@@ -13,7 +13,7 @@ let currentPlayerHTML = document.getElementById("currentPlayer");
 let currentTurnHTML = document.getElementById("currentTurn");
 let whoWonHTML = document.getElementById("whoWon");
 let playerWinNameHTML = document.getElementById("playerWinName");
-
+let itsATieHTML = document.getElementById("itsATie");
 let XSelected = [];
 let OSelected = [];
 let gameNotOver = true;
@@ -67,28 +67,35 @@ function squareClick(gamePiece) {
 }
 
 function checkWin() {
-    let selectedIds = [];
+    let XSelectedIDs = [];
+    let YSelectedIDs = [];
     for(let i = 0; i < XSelected.length; ++i) {
-        selectedIds.push(XSelected[i].pieceNumber);
+        XSelectedIDs.push(XSelected[i].pieceNumber);
     }
-    if(checkSelectedContainsWin(selectedIds)) {
+    if(checkSelectedContainsWin(XSelectedIDs)) {
         console.log("X wins!");
         gameNotOver = false;
         currentTurnHTML.style.visibility = "hidden";
         playerWinNameHTML.innerHTML = "X";
         whoWonHTML.style.display = "block";
     } else {
-            selectedIds = [];
         for(let i = 0; i < OSelected.length; ++i) {
-            selectedIds.push(OSelected[i].pieceNumber);
+            YSelectedIDs.push(OSelected[i].pieceNumber);
         }
-        if(checkSelectedContainsWin(selectedIds)) {
+        if(checkSelectedContainsWin(YSelectedIDs)) {
             console.log("O wins!");
             gameNotOver = false;
             currentTurnHTML.style.visibility = "hidden";
             playerWinNameHTML.innerHTML = "O";
             whoWonHTML.style.display = "block";
         } else {
+            if(XSelectedIDs.length + YSelectedIDs.length == 9) {
+                console.log("It's a tie!");
+                gameNotOver = false;
+                currentTurnHTML.style.visibility = "hidden";
+                itsATieHTML.style.display = "block";
+                
+            }
             console.log("Nobody wins yet");
         }
     }

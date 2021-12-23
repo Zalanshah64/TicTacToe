@@ -9,6 +9,7 @@ body {
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 20% 65% 15%;
+    font-family: eightBit;
 }
 
 #header {
@@ -38,9 +39,16 @@ body {
 
 }
 
+#itsATie {
+    display: none;
+}
+
 #board {
     display: grid;
     margin-top: 2em;
+    margin-left: 10em;
+    margin-right: 10em;
+    margin-bottom: 2em;
     grid-template-columns: 33% 33% 33%;
     grid-template-rows: 33% 33% 33%;
 }
@@ -50,6 +58,7 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 4em;
+    font-weight: bold;
 }
 
 #topLeft {
@@ -139,5 +148,12 @@ body {
 }
 
 #credits {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@font-face {
+    font-family: eightBit;
+    src: url(resources/8bitfont.ttf);
 }
