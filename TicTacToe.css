@@ -12,25 +12,44 @@ body {
 }
 
 #header {
+    padding: 0.2em;
+    margin: -2em 1em 1em 1em;
+    text-align: center;
 
 }
 
 #title {
-    text-align: center;
-    font-size: 3em;
+    font-size: 4em;
+}
+
+#whoWon {
+    display: none;
+}
+
+#playerWinName {
+
+}
+
+#currentTurn {
+
+}
+
+#currentPlayer {
+
 }
 
 #board {
     display: grid;
+    margin-top: 2em;
     grid-template-columns: 33% 33% 33%;
     grid-template-rows: 33% 33% 33%;
 }
 
 .boardpiece {
-    border-color: white;
-    border-style: solid;
-    text-align: center;
-    border: 2px white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4em;
 }
 
 #topLeft {
