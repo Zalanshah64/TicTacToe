@@ -6,6 +6,9 @@ class gamePiece {
     }
 }
 
+//Document Elements related to entire webpage
+let wrapper = document.getElementById("wrapper");
+
 //Document Elements related to start menu
 let startMenu = document.getElementById("startMenu");
 let startButton = document.getElementById("startButton");
@@ -67,6 +70,22 @@ let gameboard = [new gamePiece(topLeftId, 0),
 
 for(let i = 0; i < 9; ++i) {
     gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i])});
+    gameboard[i].idElement.addEventListener("mouseover", function() {
+        if(gameboard[i].isSelected || !gameNotOver) {
+            return;
+        }
+        if(currentPlayer == 0) {
+            gameboard[i].idElement.innerHTML = '<p class="hoverOver">X</p>';
+        } else {
+            gameboard[i].idElement.innerHTML = '<p class="hoverOver">O</p>';
+        }
+    });
+    gameboard[i].idElement.addEventListener("mouseleave", function() {
+        if(gameboard[i].isSelected || !gameNotOver) {
+            return;
+        }
+        gameboard[i].idElement.innerHTML = "";
+    })
 }
 
 startButton.addEventListener("click", function() {
@@ -96,12 +115,14 @@ instructionsButton.addEventListener("click", function() {
     startMenu.style.display = "none";
     instructionsMenu.style.display = "grid";
     instructionsTitle.style.display = "block";
+    wrapper.style.display = "block"
 })
 
 instructionsBackButton.addEventListener("click", function() {
     instructionsMenu.style.display = "none";
     instructionsTitle.style.display = "none";
     startMenu.style.display = "grid";
+    wrapper.style.display = "grid";
 })
 
 
