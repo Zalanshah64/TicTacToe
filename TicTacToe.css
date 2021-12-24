@@ -52,7 +52,13 @@ button {
     display: none;
 }
 
+#settingsTitle {
+    display: none;
+}
 
+#instructionsTitle {
+    display: none;
+}
 
 #interactionWrapper {
     display: grid;
@@ -194,6 +200,10 @@ button {
     display: none;
 }
 
+.instruction {
+    line-height: 150%;
+}
+
 
 /************************BEGINNING OF SETTINGS**************************/
 
@@ -239,7 +249,7 @@ button {
     cursor: pointer;
   }
 
-#backButton {
+#settingsBackButton {
 
 }
 

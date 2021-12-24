@@ -16,7 +16,13 @@ let settingsButton = document.getElementById("settingsButton");
 //Document Elements related to settings menu
 let settingsMenu = document.getElementById("settingsMenu");
 let volumeSlider = document.getElementById("volumeSlider");
-let backButton = document.getElementById("backButton");
+let settingsBackButton = document.getElementById("settingsBackButton");
+let settingsTitle = document.getElementById("settingsTitle");
+
+//Document Elements related to instructions menu
+let instructionsMenu = document.getElementById("instructionsMenu");
+let instructionsTitle = document.getElementById("instructionsTitle");
+let instructionsBackButton = document.getElementById("instructionsBackButton");
 
 let currentPlayer = 0;
 let currentPlayerHTML = document.getElementById("currentPlayer");
@@ -65,16 +71,19 @@ for(let i = 0; i < 9; ++i) {
 
 startButton.addEventListener("click", function() {
     startMenu.style.display = "none";
+    currentTurnHTML.style.display = "block";
     board.style.display = "grid";
 })
 
 settingsButton.addEventListener("click", function() {
     startMenu.style.display = "none";
+    settingsTitle.style.display = "block";
     settingsMenu.style.display = "grid";
 })
 
-backButton.addEventListener("click", function() {
+settingsBackButton.addEventListener("click", function() {
     settingsMenu.style.display = "none";
+    settingsTitle.style.display = "none";
     startMenu.style.display = "grid";
 })
 
@@ -82,6 +91,18 @@ volumeSlider.oninput = function() {
     XMoveAudio.volume = (this.value / 100);
     OMoveAudio.volume = (this.value / 100);
 }
+
+instructionsButton.addEventListener("click", function() {
+    startMenu.style.display = "none";
+    instructionsMenu.style.display = "grid";
+    instructionsTitle.style.display = "block";
+})
+
+instructionsBackButton.addEventListener("click", function() {
+    instructionsMenu.style.display = "none";
+    instructionsTitle.style.display = "none";
+    startMenu.style.display = "grid";
+})
 
 
 function squareClick(gamePiece) {

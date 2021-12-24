@@ -9,9 +9,11 @@
         <div id="wrapper">
             <div id="header">
                 <h1 id="title">Tic-Tac-Toe</h1>
-                <h2 id="whoWon"><span id="playerWinName"></span> wins!</h3>
-                <h2 id="currentTurn">Current Turn: <span id="currentPlayer">X</span></h3>
-                <h2 id="itsATie">It's a tie!</h3>
+                <h2 id="whoWon"><span id="playerWinName"></span> wins!</h2>
+                <h2 id="currentTurn">Current Turn: <span id="currentPlayer">X</span></h2>
+                <h2 id="itsATie">It's a tie!</h2>
+                <h2 id="settingsTitle">Settings</h2>
+                <h2 id="instructionsTitle">How to Play</h2>
             </div>
 
             <div id="interactionWrapper">
@@ -34,7 +36,13 @@
                 </div>
 
                 <div id="instructionsMenu">
-
+                    <p class="instruction">Tic-Tac-Toe, also known as Noughts and Crosses, is a game played by many children around the world. The game is very old, and early versions of it can be found in ancient Egypt and the Roman Empire.</p>
+                    <p class="instruction">The game starts with a three by three grid of squares, or a pound symbol.</p>
+                    <p class="instruction">Two players take turns filling in the grid with their respective symbol (X or O). X always starts, and O goes second.</p>
+                    <p class="instruction">If one player takes a certain square, their oponent will not be able to take that square for the rest of the game.</p>
+                    <p class="instruction">In order to win, you must line up three consecutive spaces of your symbol either vertically, horizontally, or diagonally.</p>
+                    <p class="instruction">If every space has been filled in and there has not been a three-in-a-row yet, the game is considered a tie and is over.</p>
+                    <button id="instructionsBackButton">Back</button>
                 </div>
 
                 <div id="settingsMenu">
@@ -42,7 +50,7 @@
                         <p id="volumeSliderCaption">Volume:</p>
                         <input type="range" min="0" max="100" value="75" id="volumeSlider"></slider>
                     </div>
-                    <button id="backButton">Back</button>
+                    <button id="settingsBackButton">Back</button>
                 </div>
 
             </div>
