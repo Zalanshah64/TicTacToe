@@ -1,5 +1,3 @@
-console.log("Hello, world!");
-
 class gamePiece {
     constructor(idElement, pieceNumber) {
         this.idElement = idElement;
@@ -7,6 +5,18 @@ class gamePiece {
         this.isSelected = false;
     }
 }
+
+//Document Elements related to start menu
+let startMenu = document.getElementById("startMenu");
+let startButton = document.getElementById("startButton");
+let instructionsButton = document.getElementById("instructionsButton");
+let settingsButton = document.getElementById("settingsButton");
+
+
+//Document Elements related to settings menu
+let settingsMenu = document.getElementById("settingsMenu");
+let volumeSlider = document.getElementById("volumeSlider");
+let backButton = document.getElementById("backButton");
 
 let currentPlayer = 0;
 let currentPlayerHTML = document.getElementById("currentPlayer");
@@ -18,9 +28,17 @@ let XSelected = [];
 let OSelected = [];
 let gameNotOver = true;
 
-let XMove = new Audio("resources/XMove.wav");
-let OMove = new Audio("resources/OMove.wav");
 
+//Audio Sounds
+let XMoveAudio = new Audio("resources/XMove.wav");
+let OMoveAudio = new Audio("resources/OMove.wav");
+XMoveAudio.volume = 0.75;
+OMoveAudio.volume = 0.75;
+
+
+
+//Document Elements related to gameboard
+let board = document.getElementById("board");
 let topLeftId = document.getElementById("topLeft");
 let topMiddleId = document.getElementById("topMiddle");
 let topRightId = document.getElementById("topRight");
@@ -45,6 +63,25 @@ for(let i = 0; i < 9; ++i) {
     gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i])});
 }
 
+startButton.addEventListener("click", function() {
+    startMenu.style.display = "none";
+    board.style.display = "grid";
+})
+
+settingsButton.addEventListener("click", function() {
+    startMenu.style.display = "none";
+    settingsMenu.style.display = "grid";
+})
+
+backButton.addEventListener("click", function() {
+    settingsMenu.style.display = "none";
+    startMenu.style.display = "grid";
+})
+
+volumeSlider.oninput = function() {
+    XMoveAudio.volume = (this.value / 100);
+    OMoveAudio.volume = (this.value / 100);
+}
 
 
 function squareClick(gamePiece) {
@@ -52,7 +89,7 @@ function squareClick(gamePiece) {
         gamePiece.idElement.innerHTML = "X";
         gamePiece.isSelected = true;
         XSelected.push(gamePiece);
-        XMove.play();
+        XMoveAudio.play();
         currentPlayer = 1;
         currentPlayerHTML.innerHTML = "O";
 
@@ -61,7 +98,7 @@ function squareClick(gamePiece) {
         gamePiece.idElement.innerHTML = "O";
         gamePiece.isSelected = true;
         OSelected.push(gamePiece);
-        OMove.play();
+        OMoveAudio.play();
         currentPlayer = 0;
         currentPlayerHTML.innerHTML = "X";
 
@@ -86,13 +123,13 @@ function checkWin() {
         }
         if(checkSelectedContainsWin(YSelectedIDs)) {
             gameNotOver = false;
-            currentTurnHTML.style.visibility = "hidden";
+            currentTurnHTML.style.display = "none";
             playerWinNameHTML.innerHTML = "O";
             whoWonHTML.style.display = "block";
         } else {
             if(XSelectedIDs.length + YSelectedIDs.length == 9) {
                 gameNotOver = false;
-                currentTurnHTML.style.visibility = "hidden";
+                currentTurnHTML.style.display = "none";
                 itsATieHTML.style.display = "block";
                 
             }

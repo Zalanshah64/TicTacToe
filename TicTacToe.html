@@ -14,23 +14,44 @@
                 <h2 id="itsATie">It's a tie!</h3>
             </div>
 
-            <div id="board">
-                <div id="topLeft" class="boardpiece"></div>
-                <div id="topMiddle" class="boardpiece"></div>
-                <div id="topRight" class="boardpiece"></div>
-                <div id="centerLeft" class="boardpiece"></div>
-                <div id="center" class="boardpiece"></div>
-                <div id="centerRight" class="boardpiece"></div>
-                <div id="bottomLeft" class="boardpiece"></div>
-                <div id="bottomMiddle" class="boardpiece"></div>
-                <div id="bottomRight" class="boardpiece"></div>
+            <div id="interactionWrapper">
+                <div id="startMenu">
+                    <button id="startButton" class="startMenuButton">Start</button>
+                    <button id="instructionsButton" class="startMenuButton">How to Play</button>
+                    <button id="settingsButton" class="startMenuButton">Settings</button>
+                </div>
+
+                <div id="board">
+                    <div id="topLeft" class="boardpiece"></div>
+                    <div id="topMiddle" class="boardpiece"></div>
+                    <div id="topRight" class="boardpiece"></div>
+                    <div id="centerLeft" class="boardpiece"></div>
+                    <div id="center" class="boardpiece"></div>
+                    <div id="centerRight" class="boardpiece"></div>
+                    <div id="bottomLeft" class="boardpiece"></div>
+                    <div id="bottomMiddle" class="boardpiece"></div>
+                    <div id="bottomRight" class="boardpiece"></div>
+                </div>
+
+                <div id="instructionsMenu">
+
+                </div>
+
+                <div id="settingsMenu">
+                    <div id="volumeSliderInfo">
+                        <p id="volumeSliderCaption">Volume:</p>
+                        <input type="range" min="0" max="100" value="75" id="volumeSlider"></slider>
+                    </div>
+                    <button id="backButton">Back</button>
+                </div>
+
             </div>
 
             <div id="footer">
                 <div id="credits">Created by Zalan Shah</div>
                 <div id="links">
-                    <a href="https://linkedin.com/in/zalan-shah" class="socialIcon"><ion-icon name="logo-linkedin"></ion-icon></a>
-                    <a href="https://github.com/Zalanshah64" class="socialIcon"><ion-icon name="logo-github"></ion-icon></a>
+                    <a href="https://linkedin.com/in/zalan-shah" target="_blank" class="socialIcon"><ion-icon name="logo-linkedin"></ion-icon></a>
+                    <a href="https://github.com/Zalanshah64" target="_blank" class="socialIcon"><ion-icon name="logo-github"></ion-icon></a>
                 </div>
             </div>
         </div>

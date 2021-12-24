@@ -12,6 +12,13 @@ body {
     font-family: eightBit;
 }
 
+button {
+    font-family: eightBit;
+    font-size: 110%;
+}
+
+/************************BEGINNING OF HEADER**************************/
+
 #header {
     padding: 0.2em;
     margin: -2em 1em 1em 1em;
@@ -33,6 +40,7 @@ body {
 }
 
 #currentTurn {
+    display: none;
 
 }
 
@@ -44,8 +52,43 @@ body {
     display: none;
 }
 
-#board {
+
+
+#interactionWrapper {
     display: grid;
+}
+
+/************************BEGINNING OF START MENU**************************/
+
+#startMenu {
+    display: grid;
+    grid-template-rows: 33% 33% 33%;
+    grid-template-columns: 75%;
+    justify-content: center;
+    align-items: center;
+}
+
+.startMenuButton {
+    padding: 3.5em;
+}
+
+#startButton {
+
+}
+
+#instructionsButton {
+
+}
+
+#settingsButton {
+
+}
+
+
+/************************BEGINNING OF BOARD**************************/
+
+#board {
+    display: none;
     margin-top: 2em;
     margin-left: 10em;
     margin-right: 10em;
@@ -144,6 +187,63 @@ body {
     border-left-width: 5px;
 }
 
+
+/************************BEGINNING OF INSTRUCTIONS**************************/
+
+#instructionsMenu {
+    display: none;
+}
+
+
+/************************BEGINNING OF SETTINGS**************************/
+
+#settingsMenu {
+    display: none;
+}
+
+#volumeSliderInfo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
+}
+
+#volumeSliderCaption {
+    flex-grow: 1;
+}
+
+  #volumeSlidecontainer {
+    width: 100%;
+  }
+  
+  #volumeSlider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 2em;
+    background: white;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  #volumeSlider:hover {
+    background: lightgray;
+  }
+  
+  #volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 5%;
+    height: 100%;
+    background: black;
+    cursor: pointer;
+  }
+
+#backButton {
+
+}
+
+/************************BEGINNING OF FOOTER**************************/
 #footer {
     margin: 1em;
     display: grid;
