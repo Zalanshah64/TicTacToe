@@ -21,6 +21,8 @@ let settingsMenu = document.getElementById("settingsMenu");
 let volumeSlider = document.getElementById("volumeSlider");
 let settingsBackButton = document.getElementById("settingsBackButton");
 let settingsTitle = document.getElementById("settingsTitle");
+let suggestionsToggle = document.getElementById("suggestionsCheckBox");
+let suggestionsOn = true;
 
 //Document Elements related to instructions menu
 let instructionsMenu = document.getElementById("instructionsMenu");
@@ -71,7 +73,7 @@ let gameboard = [new gamePiece(topLeftId, 0),
 for(let i = 0; i < 9; ++i) {
     gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i])});
     gameboard[i].idElement.addEventListener("mouseover", function() {
-        if(gameboard[i].isSelected || !gameNotOver) {
+        if(gameboard[i].isSelected || !gameNotOver || !suggestionsOn) {
             return;
         }
         if(currentPlayer == 0) {
@@ -81,7 +83,7 @@ for(let i = 0; i < 9; ++i) {
         }
     });
     gameboard[i].idElement.addEventListener("mouseleave", function() {
-        if(gameboard[i].isSelected || !gameNotOver) {
+        if(gameboard[i].isSelected || !gameNotOver || !suggestionsOn) {
             return;
         }
         gameboard[i].idElement.innerHTML = "";
@@ -110,6 +112,10 @@ volumeSlider.oninput = function() {
     XMoveAudio.volume = (this.value / 100);
     OMoveAudio.volume = (this.value / 100);
 }
+
+suggestionsToggle.addEventListener("change", function() {
+    suggestionsOn = !suggestionsOn;
+})
 
 instructionsButton.addEventListener("click", function() {
     startMenu.style.display = "none";
