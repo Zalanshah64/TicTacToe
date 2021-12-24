@@ -4,6 +4,7 @@ body {
 }
 
 #wrapper {
+    position: relative;
     width: 100%;
     height: 100%;
     display: grid;
@@ -20,15 +21,15 @@ button {
 /************************BEGINNING OF HEADER**************************/
 
 #header {
-    padding: 0.2em;
-    margin: -2em 1em 1em 1em;
+    padding: 0.2rem;
+    margin: -2rem 1rem 1rem 1rem;
     text-align: center;
 
 }
 
 #title {
-    font-size: 4em;
-    margin-bottom: 0em;
+    font-size: 4rem;
+    margin-bottom: 0rem;
 }
 
 #whoWon {
@@ -75,7 +76,7 @@ button {
 }
 
 .startMenuButton {
-    padding: 3.5em;
+    padding: 3.5rem;
 }
 
 #startButton {
@@ -95,10 +96,10 @@ button {
 
 #board {
     display: none;
-    margin-top: 2em;
-    margin-left: 10em;
-    margin-right: 10em;
-    margin-bottom: 2em;
+    margin-top: 2rem;
+    margin-left: 10rem;
+    margin-right: 10rem;
+    margin-bottom: 2rem;
     grid-template-columns: 33% 33% 33%;
     grid-template-rows: 33% 33% 33%;
 }
@@ -107,7 +108,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 4em;
+    font-size: 4rem;
     font-weight: bold;
 }
 
@@ -193,6 +194,10 @@ button {
     border-left-width: 5px;
 }
 
+.hoverOver {
+    opacity: 0.25;
+}
+
 
 /************************BEGINNING OF INSTRUCTIONS**************************/
 
@@ -202,6 +207,24 @@ button {
 
 .instruction {
     line-height: 150%;
+}
+
+#winImages {
+    display: flex;
+}
+
+#instructionsBackButton {
+    width: 80%;
+    height: 3rem;
+    margin: 3rem auto 1rem auto;
+}
+
+.instructionImage {
+    margin: 1.5rem auto 1.5rem auto;
+    height: 70%;
+    width: auto;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -229,7 +252,7 @@ button {
   #volumeSlider {
     -webkit-appearance: none;
     width: 100%;
-    height: 2em;
+    height: 2rem;
     background: white;
     outline: none;
     -webkit-transition: .2s;
@@ -255,27 +278,29 @@ button {
 
 /************************BEGINNING OF FOOTER**************************/
 #footer {
-    margin: 1em;
-    display: grid;
-    grid-template-rows: 50% 50%;
-
+    padding-top: 1rem;
+    width: 100%;
+    bottom: 0;
 }
 
 #credits {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0.5rem;
 }
 
 #links {
     display: flex;
     justify-content: center;
+    margin: 0.5rem;
 }
 
 .socialIcon {
     color: white;
     transition: color 0.2s;
-    font-size: 2em;
+    font-size: 2rem;
+    margin: 0.5rem;
 }
 
 .socialIcon:hover {
