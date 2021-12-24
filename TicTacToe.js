@@ -18,7 +18,8 @@ let XSelected = [];
 let OSelected = [];
 let gameNotOver = true;
 
-
+let XMove = new Audio("resources/XMove.wav");
+let OMove = new Audio("resources/OMove.wav");
 
 let topLeftId = document.getElementById("topLeft");
 let topMiddleId = document.getElementById("topMiddle");
@@ -51,6 +52,7 @@ function squareClick(gamePiece) {
         gamePiece.idElement.innerHTML = "X";
         gamePiece.isSelected = true;
         XSelected.push(gamePiece);
+        XMove.play();
         currentPlayer = 1;
         currentPlayerHTML.innerHTML = "O";
 
@@ -58,7 +60,8 @@ function squareClick(gamePiece) {
     } else if(!gamePiece.isSelected && gameNotOver) {
         gamePiece.idElement.innerHTML = "O";
         gamePiece.isSelected = true;
-        OSelected.push(gamePiece); 
+        OSelected.push(gamePiece);
+        OMove.play();
         currentPlayer = 0;
         currentPlayerHTML.innerHTML = "X";
 
@@ -73,7 +76,6 @@ function checkWin() {
         XSelectedIDs.push(XSelected[i].pieceNumber);
     }
     if(checkSelectedContainsWin(XSelectedIDs)) {
-        console.log("X wins!");
         gameNotOver = false;
         currentTurnHTML.style.visibility = "hidden";
         playerWinNameHTML.innerHTML = "X";
@@ -83,20 +85,17 @@ function checkWin() {
             YSelectedIDs.push(OSelected[i].pieceNumber);
         }
         if(checkSelectedContainsWin(YSelectedIDs)) {
-            console.log("O wins!");
             gameNotOver = false;
             currentTurnHTML.style.visibility = "hidden";
             playerWinNameHTML.innerHTML = "O";
             whoWonHTML.style.display = "block";
         } else {
             if(XSelectedIDs.length + YSelectedIDs.length == 9) {
-                console.log("It's a tie!");
                 gameNotOver = false;
                 currentTurnHTML.style.visibility = "hidden";
                 itsATieHTML.style.display = "block";
                 
             }
-            console.log("Nobody wins yet");
         }
     }
 }
@@ -111,7 +110,7 @@ function checkSelectedContainsWin(selectedIds) {
     || (selectedIds.includes(2) && selectedIds.includes(5) && selectedIds.includes(8))
     
 
-    || (selectedIds.includes(1) && selectedIds.includes(4) && selectedIds.includes(8))
+    || (selectedIds.includes(0) && selectedIds.includes(4) && selectedIds.includes(8))
     || (selectedIds.includes(2) && selectedIds.includes(4) && selectedIds.includes(6))) {
         return true;
     } else {

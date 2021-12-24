@@ -21,6 +21,7 @@ body {
 
 #title {
     font-size: 4em;
+    margin-bottom: 0em;
 }
 
 #whoWon {
@@ -145,12 +146,30 @@ body {
 
 #footer {
     margin: 1em;
+    display: grid;
+    grid-template-rows: 50% 50%;
+
 }
 
 #credits {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#links {
+    display: flex;
+    justify-content: center;
+}
+
+.socialIcon {
+    color: white;
+    transition: color 0.2s;
+    font-size: 2em;
+}
+
+.socialIcon:hover {
+    color: lightgray;
 }
 
 @font-face {
