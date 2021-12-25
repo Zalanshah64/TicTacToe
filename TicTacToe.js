@@ -179,6 +179,63 @@ mainMenuButton.addEventListener("click", function() {
     playAgainButton.style.display = "none";
 })
 
+
+playAgainButton.addEventListener("click", function() {
+    XSelected = [];
+    OSelected = [];
+    mainMenuButton.style.display = "none";
+    settingsPostGameButton.style.display = "none";
+    playAgainButton.style.display = "none";
+    itsATieHTML.style.display = "none";
+    whoWonHTML.style.display = "none";
+    currentTurnHTML.style.display = "block";
+    currentPlayerHTML.innerHTML = "X";
+    currentPlayer = 0;
+    for(let i = 0; i < gameboard.length; ++i) {
+        gameboard[i].isSelected = false;
+        gameboard[i].idElement.innerHTML = "";
+    }
+    gameResult = -1
+})
+
+settingsPostGameButton.addEventListener("click", function() {
+    game.style.display = "none";
+    settingsMenu.style.display = "grid";
+    mainMenuButton.style.display = "none";
+    settingsPostGameButton.style.display = "none";
+    playAgainButton.style.display = "none";
+    scoreTitle[0].style.display = "none";
+    scoreTitle[1].style.display = "none";
+    itsATieHTML.style.display = "none";
+    whoWonHTML.style.display = "none";
+    settingsBackFromLocation = 1;
+})
+
+mainMenuButton.addEventListener("click", function() {
+    XScore = 0;
+    OScore = 0;
+
+    XSelected = [];
+    OSelected = [];
+    currentPlayer = 0;
+    gameResult = -1
+    currentPlayerHTML.innerHTML = "X";
+    whoWonHTML.style.display = "none";
+    itsATieHTML.style.display = "none";
+    for(let i = 0; i < gameboard.length; ++i) {
+        gameboard[i].isSelected = false;
+        gameboard[i].idElement.innerHTML = "";
+    }
+
+    game.style.display = "none";
+    startMenu.style.display = "grid";
+    scoreTitle[0].style.display = "none";
+    scoreTitle[1].style.display = "none";
+    mainMenuButton.style.display = "none";
+    settingsPostGameButton.style.display = "none";
+    playAgainButton.style.display = "none";
+})
+
 settingsButton.addEventListener("click", function() {
     settingsBackFromLocation = 0;
     startMenu.style.display = "none";
