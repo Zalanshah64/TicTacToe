@@ -1,0 +1,51 @@
+/* Stylesheet for the header and all elements within the header */
+@import url("Webpage.css");
+
+#header {
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    padding: 0.2rem 0.2rem 0rem 0.2rem;
+    margin: -2rem 1rem 1rem 1rem;
+    text-align: center;
+
+}
+
+.scoreTitleWrapper {
+    justify-self: center;
+    align-self: center;
+}
+
+.scoreTitle {
+    display: none;
+}
+
+#title {
+    font-size: 4rem;
+    margin-bottom: 0rem;
+}
+
+#whoWon {
+    display: none;
+}
+
+#currentTurn {
+    display: none;
+    margin-bottom: 0rem;
+
+}
+
+#itsATie {
+    display: none;
+}
+
+#settingsTitle {
+    display: none;
+}
+
+#instructionsTitle {
+    display: none;
+}
+
+#interactionWrapper {
+    display: block;
+}

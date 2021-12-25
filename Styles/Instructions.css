@@ -1,0 +1,28 @@
+/* Stylesheet for the instructions section of the webpage */
+@import url("Webpage.css");
+
+#instructionsMenu {
+    display: none;
+}
+
+.instruction {
+    line-height: 150%;
+}
+
+#winImages {
+    display: flex;
+}
+
+#instructionsBackButton {
+    width: 80%;
+    height: 3rem;
+    margin: 3rem auto 1rem auto;
+}
+
+.instructionImage {
+    margin: 1.5rem auto 1.5rem auto;
+    height: 70%;
+    width: auto;
+    align-items: center;
+    justify-content: center;
+}

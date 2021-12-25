@@ -1,0 +1,33 @@
+/* Stylesheet for HTML tags and the overarching wrapper for the page, as well as any custom font families or other CSS items*/
+body {
+    background-color: black;
+    color: white;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+button {
+    font-family: eightBit;
+    font-size: 110%;
+    cursor: pointer;
+}
+
+#wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 20% 65% 15%;
+    font-family: eightBit;
+}
+
+@font-face {
+    font-family: eightBit;
+    src: url(../resources/8bitfont.ttf);
+}

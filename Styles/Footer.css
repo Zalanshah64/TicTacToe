@@ -1,0 +1,50 @@
+/* Stylesheet for the footer and all elements within it */
+@import url("Webpage.css");
+
+#footer {
+    display: grid;
+    grid-template-columns: 30% 40% 30%;
+    padding-top: 1rem;
+    width: 100%;
+    bottom: 0;
+}
+
+#footerLeftSide {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-rows: 45% 45%;
+    grid-template-columns: 80%;
+}
+
+#footerRightSide {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-rows: 95% 5%;
+    grid-template-columns: 80%;
+}
+
+#credits {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem;
+}
+
+#links {
+    display: flex;
+    justify-content: center;
+    margin: 0.5rem;
+}
+
+.socialIcon {
+    color: white;
+    transition: color 0.2s;
+    font-size: 2rem;
+    margin: 0.5rem;
+}
+
+.socialIcon:hover {
+    color: lightgray;
+}

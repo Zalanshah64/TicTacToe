@@ -39,6 +39,8 @@ let OScoreHTML = document.getElementById("OScore");
 let mainMenuButton = document.getElementById("mainMenuButton");
 let settingsPostGameButton = document.getElementById("settingsPostGameButton")
 let playAgainButton = document.getElementById("playAgainButton");
+let XName = document.getElementById("XName");
+let OName = document.getElementById("OName");
 
 
 let currentPlayer = 0;
@@ -52,6 +54,9 @@ let itsATieHTML = document.getElementById("itsATie");
 let XSelected = [];
 let OSelected = [];
 let gameResult = -1;
+let XIcon = "X";
+let OIcon = "O";
+
 
 //Audio Sounds
 let XMoveAudio = new Audio("resources/XMove.wav");
@@ -90,9 +95,9 @@ for(let i = 0; i < 9; ++i) {
             return;
         }
         if(currentPlayer == 0) {
-            gameboard[i].idElement.innerHTML = '<p id="hoverOver">X</p>';
+            gameboard[i].idElement.innerHTML = '<p id="hoverOver">' + XIcon + '</p>';
         } else {
-            gameboard[i].idElement.innerHTML = '<p id="hoverOver">O</p>';
+            gameboard[i].idElement.innerHTML = '<p id="hoverOver">'+ OIcon + '</p>';
         }
     });
     gameboard[i].idElement.addEventListener("mouseleave", function() {
@@ -109,9 +114,10 @@ startButton.addEventListener("click", function() {
     OScoreHTML.innerHTML = OScore;
     currentTurnHTML.style.display = "block";
     game.style.display = "block";
-    for(let i = 0; i < scoreTitle.length; ++i) {
-        scoreTitle[i].style.display = "block";
-    }
+    scoreTitle[0].style.display = "block";
+    scoreTitle[1].style.display = "block";
+    XName.innerHTML = XIcon;
+    OName.innerHTML = OIcon;
 })
 
 
@@ -124,7 +130,9 @@ playAgainButton.addEventListener("click", function() {
     itsATieHTML.style.display = "none";
     whoWonHTML.style.display = "none";
     currentTurnHTML.style.display = "block";
-    currentPlayerHTML.innerHTML = "X";
+    XName.innerHTML = XIcon;
+    OName.innerHTML = OIcon;
+    currentPlayerHTML.innerHTML = XIcon;
     currentPlayer = 0;
     for(let i = 0; i < gameboard.length; ++i) {
         gameboard[i].isSelected = false;
@@ -154,7 +162,7 @@ mainMenuButton.addEventListener("click", function() {
     OSelected = [];
     currentPlayer = 0;
     gameResult = -1
-    currentPlayerHTML.innerHTML = "X";
+    currentPlayerHTML.innerHTML = XIcon;
     whoWonHTML.style.display = "none";
     itsATieHTML.style.display = "none";
     for(let i = 0; i < gameboard.length; ++i) {
@@ -224,21 +232,21 @@ instructionsBackButton.addEventListener("click", function() {
 
 function squareClick(gamePiece) {
     if(currentPlayer == 0 && !gamePiece.isSelected && gameResult == -1) {
-        gamePiece.idElement.innerHTML = '<p class="clicked">X</p>';
+        gamePiece.idElement.innerHTML = '<p class="clicked">'+ XIcon + '</p>';
         gamePiece.isSelected = true;
         XSelected.push(gamePiece);
         XMoveAudio.play();
         currentPlayer = 1;
-        currentPlayerHTML.innerHTML = "O";
+        currentPlayerHTML.innerHTML = OIcon;
 
         checkWin();
     } else if(!gamePiece.isSelected && gameResult == -1) {
-        gamePiece.idElement.innerHTML = '<p class="clicked">O</p>';
+        gamePiece.idElement.innerHTML = '<p class="clicked">' + OIcon + '</p>';
         gamePiece.isSelected = true;
         OSelected.push(gamePiece);
         OMoveAudio.play();
         currentPlayer = 0;
-        currentPlayerHTML.innerHTML = "X";
+        currentPlayerHTML.innerHTML = XIcon;
 
         checkWin();
     }
@@ -253,7 +261,7 @@ function checkWin() {
     if(checkSelectedContainsWin(XSelectedIDs)) {
         gameResult = 0;
         currentTurnHTML.style.display = "none";
-        playerWinNameHTML.innerHTML = "X";
+        playerWinNameHTML.innerHTML = XIcon;
         XScore++;
         XScoreHTML.innerHTML = XScore;
         whoWonHTML.style.display = "block";
@@ -267,7 +275,7 @@ function checkWin() {
         if(checkSelectedContainsWin(OSelectedIDs)) {
             gameResult = 1;
             currentTurnHTML.style.display = "none";
-            playerWinNameHTML.innerHTML = "O";
+            playerWinNameHTML.innerHTML = OIcon;
             OScore++;
             OScoreHTML.innerHTML = OScore;
             whoWonHTML.style.display = "block";

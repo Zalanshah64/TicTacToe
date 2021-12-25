@@ -4,16 +4,30 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="resources/Icon.png">
-        <link rel="stylesheet" href="TicTacToe.css" type="text/css">
+        <!-- All stylesheets -->
+        <link rel="stylesheet" href="Styles/Webpage.css" type="text/css">
+        <link rel="stylesheet" href="Styles/Header.css" type="text/css">
+        <link rel="stylesheet" href="Styles/Start Menu.css" type="text/css">
+        <link rel="stylesheet" href="Styles/Board.css" type="text/css">
+        <link rel="stylesheet" href="Styles/Instructions.css" type="text/css">
+        <link rel="stylesheet" href="Styles/Settings.css" type="text/css">
+        <link rel="stylesheet" href="Styles/Footer.css" type="text/css">
         <title>Tic-Tac-Toe</title>
     </head>
 
     <body>
+        <!-- Main wrapper for webpage -->
         <div id="wrapper">
+
+            <!-- Header that contains the title, information about what happened, and scores -->
             <div id="header">
+
+                <!-- Contains data about player one's score -->
                 <div class="scoreTitleWrapper">
-                    <h2 class="scoreTitle">X Score: <span id="XScore">0</span></h2>
+                    <h2 class="scoreTitle"><span id="XName">X</span> Score: <span id="XScore">0</span></h2>
                 </div>
+
+                <!-- Contains title and information on whos turn it is -->
                 <div id="headerMiddleWrapper">
                     <h1 id="title">Tic-Tac-Toe</h1>
                     <h2 id="whoWon"><span id="playerWinName"></span> wins!</h2>
@@ -22,18 +36,29 @@
                     <h2 id="settingsTitle">Settings</h2>
                     <h2 id="instructionsTitle">How to Play</h2>
                 </div>
+
+                <!-- Contains data about player two's score -->
                 <div class="scoreTitleWrapper">
-                    <h2 class="scoreTitle">O Score: <span id="OScore">0</span></h2>
+                    <h2 class="scoreTitle"><span id="OName">O</span> Score: <span id="OScore">0</span></h2>
                 </div>
             </div>
 
+            <!-- Wrapper containing main part of the page -->
             <div id="interactionWrapper">
+
+                <!-- Wrapper containing the start menu -->
                 <div id="startMenu">
+                    <!-- Starts the game -->
                     <button id="startButton" class="startMenuButton">Start</button>
+
+                    <!-- Opens up the instructions -->
                     <button id="instructionsButton" class="startMenuButton">How to Play</button>
+
+                    <!-- Opens up the settings menu -->
                     <button id="settingsButton" class="startMenuButton">Settings</button>
                 </div>
 
+                <!-- Wrapper containing the actual game board -->
                 <div id="game">
                     <div id="board">
                         <div id="topLeft" class="boardpiece"></div>
@@ -47,7 +72,8 @@
                         <div id="bottomRight" class="boardpiece"></div>
                     </div>
                 </div>
-                
+
+                <!-- Wrapper containing the instructions on how to play, with images put in for visuals -->
                 <div id="instructionsMenu">
                     <p class="instruction">Tic-Tac-Toe, also known as Noughts and Crosses, is a game played by many children around the world. The game is very old, and early versions of it can be found in ancient Egypt and the Roman Empire.</p>
                     <p class="instruction">The game starts with a three by three grid of squares, or a pound symbol.</p>
@@ -64,15 +90,21 @@
                     </div>
                     <p class="instruction">If every space has been filled in and there has not been a three-in-a-row yet, the game is considered a tie and is over.</p>
                     <img src="resources/Instructions/InstructionsSeventhImage.png" class="instructionImage">
+                    
+                    <!-- Button to return to the previous window -->
                     <button id="instructionsBackButton">Back</button>
                 </div>
 
+                <!-- Wrapper containing the settings menu -->
                 <div id="settingsMenu">
+
+                    <!-- Slider that determines the volume of the webpage -->
                     <div id="volumeSliderInfo" class="settingsInfo">
                         <p id="volumeSliderCaption">Volume:</p>
                         <input type="range" min="0" max="100" value="75" id="volumeSlider"></slider>
                     </div>
 
+                    <!-- Toggle that turns on or off suggestions -->
                     <div id="suggestionsToggleInfo" class="settingsInfo">
                         <p id="suggestionsToggleCaption">Suggestions:</p>
                         <div id="suggestionsToggleDiv">
@@ -83,33 +115,46 @@
                         </div>
                     </div>
 
-                    <button id="settingsBackButton">Back</button>
+                    <!-- Button that returns user to previous window -->
+                    <div id="settingsBackButtonWrapper">
+                        <button id="settingsBackButton">Back</button>
+                    </div>
                 </div>
-
             </div>
 
+            <!-- Wrapper that contains credits, my links, and all buttons post-game -->
             <div id="footer">
+                
+                <!-- Contains left two buttons -->
                 <div id="footerLeftSide">
+                    <!-- Button that allows user to go to the main menu and restart the game -->
                     <button id="mainMenuButton" class="postGameButton">Main Menu</button>
+                    <!-- Button that takes user to settings -->
                     <button id="settingsPostGameButton" class="postGameButton">Settings</button>
                 </div>
 
+                <!-- Wrapper containing credits -->
                 <div id="footerInformation">
                     <div id="credits">Created by Zalan Shah</div>
                     <div id="links">
+                        <!-- Link to my LinkedIn -->
                         <a href="https://linkedin.com/in/zalan-shah" target="_blank" class="socialIcon"><ion-icon name="logo-linkedin"></ion-icon></a>
+                        <!-- Link to my Github -->
                         <a href="https://github.com/Zalanshah64" target="_blank" class="socialIcon"><ion-icon name="logo-github"></ion-icon></a>
                     </div>
                 </div>
 
+                <!-- Wrapper containing the button that allows the user to start the game again -->
                 <div id="footerRightSide">
                     <button id="playAgainButton" class="postGameButton">Play Again</button>
                 </div>
             </div>
         </div>
 
-
+        <!-- Script that runs the game -->
         <script type="text/javascript" src="TicTacToe.js"></script>
+
+        <!-- Installation of ionicons that allows Github and LinkedIn icons to run -->
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     </body>
