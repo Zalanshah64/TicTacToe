@@ -298,9 +298,9 @@ settingsBackButton.addEventListener("click", function() {
         XName.innerHTML = XIcon;
         OName.innerHTML = OIcon;
         if(gameResult == 0) {
-            whoWonHTML.innerHTML = XIcon;
+            playerWinNameHTML.innerHTML = XIcon;
         } else {
-            whoWonHTML.innerHTML = OIcon;
+            playerWinNameHTML.innerHTML = OIcon;
         }
         for(let i = 0; i < XSelected.length; ++i) {
             gameboard[XSelected[i].pieceNumber].idElement.innerHTML = XIcon;
