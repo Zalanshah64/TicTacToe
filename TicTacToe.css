@@ -411,9 +411,27 @@ button {
 
 /************************BEGINNING OF FOOTER**************************/
 #footer {
+    display: flex;
+    justify-content: space-evenly;
     padding-top: 1rem;
     width: 100%;
     bottom: 0;
+}
+
+#footerLeft {
+
+}
+
+.postGameButton {
+    display: none;
+}
+
+#footerInfo {
+
+}
+
+#footerRight {
+
 }
 
 #credits {
