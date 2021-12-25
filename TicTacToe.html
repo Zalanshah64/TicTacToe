@@ -11,12 +11,20 @@
     <body>
         <div id="wrapper">
             <div id="header">
-                <h1 id="title">Tic-Tac-Toe</h1>
-                <h2 id="whoWon"><span id="playerWinName"></span> wins!</h2>
-                <h2 id="currentTurn">Current Turn: <span id="currentPlayer">X</span></h2>
-                <h2 id="itsATie">It's a Tie!</h2>
-                <h2 id="settingsTitle">Settings</h2>
-                <h2 id="instructionsTitle">How to Play</h2>
+                <div class="scoreTitleWrapper">
+                    <h2 class="scoreTitle">X Score: <span id="XScore">0</span></h2>
+                </div>
+                <div id="headerMiddleWrapper">
+                    <h1 id="title">Tic-Tac-Toe</h1>
+                    <h2 id="whoWon"><span id="playerWinName"></span> wins!</h2>
+                    <h2 id="currentTurn">Current Turn: <span id="currentPlayer">X</span></h2>
+                    <h2 id="itsATie">It's a Tie!</h2>
+                    <h2 id="settingsTitle">Settings</h2>
+                    <h2 id="instructionsTitle">How to Play</h2>
+                </div>
+                <div class="scoreTitleWrapper">
+                    <h2 class="scoreTitle">O Score: <span id="OScore">0</span></h2>
+                </div>
             </div>
 
             <div id="interactionWrapper">
@@ -26,31 +34,33 @@
                     <button id="settingsButton" class="startMenuButton">Settings</button>
                 </div>
 
-                <div id="board">
-                    <div id="topLeft" class="boardpiece"></div>
-                    <div id="topMiddle" class="boardpiece"></div>
-                    <div id="topRight" class="boardpiece"></div>
-                    <div id="centerLeft" class="boardpiece"></div>
-                    <div id="center" class="boardpiece"></div>
-                    <div id="centerRight" class="boardpiece"></div>
-                    <div id="bottomLeft" class="boardpiece"></div>
-                    <div id="bottomMiddle" class="boardpiece"></div>
-                    <div id="bottomRight" class="boardpiece"></div>
+                <div id="game">
+                    <div id="board">
+                        <div id="topLeft" class="boardpiece"></div>
+                        <div id="topMiddle" class="boardpiece"></div>
+                        <div id="topRight" class="boardpiece"></div>
+                        <div id="centerLeft" class="boardpiece"></div>
+                        <div id="center" class="boardpiece"></div>
+                        <div id="centerRight" class="boardpiece"></div>
+                        <div id="bottomLeft" class="boardpiece"></div>
+                        <div id="bottomMiddle" class="boardpiece"></div>
+                        <div id="bottomRight" class="boardpiece"></div>
+                    </div>
                 </div>
-
+                
                 <div id="instructionsMenu">
                     <p class="instruction">Tic-Tac-Toe, also known as Noughts and Crosses, is a game played by many children around the world. The game is very old, and early versions of it can be found in ancient Egypt and the Roman Empire.</p>
                     <p class="instruction">The game starts with a three by three grid of squares, or a pound symbol.</p>
-                    <img src="resources/Instructions/InstructionsFirstImage.png" class="instructionImage">
+                    <img src="resources/Instructions/InstructionsFirstImage.png" title="An empty Tic-Tac-Toe board" class="instructionImage">
                     <p class="instruction">Two players take turns filling in the grid with their respective symbol (X or O). X always starts, and O goes second.</p>
-                    <img src="resources/Instructions/InstructionsSecondImage.png" class="instructionImage">
+                    <img src="resources/Instructions/InstructionsSecondImage.png" title="An example of the first move in a Tic-Tac-Toe board" class="instructionImage">
                     <p class="instruction">If one player takes a certain square, their oponent will not be able to take that square for the rest of the game.</p>
-                    <img src="resources/Instructions/InstructionsThirdImage.png" class="instructionImage">
+                    <img src="resources/Instructions/InstructionsThirdImage.png" title="An example of the second move in a Tic-Tac-Toe board" class="instructionImage">
                     <p class="instruction">In order to win, you must line up three consecutive spaces of your symbol either vertically, horizontally, or diagonally.</p>
                     <div id="winImages">
-                        <img src="resources/Instructions/InstructionsFourthImage.png" class="instructionImage">
-                        <img src="resources/Instructions/InstructionsFifthImage.png" class="instructionImage">
-                        <img src="resources/Instructions/InstructionsSixthImage.png" class="instructionImage">
+                        <img src="resources/Instructions/InstructionsFourthImage.png" title="A game where X has won vertically" class="instructionImage">
+                        <img src="resources/Instructions/InstructionsFifthImage.png" title="A game where X has won horizontally" class="instructionImage">
+                        <img src="resources/Instructions/InstructionsSixthImage.png" title="A game where X has won diagonally" class="instructionImage">
                     </div>
                     <p class="instruction">If every space has been filled in and there has not been a three-in-a-row yet, the game is considered a tie and is over.</p>
                     <img src="resources/Instructions/InstructionsSeventhImage.png" class="instructionImage">
@@ -58,7 +68,6 @@
                 </div>
 
                 <div id="settingsMenu">
-
                     <div id="volumeSliderInfo" class="settingsInfo">
                         <p id="volumeSliderCaption">Volume:</p>
                         <input type="range" min="0" max="100" value="75" id="volumeSlider"></slider>
@@ -72,7 +81,6 @@
                                 <span id="suggestionsSlider"></span>
                             </label>
                         </div>
-                        
                     </div>
 
                     <button id="settingsBackButton">Back</button>

@@ -29,7 +29,17 @@ let instructionsMenu = document.getElementById("instructionsMenu");
 let instructionsTitle = document.getElementById("instructionsTitle");
 let instructionsBackButton = document.getElementById("instructionsBackButton");
 
+
+//Document Elements related to the game
+let game = document.getElementById("game");
+let scoreTitle = document.getElementsByClassName("scoreTitle");
+let XScoreHTML = document.getElementById("XScore");
+let OScoreHTML = document.getElementById("OScore");
+
+
 let currentPlayer = 0;
+let XScore = 0;
+let OScore = 0;
 let currentPlayerHTML = document.getElementById("currentPlayer");
 let currentTurnHTML = document.getElementById("currentTurn");
 let whoWonHTML = document.getElementById("whoWon");
@@ -72,14 +82,14 @@ let gameboard = [new gamePiece(topLeftId, 0),
 
 for(let i = 0; i < 9; ++i) {
     gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i])});
-    gameboard[i].idElement.addEventListener("mouseover", function() {
+    gameboard[i].idElement.addEventListener("mouseenter", function() {
         if(gameboard[i].isSelected || !gameNotOver || !suggestionsOn) {
             return;
         }
         if(currentPlayer == 0) {
-            gameboard[i].idElement.innerHTML = '<p class="hoverOver">X</p>';
+            gameboard[i].idElement.innerHTML = '<p id="hoverOver">X</p>';
         } else {
-            gameboard[i].idElement.innerHTML = '<p class="hoverOver">O</p>';
+            gameboard[i].idElement.innerHTML = '<p id="hoverOver">O</p>';
         }
     });
     gameboard[i].idElement.addEventListener("mouseleave", function() {
@@ -93,7 +103,10 @@ for(let i = 0; i < 9; ++i) {
 startButton.addEventListener("click", function() {
     startMenu.style.display = "none";
     currentTurnHTML.style.display = "block";
-    board.style.display = "grid";
+    game.style.display = "block";
+    for(let i = 0; i < scoreTitle.length; ++i) {
+        scoreTitle[i].style.display = "block";
+    }
 })
 
 settingsButton.addEventListener("click", function() {
@@ -134,7 +147,7 @@ instructionsBackButton.addEventListener("click", function() {
 
 function squareClick(gamePiece) {
     if(currentPlayer == 0 && !gamePiece.isSelected && gameNotOver) {
-        gamePiece.idElement.innerHTML = "X";
+        gamePiece.idElement.innerHTML = '<p class="clicked">X</p>';
         gamePiece.isSelected = true;
         XSelected.push(gamePiece);
         XMoveAudio.play();
@@ -143,7 +156,7 @@ function squareClick(gamePiece) {
 
         checkWin();
     } else if(!gamePiece.isSelected && gameNotOver) {
-        gamePiece.idElement.innerHTML = "O";
+        gamePiece.idElement.innerHTML = '<p class="clicked">O</p>';
         gamePiece.isSelected = true;
         OSelected.push(gamePiece);
         OMoveAudio.play();
@@ -156,7 +169,7 @@ function squareClick(gamePiece) {
 
 function checkWin() {
     let XSelectedIDs = [];
-    let YSelectedIDs = [];
+    let OSelectedIDs = [];
     for(let i = 0; i < XSelected.length; ++i) {
         XSelectedIDs.push(XSelected[i].pieceNumber);
     }
@@ -164,18 +177,22 @@ function checkWin() {
         gameNotOver = false;
         currentTurnHTML.style.visibility = "hidden";
         playerWinNameHTML.innerHTML = "X";
+        XScore++;
+        XScoreHTML.innerHTML = XScore;
         whoWonHTML.style.display = "block";
     } else {
         for(let i = 0; i < OSelected.length; ++i) {
-            YSelectedIDs.push(OSelected[i].pieceNumber);
+            OSelectedIDs.push(OSelected[i].pieceNumber);
         }
-        if(checkSelectedContainsWin(YSelectedIDs)) {
+        if(checkSelectedContainsWin(OSelectedIDs)) {
             gameNotOver = false;
             currentTurnHTML.style.display = "none";
             playerWinNameHTML.innerHTML = "O";
+            OScore++;
+            OScoreHTML.innerHTML = OScore;
             whoWonHTML.style.display = "block";
         } else {
-            if(XSelectedIDs.length + YSelectedIDs.length == 9) {
+            if(XSelectedIDs.length + OSelectedIDs.length == 9) {
                 gameNotOver = false;
                 currentTurnHTML.style.display = "none";
                 itsATieHTML.style.display = "block";
