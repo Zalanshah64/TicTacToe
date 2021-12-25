@@ -24,6 +24,13 @@ let settingsTitle = document.getElementById("settingsTitle");
 let suggestionsToggle = document.getElementById("suggestionsCheckBox");
 let suggestionsOn = true;
 let settingsBackFromLocation = 0;
+let Xselections = document.getElementsByClassName("Xselection");
+let Oselections = document.getElementsByClassName("Oselection");
+let XIconSelectionnext = document.getElementById("XIconSelectionnext");
+let XIconSelectionprev = document.getElementById("XIconSelectionprev");
+let OIconSelectionnext = document.getElementById("OIconSelectionnext");
+let OIconSelectionprev = document.getElementById("OIconSelectionprev");
+
 
 //Document Elements related to instructions menu
 let instructionsMenu = document.getElementById("instructionsMenu");
@@ -42,7 +49,8 @@ let playAgainButton = document.getElementById("playAgainButton");
 let XName = document.getElementById("XName");
 let OName = document.getElementById("OName");
 
-
+let XIconSlideIndex = 0;
+let OIconSlideIndex = 0;
 let currentPlayer = 0;
 let XScore = 0;
 let OScore = 0;
@@ -64,8 +72,6 @@ let OMoveAudio = new Audio("resources/OMove.wav");
 XMoveAudio.volume = 0.75;
 OMoveAudio.volume = 0.75;
 
-
-
 //Document Elements related to gameboard
 let board = document.getElementById("board");
 let topLeftId = document.getElementById("topLeft");
@@ -77,6 +83,11 @@ let centerRightId = document.getElementById("centerRight");
 let bottomLeftId = document.getElementById("bottomLeft");
 let bottomMiddleId = document.getElementById("bottomMiddle");
 let bottomRightId = document.getElementById("bottomRight");
+
+showXSelectionOption(XIconSlideIndex);
+showOSelectionOption(OIconSlideIndex);
+
+
 
 let gameboard = [new gamePiece(topLeftId, 0),
                  new gamePiece(topMiddleId, 1),
@@ -118,6 +129,7 @@ startButton.addEventListener("click", function() {
     scoreTitle[1].style.display = "block";
     XName.innerHTML = XIcon;
     OName.innerHTML = OIcon;
+    currentPlayerHTML.innerHTML = XIcon;
 })
 
 
@@ -137,6 +149,7 @@ playAgainButton.addEventListener("click", function() {
     for(let i = 0; i < gameboard.length; ++i) {
         gameboard[i].isSelected = false;
         gameboard[i].idElement.innerHTML = "";
+        gameboard[i].idElement.classList.add("unclicked");
     }
     gameResult = -1
 })
@@ -243,6 +256,27 @@ settingsButton.addEventListener("click", function() {
     settingsMenu.style.display = "grid";
 })
 
+XIconSelectionprev.addEventListener("click", function() {
+    XIconSlideIndex -=1;
+    showXSelectionOption(XIconSlideIndex);
+})
+  
+XIconSelectionnext.addEventListener("click", function() {
+    XIconSlideIndex += 1;
+    showXSelectionOption(XIconSlideIndex);
+})
+
+OIconSelectionprev.addEventListener("click", function() {
+    OIconSlideIndex -=1;
+    showOSelectionOption(OIconSlideIndex);
+})
+  
+OIconSelectionnext.addEventListener("click", function() {
+    OIconSlideIndex += 1;
+    showOSelectionOption(OIconSlideIndex);
+})
+
+
 settingsBackButton.addEventListener("click", function() {
     settingsMenu.style.display = "none";
     settingsTitle.style.display = "none";
@@ -259,6 +293,21 @@ settingsBackButton.addEventListener("click", function() {
             whoWonHTML.style.display = "block";
         } else {
             itsATieHTML.style.display = "block";
+        }
+
+        XName.innerHTML = XIcon;
+        OName.innerHTML = OIcon;
+        if(gameResult == 0) {
+            whoWonHTML.innerHTML = XIcon;
+        } else {
+            whoWonHTML.innerHTML = OIcon;
+        }
+        for(let i = 0; i < XSelected.length; ++i) {
+            gameboard[XSelected[i].pieceNumber].idElement.innerHTML = XIcon;
+        }
+
+        for(let i = 0; i < OSelected.length; ++i) {
+            gameboard[OSelected[i].pieceNumber].idElement.innerHTML = OIcon;
         }
     }
 })
@@ -290,23 +339,24 @@ instructionsBackButton.addEventListener("click", function() {
 function squareClick(gamePiece) {
     if(currentPlayer == 0 && !gamePiece.isSelected && gameResult == -1) {
         gamePiece.idElement.innerHTML = '<p class="clicked">'+ XIcon + '</p>';
-        gamePiece.isSelected = true;
         XSelected.push(gamePiece);
         XMoveAudio.play();
         currentPlayer = 1;
         currentPlayerHTML.innerHTML = OIcon;
 
-        checkWin();
     } else if(!gamePiece.isSelected && gameResult == -1) {
         gamePiece.idElement.innerHTML = '<p class="clicked">' + OIcon + '</p>';
-        gamePiece.isSelected = true;
         OSelected.push(gamePiece);
         OMoveAudio.play();
         currentPlayer = 0;
         currentPlayerHTML.innerHTML = XIcon;
-
-        checkWin();
+    } else {
+        return;
     }
+
+    gamePiece.isSelected = true;
+    gamePiece.idElement.classList.remove("unclicked");
+    checkWin();
 }
 
 function checkWin() {
@@ -369,3 +419,33 @@ function checkSelectedContainsWin(selectedIds) {
         return false;
     }
 }
+
+function showXSelectionOption(n) {
+    if (n > Xselections.length - 1) {
+        XIconSlideIndex = 0;
+    }    
+    if (n < 0) {
+        XIconSlideIndex = Xselections.length - 1;
+    }
+    for (let i = 0; i < Xselections.length; i++) {
+        Xselections[i].style.display = "none";  
+    }
+
+
+    Xselections[XIconSlideIndex].style.display = "flex";  
+    XIcon = Xselections[XIconSlideIndex].innerHTML;
+  }
+
+  function showOSelectionOption(n) {
+    if (n >= Oselections.length) {
+        OIconSlideIndex = 0;
+    }    
+    if (n < 0) {
+        OIconSlideIndex = Oselections.length - 1;
+    }
+    for (let i = 0; i < Oselections.length; i++) {
+        Oselections[i].style.display = "none";  
+    }
+    Oselections[OIconSlideIndex].style.display = "flex";
+    OIcon = Oselections[OIconSlideIndex].innerHTML;
+  }

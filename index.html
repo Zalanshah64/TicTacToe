@@ -61,15 +61,15 @@
                 <!-- Wrapper containing the actual game board -->
                 <div id="game">
                     <div id="board">
-                        <div id="topLeft" class="boardpiece"></div>
-                        <div id="topMiddle" class="boardpiece"></div>
-                        <div id="topRight" class="boardpiece"></div>
-                        <div id="centerLeft" class="boardpiece"></div>
-                        <div id="center" class="boardpiece"></div>
-                        <div id="centerRight" class="boardpiece"></div>
-                        <div id="bottomLeft" class="boardpiece"></div>
-                        <div id="bottomMiddle" class="boardpiece"></div>
-                        <div id="bottomRight" class="boardpiece"></div>
+                        <div id="topLeft" class="boardpiece unclicked"></div>
+                        <div id="topMiddle" class="boardpiece unclicked"></div>
+                        <div id="topRight" class="boardpiece unclicked"></div>
+                        <div id="centerLeft" class="boardpiece unclicked"></div>
+                        <div id="center" class="boardpiece unclicked"></div>
+                        <div id="centerRight" class="boardpiece unclicked"></div>
+                        <div id="bottomLeft" class="boardpiece unclicked"></div>
+                        <div id="bottomMiddle" class="boardpiece unclicked"></div>
+                        <div id="bottomRight" class="boardpiece unclicked"></div>
                     </div>
                 </div>
 
@@ -114,6 +114,43 @@
                             </label>
                         </div>
                     </div>
+
+                    <div id="XIconSelectionWrapper" class="iconSelectionWrapper">
+                        <p id="XIconSelectionCaption" class="iconSelectionCaption">Player One Icon:</p>
+                        <div id="XIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
+                            <div id="XIconSelection" class="iconSelection">
+                                <p id="XIconSelectionprev" class="iconSelectionprev">&lt</p>
+                                <div class="Xselection selection">X</div>
+                                <div class="Xselection selection">O</div>
+                                <div class="Xselection selection">0</div>
+                                <div class="Xselection selection">1</div>
+                                <div class="Xselection selection">:)</div>
+                                <div class="Xselection selection">:(</div>
+                                <div class="Xselection selection">+</div>
+                                <div class="Xselection selection">-</div>
+                                <p id="XIconSelectionnext" class="iconSelectionnext">&gt</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="OIconSelectionWrapper" class="iconSelectionWrapper">
+                        <p id="OIconSelectionCaption" class="iconSelectionCaption">Player Two Icon:</p>
+                        <div id="OIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
+                            <div id="OIconSelection" class="iconSelection">
+                                <p id="OIconSelectionprev" class="iconSelectionprev">&lt</p>
+                                <div class="Oselection selection">O</div>
+                                <div class="Oselection selection">X</div>
+                                <div class="Oselection selection">1</div>
+                                <div class="Oselection selection">0</div>
+                                <div class="Oselection selection">:(</div>
+                                <div class="Oselection selection">:)</div>
+                                <div class="Oselection selection">-</div>
+                                <div class="Oselection selection">+</div>
+                                <p id="OIconSelectionnext" class="iconSelectionnext">&gt</p>
+                            </div>
+                        </div>
+                    </div>
+                   
 
                     <!-- Button that returns user to previous window -->
                     <div id="settingsBackButtonWrapper">

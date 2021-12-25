@@ -52,6 +52,11 @@
     min-height: 6rem;
 }
 
+.unclicked:active:hover {
+    color: lightgray;
+    font-size: 3.5rem;
+}
+
 #topLeft {
     border-color: white;
     border-style: solid;

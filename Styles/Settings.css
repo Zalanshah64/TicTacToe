@@ -100,7 +100,54 @@ input:checked + #suggestionsSlider:before {
     -webkit-transform: translateX(4.7rem);
     transform: translateX(4.7rem);
 }
+
+
+
+.iconSelectionWrapper {
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem;
+}
+
+.iconSelectionWrapperNoCaption {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+}
+
+.iconSelectionCaption {
+    align-self: center;
+}
+
+  .iconSelection {
+    border: 0.2rem solid white;
+    display: grid;
+    width: 20%;
+    grid-template-columns: 25% 50% 25%;
+    font-size: 2rem;
+    padding: 1rem;
+  }
   
+  .selection {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+  }
+  
+  .iconSelectionprev {
+    cursor: pointer;
+    align-self: center;
+    justify-self: center;
+  }
+  
+  .iconSelectionnext {
+    cursor: pointer;
+    align-self: center;
+    justify-self: center;
+  }
+
+
+
 
 #settingsBackButtonWrapper {
     display: flex;
