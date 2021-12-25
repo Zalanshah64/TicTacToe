@@ -190,7 +190,7 @@ function checkWin() {
             playerWinNameHTML.innerHTML = "O";
             OScore++;
             OScoreHTML.innerHTML = OScore;
-            whoWonHTML.style.display = "block";
+            whoWonHTML.style.display = "block"
         } else {
             if(XSelectedIDs.length + OSelectedIDs.length == 9) {
                 gameNotOver = false;
