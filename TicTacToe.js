@@ -23,6 +23,7 @@ let settingsBackButton = document.getElementById("settingsBackButton");
 let settingsTitle = document.getElementById("settingsTitle");
 let suggestionsToggle = document.getElementById("suggestionsCheckBox");
 let suggestionsOn = true;
+let settingsBackFromLocation = 0;
 
 //Document Elements related to instructions menu
 let instructionsMenu = document.getElementById("instructionsMenu");
@@ -35,6 +36,9 @@ let game = document.getElementById("game");
 let scoreTitle = document.getElementsByClassName("scoreTitle");
 let XScoreHTML = document.getElementById("XScore");
 let OScoreHTML = document.getElementById("OScore");
+let mainMenuButton = document.getElementById("mainMenuButton");
+let settingsPostGameButton = document.getElementById("settingsPostGameButton")
+let playAgainButton = document.getElementById("playAgainButton");
 
 
 let currentPlayer = 0;
@@ -47,8 +51,7 @@ let playerWinNameHTML = document.getElementById("playerWinName");
 let itsATieHTML = document.getElementById("itsATie");
 let XSelected = [];
 let OSelected = [];
-let gameNotOver = true;
-
+let gameResult = -1;
 
 //Audio Sounds
 let XMoveAudio = new Audio("resources/XMove.wav");
@@ -83,7 +86,7 @@ let gameboard = [new gamePiece(topLeftId, 0),
 for(let i = 0; i < 9; ++i) {
     gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i])});
     gameboard[i].idElement.addEventListener("mouseenter", function() {
-        if(gameboard[i].isSelected || !gameNotOver || !suggestionsOn) {
+        if(gameboard[i].isSelected || gameResult != -1 || !suggestionsOn) {
             return;
         }
         if(currentPlayer == 0) {
@@ -93,7 +96,7 @@ for(let i = 0; i < 9; ++i) {
         }
     });
     gameboard[i].idElement.addEventListener("mouseleave", function() {
-        if(gameboard[i].isSelected || !gameNotOver || !suggestionsOn) {
+        if(gameboard[i].isSelected || gameResult != -1 || !suggestionsOn) {
             return;
         }
         gameboard[i].idElement.innerHTML = "";
@@ -102,6 +105,8 @@ for(let i = 0; i < 9; ++i) {
 
 startButton.addEventListener("click", function() {
     startMenu.style.display = "none";
+    XScoreHTML.innerHTML = XScore;
+    OScoreHTML.innerHTML = OScore;
     currentTurnHTML.style.display = "block";
     game.style.display = "block";
     for(let i = 0; i < scoreTitle.length; ++i) {
@@ -109,7 +114,65 @@ startButton.addEventListener("click", function() {
     }
 })
 
+
+playAgainButton.addEventListener("click", function() {
+    XSelected = [];
+    OSelected = [];
+    mainMenuButton.style.display = "none";
+    settingsPostGameButton.style.display = "none";
+    playAgainButton.style.display = "none";
+    itsATieHTML.style.display = "none";
+    whoWonHTML.style.display = "none";
+    currentTurnHTML.style.display = "block";
+    currentPlayerHTML.innerHTML = "X";
+    currentPlayer = 0;
+    for(let i = 0; i < gameboard.length; ++i) {
+        gameboard[i].isSelected = false;
+        gameboard[i].idElement.innerHTML = "";
+    }
+    gameResult = -1
+})
+
+settingsPostGameButton.addEventListener("click", function() {
+    game.style.display = "none";
+    settingsMenu.style.display = "grid";
+    mainMenuButton.style.display = "none";
+    settingsPostGameButton.style.display = "none";
+    playAgainButton.style.display = "none";
+    scoreTitle[0].style.display = "none";
+    scoreTitle[1].style.display = "none";
+    itsATieHTML.style.display = "none";
+    whoWonHTML.style.display = "none";
+    settingsBackFromLocation = 1;
+})
+
+mainMenuButton.addEventListener("click", function() {
+    XScore = 0;
+    OScore = 0;
+
+    XSelected = [];
+    OSelected = [];
+    currentPlayer = 0;
+    gameResult = -1
+    currentPlayerHTML.innerHTML = "X";
+    whoWonHTML.style.display = "none";
+    itsATieHTML.style.display = "none";
+    for(let i = 0; i < gameboard.length; ++i) {
+        gameboard[i].isSelected = false;
+        gameboard[i].idElement.innerHTML = "";
+    }
+
+    game.style.display = "none";
+    startMenu.style.display = "grid";
+    scoreTitle[0].style.display = "none";
+    scoreTitle[1].style.display = "none";
+    mainMenuButton.style.display = "none";
+    settingsPostGameButton.style.display = "none";
+    playAgainButton.style.display = "none";
+})
+
 settingsButton.addEventListener("click", function() {
+    settingsBackFromLocation = 0;
     startMenu.style.display = "none";
     settingsTitle.style.display = "block";
     settingsMenu.style.display = "grid";
@@ -118,7 +181,21 @@ settingsButton.addEventListener("click", function() {
 settingsBackButton.addEventListener("click", function() {
     settingsMenu.style.display = "none";
     settingsTitle.style.display = "none";
-    startMenu.style.display = "grid";
+    if(settingsBackFromLocation == 0) {
+        startMenu.style.display = "grid";
+    } else if(settingsBackFromLocation == 1) {
+        game.style.display = "block";
+        scoreTitle[0].style.display = "block";
+        scoreTitle[1].style.display = "block";
+        mainMenuButton.style.display = "block";
+        settingsPostGameButton.style.display = "block";
+        playAgainButton.style.display = "block";
+        if(gameResult == 0 || gameResult == 1) {
+            whoWonHTML.style.display = "block";
+        } else {
+            itsATieHTML.style.display = "block";
+        }
+    }
 })
 
 volumeSlider.oninput = function() {
@@ -146,7 +223,7 @@ instructionsBackButton.addEventListener("click", function() {
 
 
 function squareClick(gamePiece) {
-    if(currentPlayer == 0 && !gamePiece.isSelected && gameNotOver) {
+    if(currentPlayer == 0 && !gamePiece.isSelected && gameResult == -1) {
         gamePiece.idElement.innerHTML = '<p class="clicked">X</p>';
         gamePiece.isSelected = true;
         XSelected.push(gamePiece);
@@ -155,7 +232,7 @@ function squareClick(gamePiece) {
         currentPlayerHTML.innerHTML = "O";
 
         checkWin();
-    } else if(!gamePiece.isSelected && gameNotOver) {
+    } else if(!gamePiece.isSelected && gameResult == -1) {
         gamePiece.idElement.innerHTML = '<p class="clicked">O</p>';
         gamePiece.isSelected = true;
         OSelected.push(gamePiece);
@@ -174,29 +251,37 @@ function checkWin() {
         XSelectedIDs.push(XSelected[i].pieceNumber);
     }
     if(checkSelectedContainsWin(XSelectedIDs)) {
-        gameNotOver = false;
-        currentTurnHTML.style.visibility = "hidden";
+        gameResult = 0;
+        currentTurnHTML.style.display = "none";
         playerWinNameHTML.innerHTML = "X";
         XScore++;
         XScoreHTML.innerHTML = XScore;
         whoWonHTML.style.display = "block";
+        mainMenuButton.style.display = "block";
+        settingsPostGameButton.style.display = "block";
+        playAgainButton.style.display = "block";
     } else {
         for(let i = 0; i < OSelected.length; ++i) {
             OSelectedIDs.push(OSelected[i].pieceNumber);
         }
         if(checkSelectedContainsWin(OSelectedIDs)) {
-            gameNotOver = false;
+            gameResult = 1;
             currentTurnHTML.style.display = "none";
             playerWinNameHTML.innerHTML = "O";
             OScore++;
             OScoreHTML.innerHTML = OScore;
-            whoWonHTML.style.display = "block"
+            whoWonHTML.style.display = "block";
+            mainMenuButton.style.display = "block";
+            settingsPostGameButton.style.display = "block";
+            playAgainButton.style.display = "block";
         } else {
             if(XSelectedIDs.length + OSelectedIDs.length == 9) {
-                gameNotOver = false;
+                gameResult = 2;
                 currentTurnHTML.style.display = "none";
                 itsATieHTML.style.display = "block";
-                
+                mainMenuButton.style.display = "block";
+                settingsPostGameButton.style.display = "block";
+                playAgainButton.style.display = "block";
             }
         }
     }
