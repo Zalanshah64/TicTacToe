@@ -22,7 +22,6 @@ let volumeSlider = document.getElementById("volumeSlider");
 let settingsBackButton = document.getElementById("settingsBackButton");
 let settingsTitle = document.getElementById("settingsTitle");
 let suggestionsToggle = document.getElementById("suggestionsCheckBox");
-let suggestionsOn = true;
 let settingsBackFromLocation = 0;
 let Xselections = document.getElementsByClassName("Xselection");
 let Oselections = document.getElementsByClassName("Oselection");
@@ -30,6 +29,7 @@ let XIconSelectionnext = document.getElementById("XIconSelectionnext");
 let XIconSelectionprev = document.getElementById("XIconSelectionprev");
 let OIconSelectionnext = document.getElementById("OIconSelectionnext");
 let OIconSelectionprev = document.getElementById("OIconSelectionprev");
+let settingsData = {};
 
 
 //Document Elements related to instructions menu
@@ -49,8 +49,6 @@ let playAgainButton = document.getElementById("playAgainButton");
 let XName = document.getElementById("XName");
 let OName = document.getElementById("OName");
 
-let XIconSlideIndex = 0;
-let OIconSlideIndex = 0;
 let currentPlayer = 0;
 let XScore = 0;
 let OScore = 0;
@@ -62,15 +60,11 @@ let itsATieHTML = document.getElementById("itsATie");
 let XSelected = [];
 let OSelected = [];
 let gameResult = -1;
-let XIcon = "X";
-let OIcon = "O";
 
 
 //Audio Sounds
 let XMoveAudio = new Audio("resources/XMove.wav");
 let OMoveAudio = new Audio("resources/OMove.wav");
-XMoveAudio.volume = 0.75;
-OMoveAudio.volume = 0.75;
 
 //Document Elements related to gameboard
 let board = document.getElementById("board");
@@ -84,11 +78,6 @@ let bottomLeftId = document.getElementById("bottomLeft");
 let bottomMiddleId = document.getElementById("bottomMiddle");
 let bottomRightId = document.getElementById("bottomRight");
 
-showXSelectionOption(XIconSlideIndex);
-showOSelectionOption(OIconSlideIndex);
-
-
-
 let gameboard = [new gamePiece(topLeftId, 0),
                  new gamePiece(topMiddleId, 1),
                  new gamePiece(topRightId, 2),
@@ -99,20 +88,58 @@ let gameboard = [new gamePiece(topLeftId, 0),
                  new gamePiece(bottomMiddleId, 7),
                  new gamePiece(bottomRightId, 8)];
 
+if(document.cookie.length == 0) {
+    let date = new Date();
+    date.setDate(date.getDate() + 2);
+    document.cookie = "volume=0.75;";
+    document.cookie = "suggestions=true;";
+    document.cookie = "XIcon=X;";
+    document.cookie = "OIcon=O;";
+    document.cookie = "XIconSlideIndex=0;"
+    document.cookie = "OIconSlideIndex=1;"
+    document.cookie = "expires=" + date.toUTCString() + ";";
+    settingsData["volume"] = 0.75;
+    settingsData["suggestions"] = true;
+    settingsData["XIcon"] = "X";
+    settingsData["OIcon"] = "O";
+    settingsData["XIconSlideIndex"] = 0;
+    settingsData["OIconSlideIndex"] = 1;
+} else {
+    let cookies = document.cookie.split(';');
+
+    for(let i = 0; i < cookies.length; ++i) {
+        if(cookies[i][0] == " ") {
+            cookies[i] = cookies[i].substring(1);
+        }
+        settingsData[cookies[i].split("=")[0]] = cookies[i].split("=")[1];
+    }
+    volumeSlider.value = settingsData["volume"] * 100;
+    if((settingsData["suggestions"] === "true")) {
+        settingsData["suggestions"] = true;
+    } else {
+        settingsData["suggestions"] = false;
+        suggestionsToggle.checked = !suggestionsToggle.checked;
+    }
+}
+
+updateVolume();
+showXSelectionOption(settingsData["XIconSlideIndex"]);
+showOSelectionOption(settingsData["OIconSlideIndex"]);
+
 for(let i = 0; i < 9; ++i) {
     gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i])});
     gameboard[i].idElement.addEventListener("mouseenter", function() {
-        if(gameboard[i].isSelected || gameResult != -1 || !suggestionsOn) {
+        if(gameboard[i].isSelected || gameResult != -1 || !settingsData["suggestions"]) {
             return;
         }
         if(currentPlayer == 0) {
-            gameboard[i].idElement.innerHTML = '<p id="hoverOver">' + XIcon + '</p>';
+            gameboard[i].idElement.innerHTML = '<p id="hoverOver">' + settingsData["XIcon"] + '</p>';
         } else {
-            gameboard[i].idElement.innerHTML = '<p id="hoverOver">'+ OIcon + '</p>';
+            gameboard[i].idElement.innerHTML = '<p id="hoverOver">'+ settingsData["OIcon"] + '</p>';
         }
     });
     gameboard[i].idElement.addEventListener("mouseleave", function() {
-        if(gameboard[i].isSelected || gameResult != -1 || !suggestionsOn) {
+        if(gameboard[i].isSelected || gameResult != -1 || !settingsData["suggestions"]) {
             return;
         }
         gameboard[i].idElement.innerHTML = "";
@@ -127,9 +154,9 @@ startButton.addEventListener("click", function() {
     game.style.display = "block";
     scoreTitle[0].style.display = "block";
     scoreTitle[1].style.display = "block";
-    XName.innerHTML = XIcon;
-    OName.innerHTML = OIcon;
-    currentPlayerHTML.innerHTML = XIcon;
+    XName.innerHTML = settingsData["XIcon"];
+    OName.innerHTML = settingsData["OIcon"];
+    currentPlayerHTML.innerHTML = settingsData["XIcon"];
 })
 
 
@@ -142,9 +169,9 @@ playAgainButton.addEventListener("click", function() {
     itsATieHTML.style.display = "none";
     whoWonHTML.style.display = "none";
     currentTurnHTML.style.display = "block";
-    XName.innerHTML = XIcon;
-    OName.innerHTML = OIcon;
-    currentPlayerHTML.innerHTML = XIcon;
+    XName.innerHTML = settingsData["XIcon"];
+    OName.innerHTML = settingsData["OIcon"];
+    currentPlayerHTML.innerHTML = settingsData["XIcon"];
     currentPlayer = 0;
     for(let i = 0; i < gameboard.length; ++i) {
         gameboard[i].isSelected = false;
@@ -175,7 +202,7 @@ mainMenuButton.addEventListener("click", function() {
     OSelected = [];
     currentPlayer = 0;
     gameResult = -1
-    currentPlayerHTML.innerHTML = XIcon;
+    currentPlayerHTML.innerHTML = settingsData["XIcon"];
     whoWonHTML.style.display = "none";
     itsATieHTML.style.display = "none";
     for(let i = 0; i < gameboard.length; ++i) {
@@ -257,23 +284,23 @@ settingsButton.addEventListener("click", function() {
 })
 
 XIconSelectionprev.addEventListener("click", function() {
-    XIconSlideIndex -=1;
-    showXSelectionOption(XIconSlideIndex);
+    settingsData["XIconSlideIndex"] -= 1;
+    showXSelectionOption(settingsData["XIconSlideIndex"]);
 })
   
 XIconSelectionnext.addEventListener("click", function() {
-    XIconSlideIndex += 1;
-    showXSelectionOption(XIconSlideIndex);
+    settingsData["XIconSlideIndex"] += 1;
+    showXSelectionOption(settingsData["XIconSlideIndex"]);
 })
 
 OIconSelectionprev.addEventListener("click", function() {
-    OIconSlideIndex -=1;
-    showOSelectionOption(OIconSlideIndex);
+    settingsData["OIconSlideIndex"] -= 1;
+    showOSelectionOption(settingsData["OIconSlideIndex"]);
 })
   
 OIconSelectionnext.addEventListener("click", function() {
-    OIconSlideIndex += 1;
-    showOSelectionOption(OIconSlideIndex);
+    settingsData["OIconSlideIndex"] += 1;
+    showOSelectionOption(settingsData["OIconSlideIndex"]);
 })
 
 
@@ -295,30 +322,39 @@ settingsBackButton.addEventListener("click", function() {
             itsATieHTML.style.display = "block";
         }
 
-        XName.innerHTML = XIcon;
-        OName.innerHTML = OIcon;
+        XName.innerHTML = settingsData["XIcon"];
+        OName.innerHTML = settingsData["OIcon"];
         if(gameResult == 0) {
-            playerWinNameHTML.innerHTML = XIcon;
+            playerWinNameHTML.innerHTML = settingsData["XIcon"];
         } else {
-            playerWinNameHTML.innerHTML = OIcon;
+            playerWinNameHTML.innerHTML = settingsData["OIcon"];
         }
         for(let i = 0; i < XSelected.length; ++i) {
-            gameboard[XSelected[i].pieceNumber].idElement.innerHTML = XIcon;
+            gameboard[XSelected[i].pieceNumber].idElement.innerHTML = settingsData["XIcon"];
         }
 
         for(let i = 0; i < OSelected.length; ++i) {
-            gameboard[OSelected[i].pieceNumber].idElement.innerHTML = OIcon;
+            gameboard[OSelected[i].pieceNumber].idElement.innerHTML = settingsData["OIcon"];
         }
     }
 })
 
 volumeSlider.oninput = function() {
-    XMoveAudio.volume = (this.value / 100);
-    OMoveAudio.volume = (this.value / 100);
+    let newVolume = this.value / 100;
+    settingsData["volume"] = newVolume;
+    document.cookie = "volume=" + newVolume + ";";
+    updateVolume();
 }
 
 suggestionsToggle.addEventListener("change", function() {
-    suggestionsOn = !suggestionsOn;
+    if(settingsData["suggestions"]) {
+        settingsData["suggestions"] = false;
+        document.cookie = "suggestions=false;";
+    } else {
+        settingsData["suggestions"] = true;
+        document.cookie = "suggestions=true;";
+    }
+
 })
 
 instructionsButton.addEventListener("click", function() {
@@ -338,18 +374,18 @@ instructionsBackButton.addEventListener("click", function() {
 
 function squareClick(gamePiece) {
     if(currentPlayer == 0 && !gamePiece.isSelected && gameResult == -1) {
-        gamePiece.idElement.innerHTML = '<p class="clicked">'+ XIcon + '</p>';
+        gamePiece.idElement.innerHTML = '<p class="clicked">'+ settingsData["XIcon"] + '</p>';
         XSelected.push(gamePiece);
         XMoveAudio.play();
         currentPlayer = 1;
-        currentPlayerHTML.innerHTML = OIcon;
+        currentPlayerHTML.innerHTML = settingsData["OIcon"];
 
     } else if(!gamePiece.isSelected && gameResult == -1) {
-        gamePiece.idElement.innerHTML = '<p class="clicked">' + OIcon + '</p>';
+        gamePiece.idElement.innerHTML = '<p class="clicked">' + settingsData["OIcon"] + '</p>';
         OSelected.push(gamePiece);
         OMoveAudio.play();
         currentPlayer = 0;
-        currentPlayerHTML.innerHTML = XIcon;
+        currentPlayerHTML.innerHTML = settingsData["XIcon"];
     } else {
         return;
     }
@@ -368,7 +404,7 @@ function checkWin() {
     if(checkSelectedContainsWin(XSelectedIDs)) {
         gameResult = 0;
         currentTurnHTML.style.display = "none";
-        playerWinNameHTML.innerHTML = XIcon;
+        playerWinNameHTML.innerHTML = settingsData["XIcon"];
         XScore++;
         XScoreHTML.innerHTML = XScore;
         whoWonHTML.style.display = "block";
@@ -382,7 +418,7 @@ function checkWin() {
         if(checkSelectedContainsWin(OSelectedIDs)) {
             gameResult = 1;
             currentTurnHTML.style.display = "none";
-            playerWinNameHTML.innerHTML = OIcon;
+            playerWinNameHTML.innerHTML = settingsData["OIcon"];
             OScore++;
             OScoreHTML.innerHTML = OScore;
             whoWonHTML.style.display = "block";
@@ -422,30 +458,37 @@ function checkSelectedContainsWin(selectedIds) {
 
 function showXSelectionOption(n) {
     if (n > Xselections.length - 1) {
-        XIconSlideIndex = 0;
+        settingsData["XIconSlideIndex"] = 0;
     }    
     if (n < 0) {
-        XIconSlideIndex = Xselections.length - 1;
+        settingsData["XIconSlideIndex"] = Xselections.length - 1;
     }
     for (let i = 0; i < Xselections.length; i++) {
         Xselections[i].style.display = "none";  
     }
 
 
-    Xselections[XIconSlideIndex].style.display = "flex";  
-    XIcon = Xselections[XIconSlideIndex].innerHTML;
+    Xselections[settingsData["XIconSlideIndex"]].style.display = "flex";  
+    settingsData["XIcon"] = Xselections[settingsData["XIconSlideIndex"]].innerHTML;
+    document.cookie = "XIconSlideIndex=" + settingsData["XIconSlideIndex"] + ";";
   }
 
   function showOSelectionOption(n) {
     if (n >= Oselections.length) {
-        OIconSlideIndex = 0;
+        settingsData["OIconSlideIndex"] = 0;
     }    
     if (n < 0) {
-        OIconSlideIndex = Oselections.length - 1;
+        settingsData["OIconSlideIndex"] = Oselections.length - 1;
     }
     for (let i = 0; i < Oselections.length; i++) {
         Oselections[i].style.display = "none";  
     }
-    Oselections[OIconSlideIndex].style.display = "flex";
-    OIcon = Oselections[OIconSlideIndex].innerHTML;
+    Oselections[settingsData["OIconSlideIndex"]].style.display = "flex";
+    settingsData["OIcon"] = Oselections[settingsData["OIconSlideIndex"]].innerHTML;
+    document.cookie = "OIconSlideIndex=" + settingsData["OIconSlideIndex"] + ";";
+  }
+
+  function updateVolume() {
+      XMoveAudio.volume = settingsData["volume"];
+      OMoveAudio.volume = settingsData["volume"];
   }
