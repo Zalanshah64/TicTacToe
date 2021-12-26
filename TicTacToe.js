@@ -72,6 +72,9 @@ let XMoveAudio = new Audio("resources/Sounds/PlayerOneMove.wav");
 let OMoveAudio = new Audio("resources/Sounds/PlayerTwoMove.wav");
 let hoverOverAudio = new Audio("resources/Sounds/HoverOverButton.wav");
 let clickAudio = new Audio("resources/Sounds/ClickButton.wav");
+let gameStartAudio = new Audio("resources/Sounds/GameStart.wav");
+let WinnerAudio = new Audio("resources/Sounds/Winner.wav");
+let DrawAudio = new Audio("resources/Sounds/Draw.wav");
 
 //Document Elements related to gameboard
 let board = document.getElementById("board");
@@ -127,6 +130,9 @@ if(document.cookie.length == 0) {
         settingsData["suggestions"] = false;
         suggestionsToggle.checked = !suggestionsToggle.checked;
     }
+    settingsData["XIconSlideIndex"] = parseInt(settingsData["XIconSlideIndex"]);
+    settingsData["OIconSlideIndex"] = parseInt(settingsData["OIconSlideIndex"]);
+
 }
 
 updateVolume();
@@ -136,14 +142,12 @@ showOSelectionOption(settingsData["OIconSlideIndex"]);
 
 document.addEventListener("keyup", function(event) {
     if(event.key === "Enter") {
-        setTimeout(function() {
-            startMenuWrapper.style.display = "none";
-            wrapper.style.display = "grid";
-        }, 250);
-        startMenuWrapper.classList.add("hidden");
-
-        
-
+        // setTimeout(function() {
+        startMenuWrapper.style.display = "none";
+        wrapper.style.display = "grid";
+        // }, 250);
+        // startMenuWrapper.classList.add("hidden");
+        gameStartAudio.play();
     }
 })
 
@@ -159,6 +163,7 @@ for(let i = 0; i < 9; ++i) {
         } else {
             gameboard[i].idElement.innerHTML = '<p id="hoverOver">'+ settingsData["OIcon"] + '</p>';
         }
+        stopHoverAudio();
         hoverOverAudio.play();
     });
     gameboard[i].idElement.addEventListener("mouseleave", function() {
@@ -171,12 +176,14 @@ for(let i = 0; i < 9; ++i) {
 
 for(let i = 0; i < hoverOverButtons.length; ++i) {
     hoverOverButtons[i].addEventListener("mouseenter", function() {
+        stopHoverAudio();
         hoverOverAudio.play();
     })
 }
 
 for(let i = 0; i < clickSoundButtons.length; ++i) {
     clickSoundButtons[i].addEventListener("click", function() {
+        stopHoverAudio();
         clickAudio.play();
     })
 }
@@ -374,6 +381,10 @@ settingsBackButton.addEventListener("click", function() {
     }
 })
 
+volumeSlider.onmouseup = function() {
+    clickAudio.play();
+}
+
 volumeSlider.oninput = function() {
     let newVolume = this.value / 100;
     settingsData["volume"] = newVolume;
@@ -411,15 +422,13 @@ function squareClick(gamePiece) {
     if(currentPlayer == 0 && !gamePiece.isSelected && gameResult == -1) {
         gamePiece.idElement.innerHTML = '<p class="clicked">'+ settingsData["XIcon"] + '</p>';
         XSelected.push(gamePiece);
-        XMoveAudio.play();
-        currentPlayer = 1;
+        stopHoverAudio();
         currentPlayerHTML.innerHTML = settingsData["OIcon"];
 
     } else if(!gamePiece.isSelected && gameResult == -1) {
         gamePiece.idElement.innerHTML = '<p class="clicked">' + settingsData["OIcon"] + '</p>';
         OSelected.push(gamePiece);
-        OMoveAudio.play();
-        currentPlayer = 0;
+        stopHoverAudio();
         currentPlayerHTML.innerHTML = settingsData["XIcon"];
     } else {
         return;
@@ -427,7 +436,20 @@ function squareClick(gamePiece) {
 
     gamePiece.isSelected = true;
     gamePiece.idElement.classList.remove("unclicked");
-    checkWin();
+    let result = checkWin();
+    if(result == -1) {
+        if(currentPlayer == 0) {
+            XMoveAudio.play();
+            currentPlayer = 1;
+        } else {
+            OMoveAudio.play();
+            currentPlayer = 0;
+        }
+    } else if(result != 2) {
+        WinnerAudio.play();
+    } else {
+        DrawAudio.play();
+    }
 }
 
 function checkWin() {
@@ -446,6 +468,7 @@ function checkWin() {
         mainMenuButton.style.display = "block";
         settingsPostGameButton.style.display = "block";
         playAgainButton.style.display = "block";
+        return 0;
     } else {
         for(let i = 0; i < OSelected.length; ++i) {
             OSelectedIDs.push(OSelected[i].pieceNumber);
@@ -460,6 +483,7 @@ function checkWin() {
             mainMenuButton.style.display = "block";
             settingsPostGameButton.style.display = "block";
             playAgainButton.style.display = "block";
+            return 1;
         } else {
             if(XSelectedIDs.length + OSelectedIDs.length == 9) {
                 gameResult = 2;
@@ -468,9 +492,11 @@ function checkWin() {
                 mainMenuButton.style.display = "block";
                 settingsPostGameButton.style.display = "block";
                 playAgainButton.style.display = "block";
+                return 2;
             }
         }
     }
+    return -1;
 }
 
 function checkSelectedContainsWin(selectedIds) {
@@ -528,4 +554,14 @@ function showXSelectionOption(n) {
       OMoveAudio.volume = settingsData["volume"];
       hoverOverAudio.volume = settingsData["volume"];
       clickAudio.volume = settingsData["volume"];
+      gameStartAudio.volume = settingsData["volume"];
+      WinnerAudio.volume = settingsData["volume"];
+      DrawAudio.volume = settingsData["volume"];
+  }
+
+  function stopHoverAudio() {
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    }
+      hoverOverAudio.currentTime = 0;
   }
