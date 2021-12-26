@@ -28,6 +28,15 @@ Once the game ends, the user will have three options:
 * "Settings", which will take the user to the settings menu.
 * "Play Again", which will reset the board and allow the user to play another game.
 
+## Features
+
+* Two player Tic-Tac-Toe
+* Audio sounds
+* Suggestions that provide the player with what the board will look like if they choose a location
+* Up to nine icons per player
+* Settings saving through use of cookies
+* Instruction guide on how to play Tic-Tac-Toe
+
 ## Authors
 
 [Zalan Shah](www.linkedin.com/in/zalan-shah)

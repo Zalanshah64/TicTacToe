@@ -8,9 +8,14 @@ class gamePiece {
 
 //Document Elements related to entire webpage
 let wrapper = document.getElementById("wrapper");
+let hoverOverButtons = document.getElementsByClassName("hoverOverSound");
+let clickSoundButtons = document.getElementsByClassName("clickSound");
 
 //Document Elements related to start menu
-let startMenu = document.getElementById("startMenu");
+let startMenuWrapper = document.getElementById("startMenuWrapper");
+
+//Document Elements related to main menu
+let mainMenu = document.getElementById("mainMenu");
 let startButton = document.getElementById("startButton");
 let instructionsButton = document.getElementById("instructionsButton");
 let settingsButton = document.getElementById("settingsButton");
@@ -63,8 +68,10 @@ let gameResult = -1;
 
 
 //Audio Sounds
-let XMoveAudio = new Audio("resources/XMove.wav");
-let OMoveAudio = new Audio("resources/OMove.wav");
+let XMoveAudio = new Audio("resources/Sounds/PlayerOneMove.wav");
+let OMoveAudio = new Audio("resources/Sounds/PlayerTwoMove.wav");
+let hoverOverAudio = new Audio("resources/Sounds/HoverOverButton.wav");
+let clickAudio = new Audio("resources/Sounds/ClickButton.wav");
 
 //Document Elements related to gameboard
 let board = document.getElementById("board");
@@ -126,6 +133,21 @@ updateVolume();
 showXSelectionOption(settingsData["XIconSlideIndex"]);
 showOSelectionOption(settingsData["OIconSlideIndex"]);
 
+
+document.addEventListener("keyup", function(event) {
+    if(event.key === "Enter") {
+        setTimeout(function() {
+            startMenuWrapper.style.display = "none";
+            wrapper.style.display = "grid";
+        }, 250);
+        startMenuWrapper.classList.add("hidden");
+
+        
+
+    }
+})
+
+
 for(let i = 0; i < 9; ++i) {
     gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i])});
     gameboard[i].idElement.addEventListener("mouseenter", function() {
@@ -137,6 +159,7 @@ for(let i = 0; i < 9; ++i) {
         } else {
             gameboard[i].idElement.innerHTML = '<p id="hoverOver">'+ settingsData["OIcon"] + '</p>';
         }
+        hoverOverAudio.play();
     });
     gameboard[i].idElement.addEventListener("mouseleave", function() {
         if(gameboard[i].isSelected || gameResult != -1 || !settingsData["suggestions"]) {
@@ -146,8 +169,20 @@ for(let i = 0; i < 9; ++i) {
     })
 }
 
+for(let i = 0; i < hoverOverButtons.length; ++i) {
+    hoverOverButtons[i].addEventListener("mouseenter", function() {
+        hoverOverAudio.play();
+    })
+}
+
+for(let i = 0; i < clickSoundButtons.length; ++i) {
+    clickSoundButtons[i].addEventListener("click", function() {
+        clickAudio.play();
+    })
+}
+
 startButton.addEventListener("click", function() {
-    startMenu.style.display = "none";
+    mainMenu.style.display = "none";
     XScoreHTML.innerHTML = XScore;
     OScoreHTML.innerHTML = OScore;
     currentTurnHTML.style.display = "block";
@@ -211,7 +246,7 @@ mainMenuButton.addEventListener("click", function() {
     }
 
     game.style.display = "none";
-    startMenu.style.display = "grid";
+    mainMenu.style.display = "grid";
     scoreTitle[0].style.display = "none";
     scoreTitle[1].style.display = "none";
     mainMenuButton.style.display = "none";
@@ -268,7 +303,7 @@ mainMenuButton.addEventListener("click", function() {
     }
 
     game.style.display = "none";
-    startMenu.style.display = "grid";
+    mainMenu.style.display = "grid";
     scoreTitle[0].style.display = "none";
     scoreTitle[1].style.display = "none";
     mainMenuButton.style.display = "none";
@@ -278,7 +313,7 @@ mainMenuButton.addEventListener("click", function() {
 
 settingsButton.addEventListener("click", function() {
     settingsBackFromLocation = 0;
-    startMenu.style.display = "none";
+    mainMenu.style.display = "none";
     settingsTitle.style.display = "block";
     settingsMenu.style.display = "grid";
 })
@@ -308,7 +343,7 @@ settingsBackButton.addEventListener("click", function() {
     settingsMenu.style.display = "none";
     settingsTitle.style.display = "none";
     if(settingsBackFromLocation == 0) {
-        startMenu.style.display = "grid";
+        mainMenu.style.display = "grid";
     } else if(settingsBackFromLocation == 1) {
         game.style.display = "block";
         scoreTitle[0].style.display = "block";
@@ -358,7 +393,7 @@ suggestionsToggle.addEventListener("change", function() {
 })
 
 instructionsButton.addEventListener("click", function() {
-    startMenu.style.display = "none";
+    mainMenu.style.display = "none";
     instructionsMenu.style.display = "grid";
     instructionsTitle.style.display = "block";
     wrapper.style.display = "block"
@@ -367,7 +402,7 @@ instructionsButton.addEventListener("click", function() {
 instructionsBackButton.addEventListener("click", function() {
     instructionsMenu.style.display = "none";
     instructionsTitle.style.display = "none";
-    startMenu.style.display = "grid";
+    mainMenu.style.display = "grid";
     wrapper.style.display = "grid";
 })
 
@@ -491,4 +526,6 @@ function showXSelectionOption(n) {
   function updateVolume() {
       XMoveAudio.volume = settingsData["volume"];
       OMoveAudio.volume = settingsData["volume"];
+      hoverOverAudio.volume = settingsData["volume"];
+      clickAudio.volume = settingsData["volume"];
   }

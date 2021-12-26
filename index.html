@@ -6,8 +6,9 @@
         <link rel="icon" href="resources/Icon.png">
         <!-- All stylesheets -->
         <link rel="stylesheet" href="Styles/Webpage.css" type="text/css">
+        <link rel="stylesheet" href="Styles/StartMenu.css" type="text/css">
         <link rel="stylesheet" href="Styles/Header.css" type="text/css">
-        <link rel="stylesheet" href="Styles/Start Menu.css" type="text/css">
+        <link rel="stylesheet" href="Styles/MainMenu.css" type="text/css">
         <link rel="stylesheet" href="Styles/Board.css" type="text/css">
         <link rel="stylesheet" href="Styles/Instructions.css" type="text/css">
         <link rel="stylesheet" href="Styles/Settings.css" type="text/css">
@@ -17,8 +18,14 @@
 
     <body>
         <!-- Main wrapper for webpage -->
-        <div id="wrapper">
+        <div id="startMenuWrapper">
+            <h1 id="startMenuTitle">Tic-Tac-Toe</h1>
+            <h3 id="startMenuCredits">A game by Zalan Shah</h3>
+            <h4 id="startMenuSubtitle">Press enter to start</h4>
+        </div>
 
+
+        <div id="wrapper">
             <!-- Header that contains the title, information about what happened, and scores -->
             <div id="header">
 
@@ -47,15 +54,15 @@
             <div id="interactionWrapper">
 
                 <!-- Wrapper containing the start menu -->
-                <div id="startMenu">
+                <div id="mainMenu">
                     <!-- Starts the game -->
-                    <button id="startButton" class="startMenuButton">Play</button>
+                    <button id="startButton" class="mainMenuButton hoverOverSound clickSound">Play</button>
 
                     <!-- Opens up the instructions -->
-                    <button id="instructionsButton" class="startMenuButton">How to Play</button>
+                    <button id="instructionsButton" class="mainMenuButton hoverOverSound clickSound">How to Play</button>
 
                     <!-- Opens up the settings menu -->
-                    <button id="settingsButton" class="startMenuButton">Settings</button>
+                    <button id="settingsButton" class="mainMenuButton hoverOverSound clickSound">Settings</button>
                 </div>
 
                 <!-- Wrapper containing the actual game board -->
@@ -92,7 +99,7 @@
                     <img src="resources/Instructions/InstructionsSeventhImage.png" class="instructionImage">
                     
                     <!-- Button to return to the previous window -->
-                    <button id="instructionsBackButton">Back</button>
+                    <button id="instructionsBackButton" class="hoverOverSound clickSound">Back</button>
                 </div>
 
                 <!-- Wrapper containing the settings menu -->
@@ -139,7 +146,7 @@
                         <div id="OIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
                             <div id="OIconSelection" class="iconSelection">
                                 <p id="OIconSelectionprev" class="iconSelectionprev">&lt</p>
-                                <div class="Oselection selection">X</div>
+                                <div class="Oselection selection ">X</div>
                                 <div class="Oselection selection">O</div>
                                 <div class="Oselection selection">1</div>
                                 <div class="Oselection selection">:)</div>
@@ -156,7 +163,7 @@
 
                     <!-- Button that returns user to previous window -->
                     <div id="settingsBackButtonWrapper">
-                        <button id="settingsBackButton">Back</button>
+                        <button id="settingsBackButton" class="hoverOverSound clickSound">Back</button>
                     </div>
                 </div>
             </div>
@@ -167,9 +174,9 @@
                 <!-- Contains left two buttons -->
                 <div id="footerLeftSide">
                     <!-- Button that allows user to go to the main menu and restart the game -->
-                    <button id="mainMenuButton" class="postGameButton">Main Menu</button>
+                    <button id="mainMenuButton" class="postGameButton hoverOverSound clickSound">Main Menu</button>
                     <!-- Button that takes user to settings -->
-                    <button id="settingsPostGameButton" class="postGameButton">Settings</button>
+                    <button id="settingsPostGameButton" class="postGameButton hoverOverSound clickSound">Settings</button>
                 </div>
 
                 <!-- Wrapper containing credits -->
@@ -185,7 +192,7 @@
 
                 <!-- Wrapper containing the button that allows the user to start the game again -->
                 <div id="footerRightSide">
-                    <button id="playAgainButton" class="postGameButton">Play Again</button>
+                    <button id="playAgainButton" class="postGameButton hoverOverSound clickSound">Play Again</button>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 /* Stylesheet for the start menu of the game */
 @import url("Webpage.css");
 
-#startMenu {
+#mainMenu {
     display: grid;
     grid-template-rows: 33% 33% 33%;
     grid-template-columns: 75%;
@@ -9,7 +9,7 @@
     align-items: center;
 }
 
-.startMenuButton {
+.mainMenuButton {
     padding: 3.5rem;
     margin-top: 0.5rem;
     margin-bottom:0.5rem;
