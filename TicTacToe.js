@@ -134,6 +134,7 @@ if(document.cookie.length == 0) {
     settingsData["OIcon"] = "O";
     settingsData["XIconSlideIndex"] = 0;
     settingsData["OIconSlideIndex"] = 1;
+    suggestionsToggle.checked = !suggestionsToggle.checked;
 
 } else {
     let cookies = document.cookie.split(';');
@@ -329,21 +330,33 @@ settingsButton.addEventListener("click", function() {
 
 XIconSelectionprev.addEventListener("click", function() {
     settingsData["XIconSlideIndex"] -= 1;
+    if(settingsData["XIconSlideIndex"] == settingsData["OIconSlideIndex"]) {
+        settingsData["XIconSlideIndex"] -= 1;
+    }
     showXSelectionOption(settingsData["XIconSlideIndex"]);
 })
   
 XIconSelectionnext.addEventListener("click", function() {
     settingsData["XIconSlideIndex"] += 1;
+    if(settingsData["XIconSlideIndex"] == settingsData["OIconSlideIndex"]) {
+        settingsData["XIconSlideIndex"] += 1;
+    }
     showXSelectionOption(settingsData["XIconSlideIndex"]);
 })
 
 OIconSelectionprev.addEventListener("click", function() {
     settingsData["OIconSlideIndex"] -= 1;
+    if(settingsData["OIconSlideIndex"] == settingsData["XIconSlideIndex"]) {
+        settingsData["OIconSlideIndex"] -= 1;
+    }
     showOSelectionOption(settingsData["OIconSlideIndex"]);
 })
   
 OIconSelectionnext.addEventListener("click", function() {
     settingsData["OIconSlideIndex"] += 1;
+    if(settingsData["OIconSlideIndex"] == settingsData["XIconSlideIndex"]) {
+        settingsData["OIconSlideIndex"] += 1;
+    }
     showOSelectionOption(settingsData["OIconSlideIndex"]);
 })
 
