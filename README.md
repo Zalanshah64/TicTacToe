@@ -51,3 +51,6 @@ Use of LinkedIn and Github logos at footer of page:
 
 Tool used to produce audio sounds:
 * [Bfxr](https://www.bfxr.net/)
+
+Font used:
+* [Zaydek MG on Dafont](https://www.dafont.com/8-bit-1-6.font)
