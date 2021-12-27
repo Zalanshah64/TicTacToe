@@ -130,7 +130,6 @@ if(document.cookie.length == 0) {
     settingsData["suggestions"] = true;
     settingsData["switchTurns"] = false;
     settingsData["AI"] = false;
-    AIToggle.checked = !AIToggle.checked;
     settingsData["XIcon"] = "X";
     settingsData["OIcon"] = "O";
     settingsData["XIconSlideIndex"] = 0;
