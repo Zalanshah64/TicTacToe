@@ -126,9 +126,9 @@ if(document.cookie.length == 0) {
     volumeSlider.value = settingsData["volume"] * 100;
     if((settingsData["suggestions"] === "true")) {
         settingsData["suggestions"] = true;
+        suggestionsToggle.checked = !suggestionsToggle.checked;
     } else {
         settingsData["suggestions"] = false;
-        suggestionsToggle.checked = !suggestionsToggle.checked;
     }
     settingsData["XIconSlideIndex"] = parseInt(settingsData["XIconSlideIndex"]);
     settingsData["OIconSlideIndex"] = parseInt(settingsData["OIconSlideIndex"]);

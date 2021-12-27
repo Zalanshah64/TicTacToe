@@ -3,6 +3,7 @@
 
 #settingsMenu {
     display: none;
+    height: 100%;
 }
 
 .settingsInfo {
@@ -25,7 +26,8 @@
 #volumeSlider {
     -webkit-appearance: none;
     width: 80%;
-    height: 2rem;
+    height: 1.8rem;
+    padding: 0.2rem;
     background: white;
     outline: none;
     -webkit-transition: .2s;
@@ -125,7 +127,7 @@ input:checked + #suggestionsSlider:before {
     width: 20%;
     grid-template-columns: 25% 50% 25%;
     font-size: 2rem;
-    padding: 1rem;
+    
   }
   
   .selection {
@@ -134,27 +136,27 @@ input:checked + #suggestionsSlider:before {
     align-self: center;
   }
   
-  .iconSelectionprev {
+  .iconSelectionButton {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     align-self: center;
     justify-self: center;
+    padding: 1rem;
   }
-  
-  .iconSelectionnext {
-    cursor: pointer;
-    align-self: center;
-    justify-self: center;
-  }
-
-
-
 
 #settingsBackButtonWrapper {
     display: flex;
     justify-content: center;
+    align-items: flex-end;
+    height: 100%;
     width: 100%;
 }
 
 #settingsBackButton {
+    height: 2rem;
     width: 80%;
 }

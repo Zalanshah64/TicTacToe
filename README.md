@@ -37,7 +37,7 @@ Once the game ends, the user will have three options:
 * Settings saving through use of cookies
 * Instruction guide on how to play Tic-Tac-Toe
 
-## Authors
+## Author
 
 [Zalan Shah](www.linkedin.com/in/zalan-shah)
 
@@ -48,3 +48,6 @@ Information on different types of HTML elements and their CSS:
 
 Use of LinkedIn and Github logos at footer of page:
 * [Ionic](https://ionic.io/ionicons)
+
+Tool used to produce audio sounds:
+* [Bfxr](https://www.bfxr.net/)
