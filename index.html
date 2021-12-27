@@ -103,6 +103,8 @@
                     <ul>
                         <li class="instruction">The volume bar, which allows you to change the volume of all sounds</li>
                         <li class="instruction">The suggestions switch, which allows you to turn on and off suggestions</li>
+                        <li class="instruction">The switch order button, which will player one to go first in the first round, player two to go first on the second, and so on.</li>
+                        <li class="instruction">The play against an AI switch, which will allow the user to play against a computer opponent</li>
                         <li class="instruction">The icon options for each player, which allow you to set the icon representing player one and player two</li>
                     </ul>
                     
@@ -110,68 +112,91 @@
                     <button id="instructionsBackButton" class="hoverOverSound clickSound">Back</button>
                 </div>
 
-                <!-- Wrapper containing the settings menu -->
+                <!-- Div containing the settings menu -->
                 <div id="settingsMenu">
 
-                    <!-- Slider that determines the volume of the webpage -->
-                    <div id="volumeSliderInfo" class="settingsInfo">
-                        <p id="volumeSliderCaption">Volume:</p>
-                        <input type="range" min="0" max="100" value="75" id="volumeSlider"></slider>
-                    </div>
-
-                    <!-- Toggle that turns on or off suggestions -->
-                    <div id="suggestionsToggleInfo" class="settingsInfo">
-                        <p id="suggestionsToggleCaption">Suggestions:</p>
-                        <div id="suggestionsToggleDiv">
-                            <label id="suggestionsSwitch" class="clickSound">
-                                <input type="checkbox" id="suggestionsCheckBox">
-                                <span id="suggestionsSlider"></span>
-                            </label>
+                    <div id="settingsWrapper">
+                        <!-- Slider that determines the volume of the webpage -->
+                        <p id="volumeSliderCaption" class="settingsCaption">Volume:</p>
+                        <div id="volumeSliderInfo" class="settingsInfo">
+                            <input type="range" min="0" max="100" value="75" id="volumeSlider"></slider>
                         </div>
-                    </div>
-
-                    <div id="XIconSelectionWrapper" class="iconSelectionWrapper">
-                        <p id="XIconSelectionCaption" class="iconSelectionCaption">Player One Icon:</p>
-                        <div id="XIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
-                            <div id="XIconSelection" class="iconSelection">
-                                <div id="XIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
-                                <div class="Xselection selection">X</div>
-                                <div class="Xselection selection">O</div>
-                                <div class="Xselection selection">1</div>
-                                <div class="Xselection selection">:)</div>
-                                <div class="Xselection selection">:(</div>
-                                <div class="Xselection selection">+</div>
-                                <div class="Xselection selection">-</div>
-                                <div class="Xselection selection">&lt;3</div>
-                                <div class="Xselection selection">&lt;/3</div>
-                                <div class="Xselection selection">$</div>
-                                <div class="Xselection selection">#</div>
-                                <div id="XIconSelectionnext" class="iconSelectionnext iconSelectionButton clickSound">&gt</div>
+    
+                        <!-- Toggle that turns on or off suggestions -->
+                        <p id="suggestionsToggleCaption" class="settingsCaption">Suggestions:</p>
+                        <div id="suggestionsToggleInfo" class="settingsInfo toggleInfo">
+                            <div id="suggestionsToggleDiv" class="toggleDiv">
+                                <label id="suggestionsSwitch" class="toggleSwitch clickSound">
+                                    <input type="checkbox" id="suggestionsCheckBox">
+                                    <span id="suggestionsSlider" class="toggleSlider"></span>
+                                </label>
+                            </div>
+                        </div>
+    
+                        <!-- Toggle that turns on or off switching turns -->
+                        <p id="switchTurnsToggleCaption" class="settingsCaption">Switch order each game:</p>
+                        <div id="switchTurnsToggleInfo" class="settingsInfo toggleInfo">
+                            <div id="switchTurnsToggleDiv" class="toggleDiv">
+                                <label id="switchTurnsSwitch" class="toggleSwitch clickSound">
+                                    <input type="checkbox" id="switchTurnsCheckBox">
+                                    <span id="switchTurnsSlider" class="toggleSlider"></span>
+                                </label>
+                            </div>
+                        </div>
+    
+                        <!-- Toggle that turns on or off AI -->
+                        <p id="AIToggleCaption" class="settingsCaption">Play CPU:</p>
+                        <div id="AIToggleInfo" class="settingsInfo toggleInfo">
+                            <div id="AIToggleDiv" class="toggleDiv">
+                                <label id="AISwitch" class="toggleSwitch clickSound">
+                                    <input type="checkbox" id="AICheckBox">
+                                    <span id="AISlider" class="toggleSlider"></span>
+                                </label>
+                            </div>
+                        </div>
+    
+                        <p id="XIconSelectionCaption" class="settingsCaption">Player One Icon:</p>
+                        <div id="XIconSelectionWrapper" class="iconSelectionWrapper">
+                            <div id="XIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
+                                <div id="XIconSelection" class="iconSelection">
+                                    <div id="XIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
+                                    <div class="Xselection selection">X</div>
+                                    <div class="Xselection selection">O</div>
+                                    <div class="Xselection selection">1</div>
+                                    <div class="Xselection selection">:)</div>
+                                    <div class="Xselection selection">:(</div>
+                                    <div class="Xselection selection">+</div>
+                                    <div class="Xselection selection">-</div>
+                                    <div class="Xselection selection">&lt;3</div>
+                                    <div class="Xselection selection">&lt;/3</div>
+                                    <div class="Xselection selection">$</div>
+                                    <div class="Xselection selection">#</div>
+                                    <div id="XIconSelectionnext" class="iconSelectionnext iconSelectionButton clickSound">&gt</div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <p id="OIconSelectionCaption" class="settingsCaption">Player Two Icon:</p>
+                        <div id="OIconSelectionWrapper" class="iconSelectionWrapper">
+                            <div id="OIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
+                                <div id="OIconSelection" class="iconSelection">
+                                    <div id="OIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
+                                    <div class="Oselection selection ">X</div>
+                                    <div class="Oselection selection">O</div>
+                                    <div class="Oselection selection">1</div>
+                                    <div class="Oselection selection">:)</div>
+                                    <div class="Oselection selection">:(</div>
+                                    <div class="Oselection selection">+</div>
+                                    <div class="Oselection selection">-</div>
+                                    <div class="Oselection selection">&lt;3</div>
+                                    <div class="Oselection selection">&lt;/3</div>
+                                    <div class="Oselection selection">$</div>
+                                    <div class="Oselection selection">#</div>
+                                    <div id="OIconSelectionnext" class="iconSelectionnext iconSelectionButton clickSound">&gt</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div id="OIconSelectionWrapper" class="iconSelectionWrapper">
-                        <p id="OIconSelectionCaption" class="iconSelectionCaption">Player Two Icon:</p>
-                        <div id="OIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
-                            <div id="OIconSelection" class="iconSelection">
-                                <div id="OIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
-                                <div class="Oselection selection ">X</div>
-                                <div class="Oselection selection">O</div>
-                                <div class="Oselection selection">1</div>
-                                <div class="Oselection selection">:)</div>
-                                <div class="Oselection selection">:(</div>
-                                <div class="Oselection selection">+</div>
-                                <div class="Oselection selection">-</div>
-                                <div class="Oselection selection">&lt;3</div>
-                                <div class="Oselection selection">&lt;/3</div>
-                                <div class="Oselection selection">$</div>
-                                <div class="Oselection selection">#</div>
-                                <div id="OIconSelectionnext" class="iconSelectionnext iconSelectionButton clickSound">&gt</div>
-                            </div>
-                        </div>
-                    </div>
-                   
 
                     <!-- Button that returns user to previous window -->
                     <div id="settingsBackButtonWrapper">

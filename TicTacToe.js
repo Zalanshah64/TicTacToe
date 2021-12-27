@@ -6,6 +6,18 @@ class gamePiece {
     }
 }
 
+const topLeft = 0;
+const topMiddle = 1;
+const topRight = 2;
+const middleLeft = 3;
+const center = 4;
+const middleRight = 5;
+const bottomLeft = 6;
+const bottomMiddle = 7;
+const bottomRight = 8;
+const corners = [topLeft, topRight, bottomLeft, bottomRight];
+const edges = [topMiddle, middleRight, bottomMiddle, middleLeft];
+
 //Document Elements related to entire webpage
 let wrapper = document.getElementById("wrapper");
 let hoverOverButtons = document.getElementsByClassName("hoverOverSound");
@@ -27,6 +39,8 @@ let volumeSlider = document.getElementById("volumeSlider");
 let settingsBackButton = document.getElementById("settingsBackButton");
 let settingsTitle = document.getElementById("settingsTitle");
 let suggestionsToggle = document.getElementById("suggestionsCheckBox");
+let switchTurnsToggle = document.getElementById("switchTurnsCheckBox");
+let AIToggle = document.getElementById("AICheckBox");
 let settingsBackFromLocation = 0;
 let Xselections = document.getElementsByClassName("Xselection");
 let Oselections = document.getElementsByClassName("Oselection");
@@ -63,9 +77,13 @@ let whoWonHTML = document.getElementById("whoWon");
 let playerWinNameHTML = document.getElementById("playerWinName");
 let itsATieHTML = document.getElementById("itsATie");
 let XSelected = [];
+let XSelectedIds = [];
+let OSelectedIds = [];
 let OSelected = [];
 let gameResult = -1;
-
+let whoStarts = 0;
+let roundNumber = 0;
+let AIwaitTime = 400;
 
 //Audio Sounds
 let XMoveAudio = new Audio("resources/Sounds/PlayerOneMove.wav");
@@ -99,21 +117,25 @@ let gameboard = [new gamePiece(topLeftId, 0),
                  new gamePiece(bottomRightId, 8)];
 
 if(document.cookie.length == 0) {
-    let date = new Date();
-    date.setDate(date.getDate() + 2);
+    
     document.cookie = "volume=0.75;";
     document.cookie = "suggestions=true;";
+    document.cookie = "switchTurns=false;"
+    document.cookie = "AI=false";
     document.cookie = "XIcon=X;";
     document.cookie = "OIcon=O;";
     document.cookie = "XIconSlideIndex=0;"
     document.cookie = "OIconSlideIndex=1;"
-    document.cookie = "expires=" + date.toUTCString() + ";";
     settingsData["volume"] = 0.75;
     settingsData["suggestions"] = true;
+    settingsData["switchTurns"] = false;
+    settingsData["AI"] = false;
+    AIToggle.checked = !AIToggle.checked;
     settingsData["XIcon"] = "X";
     settingsData["OIcon"] = "O";
     settingsData["XIconSlideIndex"] = 0;
     settingsData["OIconSlideIndex"] = 1;
+
 } else {
     let cookies = document.cookie.split(';');
 
@@ -124,16 +146,33 @@ if(document.cookie.length == 0) {
         settingsData[cookies[i].split("=")[0]] = cookies[i].split("=")[1];
     }
     volumeSlider.value = settingsData["volume"] * 100;
-    if((settingsData["suggestions"] === "true")) {
+    if(settingsData["suggestions"] === "true") {
         settingsData["suggestions"] = true;
         suggestionsToggle.checked = !suggestionsToggle.checked;
     } else {
         settingsData["suggestions"] = false;
     }
+
+    if(settingsData["switchTurns"] === "true") {
+        settingsData["switchTurns"] = true;
+        switchTurnsToggle.checked = !switchTurnsToggle.checked;
+    } else {
+        settingsData["switchTurns"] = false;
+    }
+
+    if(settingsData["AI"] === "true") {
+        settingsData["AI"] = true;
+        AIToggle.checked = !AIToggle.checked;
+    } else {
+        settingsData["AI"] = false;
+    }
+
     settingsData["XIconSlideIndex"] = parseInt(settingsData["XIconSlideIndex"]);
     settingsData["OIconSlideIndex"] = parseInt(settingsData["OIconSlideIndex"]);
-
 }
+let dateCookiesExpire = new Date();
+dateCookiesExpire.setDate(dateCookiesExpire.getDate() + 2);
+document.cookie = "expires=" + dateCookiesExpire.toUTCString() + ";";
 
 updateVolume();
 showXSelectionOption(settingsData["XIconSlideIndex"]);
@@ -153,15 +192,17 @@ document.addEventListener("keyup", function(event) {
 
 
 for(let i = 0; i < 9; ++i) {
-    gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i])});
+    gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i], true)});
     gameboard[i].idElement.addEventListener("mouseenter", function() {
         if(gameboard[i].isSelected || gameResult != -1 || !settingsData["suggestions"]) {
             return;
         }
         if(currentPlayer == 0) {
             gameboard[i].idElement.innerHTML = '<p id="hoverOver">' + settingsData["XIcon"] + '</p>';
-        } else {
+        } else if(!settingsData["AI"]){
             gameboard[i].idElement.innerHTML = '<p id="hoverOver">'+ settingsData["OIcon"] + '</p>';
+        } else {
+            return;
         }
         stopHoverAudio();
         hoverOverAudio.play();
@@ -189,6 +230,7 @@ for(let i = 0; i < clickSoundButtons.length; ++i) {
 }
 
 startButton.addEventListener("click", function() {
+    whoStarts = 0;
     mainMenu.style.display = "none";
     XScoreHTML.innerHTML = XScore;
     OScoreHTML.innerHTML = OScore;
@@ -203,8 +245,20 @@ startButton.addEventListener("click", function() {
 
 
 playAgainButton.addEventListener("click", function() {
+    if(whoStarts == 0 && settingsData["switchTurns"]) {
+        whoStarts = 1;
+        currentPlayer = 1;
+        currentPlayerHTML.innerHTML = settingsData["OIcon"];
+    } else {
+        whoStarts = 0;
+        currentPlayer = 0;
+        currentPlayerHTML.innerHTML = settingsData["XIcon"];
+    }
     XSelected = [];
+    XSelectedIds = [];
     OSelected = [];
+    OSelectedIds = [];
+    AIwaitTime = 400;
     mainMenuButton.style.display = "none";
     settingsPostGameButton.style.display = "none";
     playAgainButton.style.display = "none";
@@ -213,19 +267,21 @@ playAgainButton.addEventListener("click", function() {
     currentTurnHTML.style.display = "block";
     XName.innerHTML = settingsData["XIcon"];
     OName.innerHTML = settingsData["OIcon"];
-    currentPlayerHTML.innerHTML = settingsData["XIcon"];
-    currentPlayer = 0;
     for(let i = 0; i < gameboard.length; ++i) {
         gameboard[i].isSelected = false;
         gameboard[i].idElement.innerHTML = "";
         gameboard[i].idElement.classList.add("unclicked");
     }
     gameResult = -1
+
+    if(whoStarts == 1) {
+        AIPlayMove();
+    }
 })
 
 settingsPostGameButton.addEventListener("click", function() {
     game.style.display = "none";
-    settingsMenu.style.display = "grid";
+    settingsMenu.style.display = "block";
     mainMenuButton.style.display = "none";
     settingsPostGameButton.style.display = "none";
     playAgainButton.style.display = "none";
@@ -241,67 +297,12 @@ mainMenuButton.addEventListener("click", function() {
     OScore = 0;
 
     XSelected = [];
+    XSelectedIds = [];
     OSelected = [];
+    OSelectedIds = [];
     currentPlayer = 0;
     gameResult = -1
     currentPlayerHTML.innerHTML = settingsData["XIcon"];
-    whoWonHTML.style.display = "none";
-    itsATieHTML.style.display = "none";
-    for(let i = 0; i < gameboard.length; ++i) {
-        gameboard[i].isSelected = false;
-        gameboard[i].idElement.innerHTML = "";
-    }
-
-    game.style.display = "none";
-    mainMenu.style.display = "grid";
-    scoreTitle[0].style.display = "none";
-    scoreTitle[1].style.display = "none";
-    mainMenuButton.style.display = "none";
-    settingsPostGameButton.style.display = "none";
-    playAgainButton.style.display = "none";
-})
-
-
-playAgainButton.addEventListener("click", function() {
-    XSelected = [];
-    OSelected = [];
-    mainMenuButton.style.display = "none";
-    settingsPostGameButton.style.display = "none";
-    playAgainButton.style.display = "none";
-    itsATieHTML.style.display = "none";
-    whoWonHTML.style.display = "none";
-    currentTurnHTML.style.display = "block";
-    currentPlayerHTML.innerHTML = "X";
-    currentPlayer = 0;
-    for(let i = 0; i < gameboard.length; ++i) {
-        gameboard[i].isSelected = false;
-        gameboard[i].idElement.innerHTML = "";
-    }
-    gameResult = -1
-})
-
-settingsPostGameButton.addEventListener("click", function() {
-    game.style.display = "none";
-    settingsMenu.style.display = "grid";
-    mainMenuButton.style.display = "none";
-    settingsPostGameButton.style.display = "none";
-    playAgainButton.style.display = "none";
-    scoreTitle[0].style.display = "none";
-    scoreTitle[1].style.display = "none";
-    itsATieHTML.style.display = "none";
-    whoWonHTML.style.display = "none";
-    settingsBackFromLocation = 1;
-})
-
-mainMenuButton.addEventListener("click", function() {
-    XScore = 0;
-    OScore = 0;
-
-    XSelected = [];
-    OSelected = [];
-    currentPlayer = 0;
-    gameResult = -1
-    currentPlayerHTML.innerHTML = "X";
     whoWonHTML.style.display = "none";
     itsATieHTML.style.display = "none";
     for(let i = 0; i < gameboard.length; ++i) {
@@ -322,7 +323,8 @@ settingsButton.addEventListener("click", function() {
     settingsBackFromLocation = 0;
     mainMenu.style.display = "none";
     settingsTitle.style.display = "block";
-    settingsMenu.style.display = "grid";
+    settingsMenu.style.display = "block";
+    wrapper.style.display = "block";
 })
 
 XIconSelectionprev.addEventListener("click", function() {
@@ -349,6 +351,7 @@ OIconSelectionnext.addEventListener("click", function() {
 settingsBackButton.addEventListener("click", function() {
     settingsMenu.style.display = "none";
     settingsTitle.style.display = "none";
+    wrapper.style.display = "grid";
     if(settingsBackFromLocation == 0) {
         mainMenu.style.display = "grid";
     } else if(settingsBackFromLocation == 1) {
@@ -400,7 +403,16 @@ suggestionsToggle.addEventListener("change", function() {
         settingsData["suggestions"] = true;
         document.cookie = "suggestions=true;";
     }
+})
 
+switchTurnsCheckBox.addEventListener("change", function() {
+    settingsData["switchTurns"] = !settingsData["switchTurns"];
+    document.cookie = "switchTurns=" + settingsData["switchTurns"] + ";";
+})
+
+AIToggle.addEventListener("change", function() {
+    settingsData["AI"] = !settingsData["AI"];
+    document.cookie = "AI=" + settingsData["AI"] + ";";
 })
 
 instructionsButton.addEventListener("click", function() {
@@ -418,19 +430,22 @@ instructionsBackButton.addEventListener("click", function() {
 })
 
 
-function squareClick(gamePiece) {
+function squareClick(gamePiece, playerClicked) {
     if(currentPlayer == 0 && !gamePiece.isSelected && gameResult == -1) {
         gamePiece.idElement.innerHTML = '<p class="clicked">'+ settingsData["XIcon"] + '</p>';
         XSelected.push(gamePiece);
+        XSelectedIds.push(gamePiece.pieceNumber);
         stopHoverAudio();
         currentPlayerHTML.innerHTML = settingsData["OIcon"];
 
-    } else if(!gamePiece.isSelected && gameResult == -1) {
+    } else if(!gamePiece.isSelected && gameResult == -1 && ((!playerClicked && settingsData["AI"]) || (playerClicked && !settingsData["AI"]))) {
         gamePiece.idElement.innerHTML = '<p class="clicked">' + settingsData["OIcon"] + '</p>';
         OSelected.push(gamePiece);
+        OSelectedIds.push(gamePiece.pieceNumber);
         stopHoverAudio();
         currentPlayerHTML.innerHTML = settingsData["XIcon"];
     } else {
+        console.log("Error on line 446");
         return;
     }
 
@@ -450,15 +465,17 @@ function squareClick(gamePiece) {
     } else {
         DrawAudio.play();
     }
+
+    if(settingsData["AI"] && currentPlayer == 1 && gameResult == -1) {
+        setTimeout(function(){
+            AIPlayMove();
+        }, AIwaitTime);
+        AIwaitTime += 75;
+    }
 }
 
 function checkWin() {
-    let XSelectedIDs = [];
-    let OSelectedIDs = [];
-    for(let i = 0; i < XSelected.length; ++i) {
-        XSelectedIDs.push(XSelected[i].pieceNumber);
-    }
-    if(checkSelectedContainsWin(XSelectedIDs)) {
+    if(checkSelectedContainsWin(XSelectedIds)) {
         gameResult = 0;
         currentTurnHTML.style.display = "none";
         playerWinNameHTML.innerHTML = settingsData["XIcon"];
@@ -470,10 +487,7 @@ function checkWin() {
         playAgainButton.style.display = "block";
         return 0;
     } else {
-        for(let i = 0; i < OSelected.length; ++i) {
-            OSelectedIDs.push(OSelected[i].pieceNumber);
-        }
-        if(checkSelectedContainsWin(OSelectedIDs)) {
+        if(checkSelectedContainsWin(OSelectedIds)) {
             gameResult = 1;
             currentTurnHTML.style.display = "none";
             playerWinNameHTML.innerHTML = settingsData["OIcon"];
@@ -485,7 +499,7 @@ function checkWin() {
             playAgainButton.style.display = "block";
             return 1;
         } else {
-            if(XSelectedIDs.length + OSelectedIDs.length == 9) {
+            if(XSelectedIds.length + OSelectedIds.length == 9) {
                 gameResult = 2;
                 currentTurnHTML.style.display = "none";
                 itsATieHTML.style.display = "block";
@@ -565,3 +579,108 @@ function showXSelectionOption(n) {
     }
       hoverOverAudio.currentTime = 0;
   }
+
+  function AIPlayMove() {
+      let randomChance = Math.random();
+      if(randomChance < 0.85) {
+        if(AIEdgeWinTest(topMiddle, topLeft, topRight, center, bottomMiddle)) {
+            squareClick(gameboard[topMiddle], false);
+            return;
+        } else if(AIEdgeWinTest(middleRight, center, middleLeft, topRight, bottomRight)) {
+            squareClick(gameboard[middleRight], false);
+            return;
+        } else if(AIEdgeWinTest(bottomMiddle, bottomLeft, bottomRight, center, topMiddle)) {
+            squareClick(gameboard[bottomMiddle], false);
+            return;
+        } else if(AIEdgeWinTest(middleLeft, center, middleRight, bottomLeft, topLeft)) {
+            squareClick(gameboard[middleLeft], false);
+            return;
+        } else if(AICornerWinTest(topLeft, topMiddle, topRight, middleLeft, bottomLeft, bottomRight)) {
+            squareClick(gameboard[topLeft], false);
+            return;
+        } else if(AICornerWinTest(topRight, topMiddle, topLeft, middleRight, bottomRight, bottomLeft)) {
+            squareClick(gameboard[topRight], false);
+            return;
+        } else if(AICornerWinTest(bottomLeft, bottomMiddle, bottomRight, middleLeft, topLeft, topRight)) {
+            squareClick(gameboard[bottomLeft], false);
+            return;
+        } else if(AICornerWinTest(bottomRight, bottomMiddle, bottomLeft, middleRight, topRight, topLeft)) {
+            squareClick(gameboard[bottomRight], false);
+            return;
+        } else if(AIEdgeBlockTest(topMiddle, topLeft, topRight, center, bottomMiddle)) {
+            squareClick(gameboard[topMiddle], false);
+            return;
+        } else if(AIEdgeBlockTest(middleRight, center, middleLeft, topRight, bottomRight)) {
+            squareClick(gameboard[middleRight], false);
+            return;
+        } else if(AIEdgeBlockTest(bottomMiddle, bottomLeft, bottomRight, center, topMiddle)) {
+            squareClick(gameboard[bottomMiddle], false);
+            return;
+        } else if(AIEdgeBlockTest(middleLeft, center, middleRight, bottomLeft, topLeft)) {
+            squareClick(gameboard[middleLeft], false);
+            return;
+        } else if(AICornerBlockTest(topLeft, topMiddle, topRight, middleLeft, bottomRight)) {
+            squareClick(gameboard[topLeft], false);
+            return;
+        } else if(AICornerBlockTest(topRight, topMiddle, topLeft, middleRight, bottomRight, bottomLeft)) {
+            squareClick(gameboard[topRight], false);
+            return;
+        } else if(AICornerBlockTest(bottomRight, bottomMiddle, bottomRight, middleLeft, topLeft, topRight)) {
+            squareClick(gameboard[bottomLeft], false);
+            return;
+        } else if(AICornerBlockTest(bottomRight, bottomMiddle, bottomLeft, middleRight, topRight, topLeft)) {
+            squareClick(gameboard[bottomRight], false);
+            return;
+        } else if(!XSelected.includes(gameboard[center]) && !OSelected.includes(gameboard[center])) {
+            squareClick(gameboard[center], false);
+            return;
+        }
+      }
+        let potentialSquare = Math.floor(Math.random() * 9);
+        while((XSelectedIds.includes(potentialSquare) || OSelectedIds.includes(potentialSquare))) {
+            potentialSquare = Math.floor(Math.random() * 9);
+        }
+        squareClick(gameboard[potentialSquare], false);
+    }
+
+    function AIEdgeBlockTest(edge, horizontalOne, horizontalTwo, verticalOne, verticalTwo) {
+        if(
+            (!OSelectedIds.includes(edge) && XSelectedIds.includes(horizontalOne) && XSelectedIds.includes(horizontalTwo))
+         || (!OSelectedIds.includes(edge) && XSelectedIds.includes(verticalOne) && XSelectedIds.includes(verticalTwo))) {
+             return true;
+         } else {
+             return false;
+         }
+     }
+
+    function AICornerBlockTest(corner, horizontalOne, horizontalTwo, verticalOne, verticalTwo, diagonal) {
+        if(
+           (!OSelectedIds.includes(corner) && XSelectedIds.includes(horizontalOne) && XSelectedIds.includes(horizontalTwo))
+        || (!OSelectedIds.includes(corner) && XSelectedIds.includes(verticalOne) && XSelectedIds.includes(verticalTwo))
+        || (!OSelectedIds.includes(corner) && XSelectedIds.includes(center) && XSelectedIds.includes(diagonal))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function AIEdgeWinTest(edge, horizontalOne, horizontalTwo, verticalOne, verticalTwo) {
+        if(
+            (!XSelectedIds.includes(edge) && OSelectedIds.includes(horizontalOne) && OSelectedIds.includes(horizontalTwo))
+         || (!XSelectedIds.includes(edge) && OSelectedIds.includes(verticalOne) && OSelectedIds.includes(verticalTwo))) {
+             return true;
+         } else {
+             return false;
+         }
+     }
+
+     function AICornerWinTest(corner, horizontalOne, horizontalTwo, verticalOne, verticalTwo, diagonal) {
+        if(
+           (!XSelectedIds.includes(corner) && OSelectedIds.includes(horizontalOne) && OSelectedIds.includes(horizontalTwo))
+        || (!XSelectedIds.includes(corner) && OSelectedIds.includes(verticalOne) && OSelectedIds.includes(verticalTwo))
+        || (!XSelectedIds.includes(corner) && OSelectedIds.includes(center) && OSelectedIds.includes(diagonal))) {
+            return true;
+        } else {
+            return false;
+        }
+    }

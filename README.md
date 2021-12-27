@@ -31,11 +31,13 @@ Once the game ends, the user will have three options:
 ## Features
 
 * Two player Tic-Tac-Toe
-* Audio sounds
+* A computer opponent the user can play against
+* Ability to switch the turn order every game
 * Suggestions that provide the player with what the board will look like if they choose a location
-* Up to nine icons per player
-* Settings saving through use of cookies
 * Instruction guide on how to play Tic-Tac-Toe
+* Up to eleven icons per player
+* Audio sounds
+* Settings saving through use of cookies
 
 ## Author
 
