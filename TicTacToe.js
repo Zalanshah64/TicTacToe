@@ -284,6 +284,7 @@ settingsPostGameButton.addEventListener("click", function() {
     settingsMenu.style.display = "block";
     mainMenuButton.style.display = "none";
     settingsPostGameButton.style.display = "none";
+    wrapper.style.display = "block";
     playAgainButton.style.display = "none";
     scoreTitle[0].style.display = "none";
     scoreTitle[1].style.display = "none";
@@ -445,7 +446,6 @@ function squareClick(gamePiece, playerClicked) {
         stopHoverAudio();
         currentPlayerHTML.innerHTML = settingsData["XIcon"];
     } else {
-        console.log("Error on line 446");
         return;
     }
 
@@ -619,13 +619,13 @@ function showXSelectionOption(n) {
         } else if(AIEdgeBlockTest(middleLeft, center, middleRight, bottomLeft, topLeft)) {
             squareClick(gameboard[middleLeft], false);
             return;
-        } else if(AICornerBlockTest(topLeft, topMiddle, topRight, middleLeft, bottomRight)) {
+        } else if(AICornerBlockTest(topLeft, topMiddle, topRight, middleLeft, bottomLeft, bottomRight)) {
             squareClick(gameboard[topLeft], false);
             return;
         } else if(AICornerBlockTest(topRight, topMiddle, topLeft, middleRight, bottomRight, bottomLeft)) {
             squareClick(gameboard[topRight], false);
             return;
-        } else if(AICornerBlockTest(bottomRight, bottomMiddle, bottomRight, middleLeft, topLeft, topRight)) {
+        } else if(AICornerBlockTest(bottomLeft, bottomMiddle, bottomRight, middleLeft, topLeft, topRight)) {
             squareClick(gameboard[bottomLeft], false);
             return;
         } else if(AICornerBlockTest(bottomRight, bottomMiddle, bottomLeft, middleRight, topRight, topLeft)) {
@@ -635,6 +635,8 @@ function showXSelectionOption(n) {
             squareClick(gameboard[center], false);
             return;
         }
+      } else {
+          console.log("stupid");
       }
         let potentialSquare = Math.floor(Math.random() * 9);
         while((XSelectedIds.includes(potentialSquare) || OSelectedIds.includes(potentialSquare))) {
