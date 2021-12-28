@@ -330,34 +330,38 @@ settingsButton.addEventListener("click", function() {
 
 XIconSelectionprev.addEventListener("click", function() {
     settingsData["XIconSlideIndex"] -= 1;
+    showXSelectionOption(settingsData["XIconSlideIndex"]);
     if(settingsData["XIconSlideIndex"] == settingsData["OIconSlideIndex"]) {
         settingsData["XIconSlideIndex"] -= 1;
+        showXSelectionOption(settingsData["XIconSlideIndex"]);
     }
-    showXSelectionOption(settingsData["XIconSlideIndex"]);
 })
   
 XIconSelectionnext.addEventListener("click", function() {
     settingsData["XIconSlideIndex"] += 1;
+    showXSelectionOption(settingsData["XIconSlideIndex"]);
     if(settingsData["XIconSlideIndex"] == settingsData["OIconSlideIndex"]) {
         settingsData["XIconSlideIndex"] += 1;
+        showXSelectionOption(settingsData["XIconSlideIndex"]);
     }
-    showXSelectionOption(settingsData["XIconSlideIndex"]);
 })
 
 OIconSelectionprev.addEventListener("click", function() {
     settingsData["OIconSlideIndex"] -= 1;
+    showOSelectionOption(settingsData["OIconSlideIndex"]);
     if(settingsData["OIconSlideIndex"] == settingsData["XIconSlideIndex"]) {
         settingsData["OIconSlideIndex"] -= 1;
+        showOSelectionOption(settingsData["OIconSlideIndex"]);
     }
-    showOSelectionOption(settingsData["OIconSlideIndex"]);
 })
   
 OIconSelectionnext.addEventListener("click", function() {
     settingsData["OIconSlideIndex"] += 1;
+    showOSelectionOption(settingsData["OIconSlideIndex"]);
     if(settingsData["OIconSlideIndex"] == settingsData["XIconSlideIndex"]) {
         settingsData["OIconSlideIndex"] += 1;
+        showOSelectionOption(settingsData["OIconSlideIndex"]);
     }
-    showOSelectionOption(settingsData["OIconSlideIndex"]);
 })
 
 
