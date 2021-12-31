@@ -17,6 +17,34 @@
     </head>
 
     <body>
+        <audio id="playerOneMoveAudio">
+            <source src="resources/Sounds/PlayerOneMove.wav" type="audio/wav">
+        </audio>
+
+        <audio id="playerTwoMoveAudio">
+            <source src="resources/Sounds/PlayerTwoMove.wav" type="audio/wav">
+        </audio>
+
+        <audio id="hoverOverAudio">
+            <source src="resources/Sounds/HoverOverButton.wav" type="audio/wav">
+        </audio>
+
+        <audio id="clickAudio">
+            <source src="resources/Sounds/ClickButton.wav" type="audio/wav">
+        </audio>
+
+        <audio id="gameStartAudio">
+            <source src="resources/Sounds/GameStart.wav" type="audio/wav">
+        </audio>
+
+        <audio id="WinnerAudio">
+            <source src="resources/Sounds/Winner.wav" type="audio/wav">
+        </audio>
+
+        <audio id="DrawAudio">
+            <source src="resources/Sounds/Draw.wav" type="audio/wav">
+        </audio>
+
         <!-- Main wrapper for webpage -->
         <div id="startMenuWrapper">
             <h1 id="startMenuTitle">Tic-Tac-Toe</h1>
@@ -31,14 +59,14 @@
 
                 <!-- Contains data about player one's score -->
                 <div class="scoreTitleWrapper">
-                    <h2 class="scoreTitle"><span id="XName">PLAYERS SHOULD NOT SEE THIS TEXT</span> Score: <span id="XScore">0</span></h2>
+                    <h2 class="scoreTitle"><span id="playerOneName"></span> Score: <span id="playerOneScore">0</span></h2>
                 </div>
 
                 <!-- Contains title and information on whos turn it is -->
                 <div id="headerMiddleWrapper">
                     <h1 id="title">Tic-Tac-Toe</h1>
                     <h2 id="whoWon"><span id="playerWinName"></span> wins!</h2>
-                    <h2 id="currentTurn">Current Turn: <span id="currentPlayer">PLAYERS SHOULD NOT SEE THIS TEXT</span></h2>
+                    <h2 id="currentTurn">Current Turn: <span id="currentPlayer"></span></h2>
                     <h2 id="itsATie">It's a Tie!</h2>
                     <h2 id="settingsTitle">Settings</h2>
                     <h2 id="instructionsTitle">How to Play</h2>
@@ -46,7 +74,7 @@
 
                 <!-- Contains data about player two's score -->
                 <div class="scoreTitleWrapper">
-                    <h2 class="scoreTitle"><span id="OName">PLAYERS SHOULD NOT SEE THIS TEXT</span> Score: <span id="OScore">0</span></h2>
+                    <h2 class="scoreTitle"><span id="playerTwoName"></span> Score: <span id="playerTwoScore">0</span></h2>
                 </div>
             </div>
 
@@ -71,9 +99,9 @@
                         <div id="topLeft" class="boardpiece unclicked"></div>
                         <div id="topMiddle" class="boardpiece unclicked"></div>
                         <div id="topRight" class="boardpiece unclicked"></div>
-                        <div id="centerLeft" class="boardpiece unclicked"></div>
+                        <div id="middleLeft" class="boardpiece unclicked"></div>
                         <div id="center" class="boardpiece unclicked"></div>
-                        <div id="centerRight" class="boardpiece unclicked"></div>
+                        <div id="middleRight" class="boardpiece unclicked"></div>
                         <div id="bottomLeft" class="boardpiece unclicked"></div>
                         <div id="bottomMiddle" class="boardpiece unclicked"></div>
                         <div id="bottomRight" class="boardpiece unclicked"></div>
@@ -119,14 +147,14 @@
                         <!-- Slider that determines the volume of the webpage -->
                         <p id="volumeSliderCaption" class="settingsCaption">Volume:</p>
                         <div id="volumeSliderInfo" class="settingsInfo">
-                            <input type="range" min="0" max="100" value="75" id="volumeSlider"></slider>
+                            <input type="range" min="0" max="100" value="50" id="volumeSlider"></slider>
                         </div>
     
                         <!-- Toggle that turns on or off suggestions -->
                         <p id="suggestionsToggleCaption" class="settingsCaption">Suggestions:</p>
                         <div id="suggestionsToggleInfo" class="settingsInfo toggleInfo">
                             <div id="suggestionsToggleDiv" class="toggleDiv">
-                                <label id="suggestionsSwitch" class="toggleSwitch clickSound">
+                                <label id="suggestionsSwitch" class="toggleSwitch clickSound" checked>
                                     <input type="checkbox" id="suggestionsCheckBox">
                                     <span id="suggestionsSlider" class="toggleSlider"></span>
                                 </label>
@@ -145,7 +173,7 @@
                         </div>
     
                         <!-- Toggle that turns on or off AI -->
-                        <p id="AIToggleCaption" class="settingsCaption">Play CPU:</p>
+                        <p id="AIToggleCaption" class="settingsCaption">Play against AI:</p>
                         <div id="AIToggleInfo" class="settingsInfo toggleInfo">
                             <div id="AIToggleDiv" class="toggleDiv">
                                 <label id="AISwitch" class="toggleSwitch clickSound">
@@ -155,44 +183,44 @@
                             </div>
                         </div>
     
-                        <p id="XIconSelectionCaption" class="settingsCaption">Player One Icon:</p>
-                        <div id="XIconSelectionWrapper" class="iconSelectionWrapper">
-                            <div id="XIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
-                                <div id="XIconSelection" class="iconSelection">
-                                    <div id="XIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
-                                    <div class="Xselection selection">X</div>
-                                    <div class="Xselection selection">O</div>
-                                    <div class="Xselection selection">1</div>
-                                    <div class="Xselection selection">:)</div>
-                                    <div class="Xselection selection">:(</div>
-                                    <div class="Xselection selection">+</div>
-                                    <div class="Xselection selection">-</div>
-                                    <div class="Xselection selection">&lt;3</div>
-                                    <div class="Xselection selection">&lt;/3</div>
-                                    <div class="Xselection selection">$</div>
-                                    <div class="Xselection selection">#</div>
-                                    <div id="XIconSelectionnext" class="iconSelectionnext iconSelectionButton clickSound">&gt</div>
+                        <p id="playerOneIconSelectionCaption" class="settingsCaption">Player One Icon:</p>
+                        <div id="playerOneIconSelectionWrapper" class="iconSelectionWrapper">
+                            <div id="playerOneIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
+                                <div id="playerOneIconSelection" class="iconSelection">
+                                    <div id="playerOneIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
+                                    <div class="playerOneselection selection">X</div>
+                                    <div class="playerOneselection selection">O</div>
+                                    <div class="playerOneselection selection">1</div>
+                                    <div class="playerOneselection selection">:)</div>
+                                    <div class="playerOneselection selection">:(</div>
+                                    <div class="playerOneselection selection">+</div>
+                                    <div class="playerOneselection selection">-</div>
+                                    <div class="playerOneselection selection">&lt;3</div>
+                                    <div class="playerOneselection selection">&lt;/3</div>
+                                    <div class="playerOneselection selection">$</div>
+                                    <div class="playerOneselection selection">#</div>
+                                    <div id="playerOneIconSelectionnext" class="iconSelectionnext iconSelectionButton clickSound">&gt</div>
                                 </div>
                             </div>
                         </div>
     
-                        <p id="OIconSelectionCaption" class="settingsCaption">Player Two Icon:</p>
-                        <div id="OIconSelectionWrapper" class="iconSelectionWrapper">
-                            <div id="OIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
-                                <div id="OIconSelection" class="iconSelection">
-                                    <div id="OIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
-                                    <div class="Oselection selection ">X</div>
-                                    <div class="Oselection selection">O</div>
-                                    <div class="Oselection selection">1</div>
-                                    <div class="Oselection selection">:)</div>
-                                    <div class="Oselection selection">:(</div>
-                                    <div class="Oselection selection">+</div>
-                                    <div class="Oselection selection">-</div>
-                                    <div class="Oselection selection">&lt;3</div>
-                                    <div class="Oselection selection">&lt;/3</div>
-                                    <div class="Oselection selection">$</div>
-                                    <div class="Oselection selection">#</div>
-                                    <div id="OIconSelectionnext" class="iconSelectionnext iconSelectionButton clickSound">&gt</div>
+                        <p id="playerTwoIconSelectionCaption" class="settingsCaption">Player Two Icon:</p>
+                        <div id="playerTwoIconSelectionWrapper" class="iconSelectionWrapper">
+                            <div id="playerTwoIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
+                                <div id="playerTwoIconSelection" class="iconSelection">
+                                    <div id="playerTwoIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
+                                    <div class="playerTwoselection selection ">X</div>
+                                    <div class="playerTwoselection selection">O</div>
+                                    <div class="playerTwoselection selection">1</div>
+                                    <div class="playerTwoselection selection">:)</div>
+                                    <div class="playerTwoselection selection">:(</div>
+                                    <div class="playerTwoselection selection">+</div>
+                                    <div class="playerTwoselection selection">-</div>
+                                    <div class="playerTwoselection selection">&lt;3</div>
+                                    <div class="playerTwoselection selection">&lt;/3</div>
+                                    <div class="playerTwoselection selection">$</div>
+                                    <div class="playerTwoselection selection">#</div>
+                                    <div id="playerTwoIconSelectionnext" class="iconSelectionnext iconSelectionButton clickSound">&gt</div>
                                 </div>
                             </div>
                         </div>

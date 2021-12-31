@@ -6,17 +6,46 @@ class gamePiece {
     }
 }
 
-const topLeft = 0;
-const topMiddle = 1;
-const topRight = 2;
-const middleLeft = 3;
-const center = 4;
-const middleRight = 5;
-const bottomLeft = 6;
-const bottomMiddle = 7;
-const bottomRight = 8;
-const corners = [topLeft, topRight, bottomLeft, bottomRight];
-const edges = [topMiddle, middleRight, bottomMiddle, middleLeft];
+//Indexes of each square
+const TOPLEFT = 0;
+const TOPMIDDLE = 1;
+const TOPRIGHT = 2;
+const MIDDLELEFT = 3;
+const CENTER = 4;
+const MIDDLERIGHT = 5;
+const BOTTOMLEFT = 6;
+const BOTTOMMIDDLE = 7;
+const BOTTOMRIGHT = 8;
+
+const GAMEMENU = -3;
+const MAINMENU = -2
+const NOTFINISHED = -1;
+const PLAYERONE = 0;
+const PLAYERTWO = 1;
+const DRAW = 2;
+
+let gameData = {
+    currentPlayer: PLAYERONE,
+    playerOneScore: 0,
+    playerTwoScore: 0,
+    playerOneSelected: [],
+    playerOneSelectedIds: [],
+    playerTwoSelected: [],
+    playerTwoSelectedIds: [],
+    gameResult: GAMEMENU,
+    whoStarts: PLAYERONE,
+    AIwaitTime: 400,
+    settingsBackFromLocation: 0,
+    settingsData: {}
+}
+
+
+let currentPlayerHTML = document.getElementById("currentPlayer");
+let currentTurnHTML = document.getElementById("currentTurn");
+let whoWonHTML = document.getElementById("whoWon");
+let playerWinNameHTML = document.getElementById("playerWinName");
+let itsATieHTML = document.getElementById("itsATie");
+
 
 //Document Elements related to entire webpage
 let wrapper = document.getElementById("wrapper");
@@ -41,15 +70,12 @@ let settingsTitle = document.getElementById("settingsTitle");
 let suggestionsToggle = document.getElementById("suggestionsCheckBox");
 let switchTurnsToggle = document.getElementById("switchTurnsCheckBox");
 let AIToggle = document.getElementById("AICheckBox");
-let settingsBackFromLocation = 0;
-let Xselections = document.getElementsByClassName("Xselection");
-let Oselections = document.getElementsByClassName("Oselection");
-let XIconSelectionnext = document.getElementById("XIconSelectionnext");
-let XIconSelectionprev = document.getElementById("XIconSelectionprev");
-let OIconSelectionnext = document.getElementById("OIconSelectionnext");
-let OIconSelectionprev = document.getElementById("OIconSelectionprev");
-let settingsData = {};
-
+let playerOneSelections = document.getElementsByClassName("playerOneselection");
+let playerTwoSelections = document.getElementsByClassName("playerTwoselection");
+let playerOneIconSelectionnext = document.getElementById("playerOneIconSelectionnext");
+let playerOneIconSelectionprev = document.getElementById("playerOneIconSelectionprev");
+let playerTwoIconSelectionnext = document.getElementById("playerTwoIconSelectionnext");
+let playerTwoIconSelectionprev = document.getElementById("playerTwoIconSelectionprev");
 
 //Document Elements related to instructions menu
 let instructionsMenu = document.getElementById("instructionsMenu");
@@ -60,81 +86,62 @@ let instructionsBackButton = document.getElementById("instructionsBackButton");
 //Document Elements related to the game
 let game = document.getElementById("game");
 let scoreTitle = document.getElementsByClassName("scoreTitle");
-let XScoreHTML = document.getElementById("XScore");
-let OScoreHTML = document.getElementById("OScore");
+let playerOneScoreHTML = document.getElementById("playerOneScore");
+let playerTwoScoreHTML = document.getElementById("playerTwoScore");
 let mainMenuButton = document.getElementById("mainMenuButton");
 let settingsPostGameButton = document.getElementById("settingsPostGameButton")
 let playAgainButton = document.getElementById("playAgainButton");
-let XName = document.getElementById("XName");
-let OName = document.getElementById("OName");
-
-let currentPlayer = 0;
-let XScore = 0;
-let OScore = 0;
-let currentPlayerHTML = document.getElementById("currentPlayer");
-let currentTurnHTML = document.getElementById("currentTurn");
-let whoWonHTML = document.getElementById("whoWon");
-let playerWinNameHTML = document.getElementById("playerWinName");
-let itsATieHTML = document.getElementById("itsATie");
-let XSelected = [];
-let XSelectedIds = [];
-let OSelectedIds = [];
-let OSelected = [];
-let gameResult = -1;
-let whoStarts = 0;
-let roundNumber = 0;
-let AIwaitTime = 400;
+let playerOneName = document.getElementById("playerOneName");
+let playerTwoName = document.getElementById("playerTwoName");
 
 //Audio Sounds
-let XMoveAudio = new Audio("resources/Sounds/PlayerOneMove.wav");
-let OMoveAudio = new Audio("resources/Sounds/PlayerTwoMove.wav");
-let hoverOverAudio = new Audio("resources/Sounds/HoverOverButton.wav");
-let clickAudio = new Audio("resources/Sounds/ClickButton.wav");
-let gameStartAudio = new Audio("resources/Sounds/GameStart.wav");
-let WinnerAudio = new Audio("resources/Sounds/Winner.wav");
-let DrawAudio = new Audio("resources/Sounds/Draw.wav");
+let playerOneMoveAudio = document.getElementById("playerOneMoveAudio");
+let playerTwoMoveAudio = document.getElementById("playerTwoMoveAudio");
+let hoverOverAudio = document.getElementById("hoverOverAudio");
+let clickAudio = document.getElementById("clickAudio");
+let gameStartAudio = document.getElementById("gameStartAudio");
+let WinnerAudio =  document.getElementById("WinnerAudio");
+let DrawAudio = document.getElementById("DrawAudio");
 
 //Document Elements related to gameboard
 let board = document.getElementById("board");
 let topLeftId = document.getElementById("topLeft");
 let topMiddleId = document.getElementById("topMiddle");
 let topRightId = document.getElementById("topRight");
-let centerLeftId = document.getElementById("centerLeft");
+let middleLeftId = document.getElementById("middleLeft");
 let centerId = document.getElementById("center");
-let centerRightId = document.getElementById("centerRight");
+let middleRightId = document.getElementById("middleRight");
 let bottomLeftId = document.getElementById("bottomLeft");
 let bottomMiddleId = document.getElementById("bottomMiddle");
 let bottomRightId = document.getElementById("bottomRight");
 
-let gameboard = [new gamePiece(topLeftId, 0),
-                 new gamePiece(topMiddleId, 1),
-                 new gamePiece(topRightId, 2),
-                 new gamePiece(centerLeftId, 3),
-                 new gamePiece(centerId, 4),
-                 new gamePiece(centerRightId, 5),
-                 new gamePiece(bottomLeftId, 6),
-                 new gamePiece(bottomMiddleId, 7),
-                 new gamePiece(bottomRightId, 8)];
+let gameboard = [new gamePiece(topLeftId, TOPLEFT),
+                 new gamePiece(topMiddleId, TOPMIDDLE),
+                 new gamePiece(topRightId, TOPRIGHT),
+                 new gamePiece(middleLeftId, MIDDLELEFT),
+                 new gamePiece(centerId, CENTER),
+                 new gamePiece(middleRightId, MIDDLERIGHT),
+                 new gamePiece(bottomLeftId, BOTTOMLEFT),
+                 new gamePiece(bottomMiddleId, BOTTOMMIDDLE),
+                 new gamePiece(bottomRightId, BOTTOMRIGHT)];
 
 if(document.cookie.length == 0) {
-    
-    document.cookie = "volume=0.75;";
+    document.cookie = "volume=0.50;";
     document.cookie = "suggestions=true;";
     document.cookie = "switchTurns=false;"
     document.cookie = "AI=false";
-    document.cookie = "XIcon=X;";
-    document.cookie = "OIcon=O;";
-    document.cookie = "XIconSlideIndex=0;"
-    document.cookie = "OIconSlideIndex=1;"
-    settingsData["volume"] = 0.75;
-    settingsData["suggestions"] = true;
-    settingsData["switchTurns"] = false;
-    settingsData["AI"] = false;
-    settingsData["XIcon"] = "X";
-    settingsData["OIcon"] = "O";
-    settingsData["XIconSlideIndex"] = 0;
-    settingsData["OIconSlideIndex"] = 1;
-    suggestionsToggle.checked = !suggestionsToggle.checked;
+    document.cookie = "playerOneIcon=X;";
+    document.cookie = "playerTwoIcon=O;";
+    document.cookie = "playerOneIconSlideIndex=0;"
+    document.cookie = "playerTwoIconSlideIndex=1;"
+    gameData.settingsData["volume"] = 0.50;
+    gameData.settingsData["suggestions"] = true;
+    gameData.settingsData["switchTurns"] = false;
+    gameData.settingsData["AI"] = false;
+    gameData.settingsData["playerOneIcon"] = "X";
+    gameData.settingsData["playerTwoIcon"] = "O";
+    gameData.settingsData["playerOneIconSlideIndex"] = PLAYERONE;
+    gameData.settingsData["playerTwoIconSlideIndex"] = PLAYERTWO;
 
 } else {
     let cookies = document.cookie.split(';');
@@ -143,141 +150,136 @@ if(document.cookie.length == 0) {
         if(cookies[i][0] == " ") {
             cookies[i] = cookies[i].substring(1);
         }
-        settingsData[cookies[i].split("=")[0]] = cookies[i].split("=")[1];
+        gameData.settingsData[cookies[i].split("=")[0]] = cookies[i].split("=")[1];
     }
-    volumeSlider.value = settingsData["volume"] * 100;
-    if(settingsData["suggestions"] === "true") {
-        settingsData["suggestions"] = true;
+    volumeSlider.value = gameData.settingsData["volume"] * 100;
+
+    gameData.settingsData["suggestions"] = gameData.settingsData["suggestions"] === "true";
+    gameData.settingsData["switchTurns"] = gameData.settingsData["switchTurns"] === "true";
+    gameData.settingsData["AI"] = gameData.settingsData["AI"] === "true";
+
+    if(gameData.settingsData["suggestions"]) {
         suggestionsToggle.checked = !suggestionsToggle.checked;
-    } else {
-        settingsData["suggestions"] = false;
     }
 
-    if(settingsData["switchTurns"] === "true") {
-        settingsData["switchTurns"] = true;
+    if(gameData.settingsData["switchTurns"]) {
         switchTurnsToggle.checked = !switchTurnsToggle.checked;
-    } else {
-        settingsData["switchTurns"] = false;
     }
 
-    if(settingsData["AI"] === "true") {
-        settingsData["AI"] = true;
+    if(gameData.settingsData["AI"]) {
         AIToggle.checked = !AIToggle.checked;
-    } else {
-        settingsData["AI"] = false;
     }
 
-    settingsData["XIconSlideIndex"] = parseInt(settingsData["XIconSlideIndex"]);
-    settingsData["OIconSlideIndex"] = parseInt(settingsData["OIconSlideIndex"]);
+    gameData.settingsData["playerOneIconSlideIndex"] = parseInt(gameData.settingsData["playerOneIconSlideIndex"]);
+    gameData.settingsData["playerTwoIconSlideIndex"] = parseInt(gameData.settingsData["playerTwoIconSlideIndex"]);
 }
 let dateCookiesExpire = new Date();
 dateCookiesExpire.setDate(dateCookiesExpire.getDate() + 2);
 document.cookie = "expires=" + dateCookiesExpire.toUTCString() + ";";
 
 updateVolume();
-showXSelectionOption(settingsData["XIconSlideIndex"]);
-showOSelectionOption(settingsData["OIconSlideIndex"]);
+showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
+showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
 
 
 document.addEventListener("keyup", function(event) {
-    if(event.key === "Enter") {
-        // setTimeout(function() {
+    if(event.key === "Enter" && gameData.gameResult == GAMEMENU) {
+        gameData.gameResult = MAINMENU;
         startMenuWrapper.style.display = "none";
         wrapper.style.display = "grid";
-        // }, 250);
-        // startMenuWrapper.classList.add("hidden");
         gameStartAudio.play();
     }
-})
+});
 
 
 for(let i = 0; i < 9; ++i) {
     gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i], true)});
     gameboard[i].idElement.addEventListener("mouseenter", function() {
-        if(gameboard[i].isSelected || gameResult != -1 || !settingsData["suggestions"]) {
+        if(gameboard[i].isSelected || gameData.gameResult != NOTFINISHED || !gameData.settingsData["suggestions"]) {
             return;
         }
-        if(currentPlayer == 0) {
-            gameboard[i].idElement.innerHTML = '<p id="hoverOver">' + settingsData["XIcon"] + '</p>';
-        } else if(!settingsData["AI"]){
-            gameboard[i].idElement.innerHTML = '<p id="hoverOver">'+ settingsData["OIcon"] + '</p>';
+        if(gameData.currentPlayer == 0) {
+            gameboard[i].idElement.innerHTML = '<p id="hoverOver">' + gameData.settingsData["playerOneIcon"] + '</p>';
+        } else if(!gameData.settingsData["AI"]){
+            gameboard[i].idElement.innerHTML = '<p id="hoverOver">'+ gameData.settingsData["playerTwoIcon"] + '</p>';
         } else {
             return;
         }
         stopHoverAudio();
         hoverOverAudio.play();
     });
+
     gameboard[i].idElement.addEventListener("mouseleave", function() {
-        if(gameboard[i].isSelected || gameResult != -1 || !settingsData["suggestions"]) {
+        if(gameboard[i].isSelected || gameData.gameResult != NOTFINISHED || !gameData.settingsData["suggestions"]) {
             return;
         }
         gameboard[i].idElement.innerHTML = "";
-    })
+    });
 }
 
 for(let i = 0; i < hoverOverButtons.length; ++i) {
     hoverOverButtons[i].addEventListener("mouseenter", function() {
         stopHoverAudio();
         hoverOverAudio.play();
-    })
+    });
 }
 
 for(let i = 0; i < clickSoundButtons.length; ++i) {
     clickSoundButtons[i].addEventListener("click", function() {
-        stopHoverAudio();
-        clickAudio.play();
-    })
+        playClickAudio();
+    });
 }
 
 startButton.addEventListener("click", function() {
-    whoStarts = 0;
+    gameData.gameResult = NOTFINISHED;
+    gameData.whoStarts = PLAYERONE;
     mainMenu.style.display = "none";
-    XScoreHTML.innerHTML = XScore;
-    OScoreHTML.innerHTML = OScore;
+    playerOneScoreHTML.innerHTML = gameData.playerOneScore;
+    playerTwoScoreHTML.innerHTML = gameData.playerTwoScore;
     currentTurnHTML.style.display = "block";
     game.style.display = "block";
-    scoreTitle[0].style.display = "block";
-    scoreTitle[1].style.display = "block";
-    XName.innerHTML = settingsData["XIcon"];
-    OName.innerHTML = settingsData["OIcon"];
-    currentPlayerHTML.innerHTML = settingsData["XIcon"];
-})
+    scoreTitle[PLAYERONE].style.display = "block";
+    scoreTitle[PLAYERTWO].style.display = "block";
+    playerOneName.innerHTML = gameData.settingsData["playerOneIcon"];
+    playerTwoName.innerHTML = gameData.settingsData["playerTwoIcon"];
+    currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
+});
 
 
 playAgainButton.addEventListener("click", function() {
-    if(whoStarts == 0 && settingsData["switchTurns"]) {
-        whoStarts = 1;
-        currentPlayer = 1;
-        currentPlayerHTML.innerHTML = settingsData["OIcon"];
+    if(gameData.whoStarts == PLAYERONE && gameData.settingsData["switchTurns"]) {
+        gameData.whoStarts = PLAYERTWO;
+        gameData.currentPlayer = PLAYERTWO;
+        currentPlayerHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
     } else {
-        whoStarts = 0;
-        currentPlayer = 0;
-        currentPlayerHTML.innerHTML = settingsData["XIcon"];
+        gameData.whoStarts = PLAYERONE;
+        gameData.currentPlayer = PLAYERONE;
+        currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
     }
-    XSelected = [];
-    XSelectedIds = [];
-    OSelected = [];
-    OSelectedIds = [];
-    AIwaitTime = 400;
+    gameData.playerOneSelected = [];
+    gameData.playerOneSelectedIds = [];
+    gameData.playerTwoSelected = [];
+    gameData.playerTwoSelectedIds = [];
+    gameData.AIwaitTime = 400;
     mainMenuButton.style.display = "none";
     settingsPostGameButton.style.display = "none";
     playAgainButton.style.display = "none";
     itsATieHTML.style.display = "none";
     whoWonHTML.style.display = "none";
     currentTurnHTML.style.display = "block";
-    XName.innerHTML = settingsData["XIcon"];
-    OName.innerHTML = settingsData["OIcon"];
+    playerOneName.innerHTML = gameData.settingsData["playerOneIcon"];
+    playerTwoName.innerHTML = gameData.settingsData["playerTwoIcon"];
     for(let i = 0; i < gameboard.length; ++i) {
         gameboard[i].isSelected = false;
         gameboard[i].idElement.innerHTML = "";
         gameboard[i].idElement.classList.add("unclicked");
     }
-    gameResult = -1
+    gameData.gameResult = NOTFINISHED;
 
-    if(whoStarts == 1) {
+    if(gameData.whoStarts == PLAYERTWO) {
         AIPlayMove();
     }
-})
+});
 
 settingsPostGameButton.addEventListener("click", function() {
     game.style.display = "none";
@@ -286,24 +288,23 @@ settingsPostGameButton.addEventListener("click", function() {
     settingsPostGameButton.style.display = "none";
     wrapper.style.display = "block";
     playAgainButton.style.display = "none";
-    scoreTitle[0].style.display = "none";
-    scoreTitle[1].style.display = "none";
+    scoreTitle[PLAYERONE].style.display = "none";
+    scoreTitle[PLAYERTWO].style.display = "none";
     itsATieHTML.style.display = "none";
     whoWonHTML.style.display = "none";
-    settingsBackFromLocation = 1;
-})
+    gameData.settingsBackFromLocation = 1;
+});
 
 mainMenuButton.addEventListener("click", function() {
-    XScore = 0;
-    OScore = 0;
-
-    XSelected = [];
-    XSelectedIds = [];
-    OSelected = [];
-    OSelectedIds = [];
-    currentPlayer = 0;
-    gameResult = -1
-    currentPlayerHTML.innerHTML = settingsData["XIcon"];
+    gameData.playerOneSelected = [];
+    gameData.playerOneSelectedIds = [];
+    gameData.playerTwoSelected = [];
+    gameData.playerTwoSelectedIds = [];
+    gameData.playerOneScore = 0;
+    gameData.playerTwoScore = 0;
+    gameData.currentPlayer = PLAYERONE;
+    gameData.gameResult = MAINMENU;
+    currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
     whoWonHTML.style.display = "none";
     itsATieHTML.style.display = "none";
     for(let i = 0; i < gameboard.length; ++i) {
@@ -313,154 +314,150 @@ mainMenuButton.addEventListener("click", function() {
 
     game.style.display = "none";
     mainMenu.style.display = "grid";
-    scoreTitle[0].style.display = "none";
-    scoreTitle[1].style.display = "none";
+    scoreTitle[PLAYERONE].style.display = "none";
+    scoreTitle[PLAYERTWO].style.display = "none";
     mainMenuButton.style.display = "none";
     settingsPostGameButton.style.display = "none";
     playAgainButton.style.display = "none";
-})
+});
 
 settingsButton.addEventListener("click", function() {
-    settingsBackFromLocation = 0;
+    gameData.settingsBackFromLocation = 0;
     mainMenu.style.display = "none";
     settingsTitle.style.display = "block";
     settingsMenu.style.display = "block";
     wrapper.style.display = "block";
-})
+});
 
-XIconSelectionprev.addEventListener("click", function() {
-    settingsData["XIconSlideIndex"] -= 1;
-    showXSelectionOption(settingsData["XIconSlideIndex"]);
-    if(settingsData["XIconSlideIndex"] == settingsData["OIconSlideIndex"]) {
-        settingsData["XIconSlideIndex"] -= 1;
-        showXSelectionOption(settingsData["XIconSlideIndex"]);
+playerOneIconSelectionprev.addEventListener("click", function() {
+    gameData.settingsData["playerOneIconSlideIndex"] -= 1;
+    showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
+    if(gameData.settingsData["playerOneIconSlideIndex"] == gameData.settingsData["playerTwoIconSlideIndex"]) {
+        gameData.settingsData["playerOneIconSlideIndex"] -= 1;
+        showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
     }
-})
-  
-XIconSelectionnext.addEventListener("click", function() {
-    settingsData["XIconSlideIndex"] += 1;
-    showXSelectionOption(settingsData["XIconSlideIndex"]);
-    if(settingsData["XIconSlideIndex"] == settingsData["OIconSlideIndex"]) {
-        settingsData["XIconSlideIndex"] += 1;
-        showXSelectionOption(settingsData["XIconSlideIndex"]);
-    }
-})
+});
 
-OIconSelectionprev.addEventListener("click", function() {
-    settingsData["OIconSlideIndex"] -= 1;
-    showOSelectionOption(settingsData["OIconSlideIndex"]);
-    if(settingsData["OIconSlideIndex"] == settingsData["XIconSlideIndex"]) {
-        settingsData["OIconSlideIndex"] -= 1;
-        showOSelectionOption(settingsData["OIconSlideIndex"]);
+playerOneIconSelectionnext.addEventListener("click", function() {
+    gameData.settingsData["playerOneIconSlideIndex"] += 1;
+    showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
+    if(gameData.settingsData["playerOneIconSlideIndex"] == gameData.settingsData["playerTwoIconSlideIndex"]) {
+        gameData.settingsData["playerOneIconSlideIndex"] += 1;
+        showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
     }
-})
-  
-OIconSelectionnext.addEventListener("click", function() {
-    settingsData["OIconSlideIndex"] += 1;
-    showOSelectionOption(settingsData["OIconSlideIndex"]);
-    if(settingsData["OIconSlideIndex"] == settingsData["XIconSlideIndex"]) {
-        settingsData["OIconSlideIndex"] += 1;
-        showOSelectionOption(settingsData["OIconSlideIndex"]);
+});
+
+playerTwoIconSelectionprev.addEventListener("click", function() {
+    gameData.settingsData["playerTwoIconSlideIndex"] -= 1;
+    showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
+    if(gameData.settingsData["playerTwoIconSlideIndex"] == gameData.settingsData["playerOneIconSlideIndex"]) {
+        gameData.settingsData["playerTwoIconSlideIndex"] -= 1;
+        showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
     }
-})
+});
+
+playerTwoIconSelectionnext.addEventListener("click", function() {
+    gameData.settingsData["playerTwoIconSlideIndex"] += 1;
+    showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
+    if(gameData.settingsData["playerTwoIconSlideIndex"] == gameData.settingsData["playerOneIconSlideIndex"]) {
+        gameData.settingsData["playerTwoIconSlideIndex"] += 1;
+        showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
+    }
+});
 
 
 settingsBackButton.addEventListener("click", function() {
     settingsMenu.style.display = "none";
     settingsTitle.style.display = "none";
     wrapper.style.display = "grid";
-    if(settingsBackFromLocation == 0) {
+    if(gameData.settingsBackFromLocation == 0) {
         mainMenu.style.display = "grid";
-    } else if(settingsBackFromLocation == 1) {
+    } else if(gameData.settingsBackFromLocation == 1) {
         game.style.display = "block";
-        scoreTitle[0].style.display = "block";
-        scoreTitle[1].style.display = "block";
+        scoreTitle[PLAYERONE].style.display = "block";
+        scoreTitle[PLAYERTWO].style.display = "block";
         mainMenuButton.style.display = "block";
         settingsPostGameButton.style.display = "block";
         playAgainButton.style.display = "block";
-        if(gameResult == 0 || gameResult == 1) {
+        if(gameData.gameResult == PLAYERONE || gameData.gameResult == PLAYERTWO) {
             whoWonHTML.style.display = "block";
         } else {
             itsATieHTML.style.display = "block";
         }
 
-        XName.innerHTML = settingsData["XIcon"];
-        OName.innerHTML = settingsData["OIcon"];
-        if(gameResult == 0) {
-            playerWinNameHTML.innerHTML = settingsData["XIcon"];
+        playerOneName.innerHTML = gameData.settingsData["playerOneIcon"];
+        playerTwoName.innerHTML = gameData.settingsData["playerTwoIcon"];
+        if(gameData.gameResult == PLAYERONE) {
+            playerWinNameHTML.innerHTML = gameData.settingsData["playerOneIcon"];
         } else {
-            playerWinNameHTML.innerHTML = settingsData["OIcon"];
+            playerWinNameHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
         }
-        for(let i = 0; i < XSelected.length; ++i) {
-            gameboard[XSelected[i].pieceNumber].idElement.innerHTML = settingsData["XIcon"];
+        for(let i = 0; i < gameData.playerOneSelected.length; ++i) {
+            gameboard[gameData.playerOneSelected[i].pieceNumber].idElement.innerHTML = gameData.settingsData["playerOneIcon"];
         }
 
-        for(let i = 0; i < OSelected.length; ++i) {
-            gameboard[OSelected[i].pieceNumber].idElement.innerHTML = settingsData["OIcon"];
+        for(let i = 0; i < gameData.playerTwoSelected.length; ++i) {
+            gameboard[gameData.playerTwoSelected[i].pieceNumber].idElement.innerHTML = gameData.settingsData["playerTwoIcon"];
         }
     }
-})
+});
 
-volumeSlider.onmouseup = function() {
-    clickAudio.play();
-}
-
-volumeSlider.oninput = function() {
+volumeSlider.addEventListener("input", function() {
     let newVolume = this.value / 100;
-    settingsData["volume"] = newVolume;
+    gameData.settingsData["volume"] = newVolume;
     document.cookie = "volume=" + newVolume + ";";
     updateVolume();
-}
+});
+
+volumeSlider.addEventListener("mouseup", function() {
+    clickAudio.play();
+});
 
 suggestionsToggle.addEventListener("change", function() {
-    if(settingsData["suggestions"]) {
-        settingsData["suggestions"] = false;
-        document.cookie = "suggestions=false;";
-    } else {
-        settingsData["suggestions"] = true;
-        document.cookie = "suggestions=true;";
-    }
-})
+    gameData.settingsData["suggestions"] = !gameData.settingsData["suggestions"];
+    document.cookie = "suggestions=" + gameData.settingsData["suggestions"] + ";";
+});
 
 switchTurnsCheckBox.addEventListener("change", function() {
-    settingsData["switchTurns"] = !settingsData["switchTurns"];
-    document.cookie = "switchTurns=" + settingsData["switchTurns"] + ";";
-})
+    gameData.settingsData["switchTurns"] = !gameData.settingsData["switchTurns"];
+    gameData.whoStarts = 0;
+    document.cookie = "switchTurns=" + gameData.settingsData["switchTurns"] + ";";
+});
 
 AIToggle.addEventListener("change", function() {
-    settingsData["AI"] = !settingsData["AI"];
-    document.cookie = "AI=" + settingsData["AI"] + ";";
-})
+    gameData.settingsData["AI"] = !gameData.settingsData["AI"];
+    document.cookie = "AI=" + gameData.settingsData["AI"] + ";";
+});
 
 instructionsButton.addEventListener("click", function() {
     mainMenu.style.display = "none";
     instructionsMenu.style.display = "grid";
     instructionsTitle.style.display = "block";
     wrapper.style.display = "block"
-})
+});
 
 instructionsBackButton.addEventListener("click", function() {
     instructionsMenu.style.display = "none";
     instructionsTitle.style.display = "none";
     mainMenu.style.display = "grid";
     wrapper.style.display = "grid";
-})
+});
 
 
 function squareClick(gamePiece, playerClicked) {
-    if(currentPlayer == 0 && !gamePiece.isSelected && gameResult == -1) {
-        gamePiece.idElement.innerHTML = '<p class="clicked">'+ settingsData["XIcon"] + '</p>';
-        XSelected.push(gamePiece);
-        XSelectedIds.push(gamePiece.pieceNumber);
+    if(gameData.currentPlayer == PLAYERONE && !gamePiece.isSelected && gameData.gameResult == NOTFINISHED) {
+        gamePiece.idElement.innerHTML = '<p class="clicked">'+ gameData.settingsData["playerOneIcon"] + '</p>';
+        gameData.playerOneSelected.push(gamePiece);
+        gameData.playerOneSelectedIds.push(gamePiece.pieceNumber);
         stopHoverAudio();
-        currentPlayerHTML.innerHTML = settingsData["OIcon"];
+        currentPlayerHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
 
-    } else if(!gamePiece.isSelected && gameResult == -1 && ((!playerClicked && settingsData["AI"]) || (playerClicked && !settingsData["AI"]))) {
-        gamePiece.idElement.innerHTML = '<p class="clicked">' + settingsData["OIcon"] + '</p>';
-        OSelected.push(gamePiece);
-        OSelectedIds.push(gamePiece.pieceNumber);
+    } else if(!gamePiece.isSelected && gameData.gameResult == NOTFINISHED && ((!playerClicked && gameData.settingsData["AI"]) || (playerClicked && !gameData.settingsData["AI"]))) {
+        gamePiece.idElement.innerHTML = '<p class="clicked">' + gameData.settingsData["playerTwoIcon"] + '</p>';
+        gameData.playerTwoSelected.push(gamePiece);
+        gameData.playerTwoSelectedIds.push(gamePiece.pieceNumber);
         stopHoverAudio();
-        currentPlayerHTML.innerHTML = settingsData["XIcon"];
+        currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
     } else {
         return;
     }
@@ -468,125 +465,117 @@ function squareClick(gamePiece, playerClicked) {
     gamePiece.isSelected = true;
     gamePiece.idElement.classList.remove("unclicked");
     let result = checkWin();
-    if(result == -1) {
-        if(currentPlayer == 0) {
-            XMoveAudio.play();
-            currentPlayer = 1;
+    if(result == NOTFINISHED) {
+        if(gameData.currentPlayer == PLAYERONE) {
+            playerOneMoveAudio.play();
+            gameData.currentPlayer = PLAYERTWO;
         } else {
-            OMoveAudio.play();
-            currentPlayer = 0;
+            playerTwoMoveAudio.play();
+            gameData.currentPlayer = PLAYERONE;
         }
-    } else if(result != 2) {
+    } else if(result != DRAW) {
         WinnerAudio.play();
     } else {
         DrawAudio.play();
     }
 
-    if(settingsData["AI"] && currentPlayer == 1 && gameResult == -1) {
+    if(gameData.settingsData["AI"] && gameData.currentPlayer == 1 && gameData.gameResult == NOTFINISHED) {
         setTimeout(function(){
             AIPlayMove();
-        }, AIwaitTime);
-        AIwaitTime += 75;
+        }, gameData.AIwaitTime);
+        gameData.AIwaitTime += 75;
     }
 }
 
 function checkWin() {
-    if(checkSelectedContainsWin(XSelectedIds)) {
-        gameResult = 0;
+    if(checkSelectedContainsWin(gameData.playerOneSelectedIds)) {
+        gameData.gameResult = PLAYERONE;
         currentTurnHTML.style.display = "none";
-        playerWinNameHTML.innerHTML = settingsData["XIcon"];
-        XScore++;
-        XScoreHTML.innerHTML = XScore;
+        playerWinNameHTML.innerHTML = gameData.settingsData["playerOneIcon"];
+        gameData.playerOneScore++;
+        playerOneScoreHTML.innerHTML = gameData.playerOneScore;
         whoWonHTML.style.display = "block";
         mainMenuButton.style.display = "block";
         settingsPostGameButton.style.display = "block";
         playAgainButton.style.display = "block";
-        return 0;
+        return PLAYERONE;
     } else {
-        if(checkSelectedContainsWin(OSelectedIds)) {
-            gameResult = 1;
+        if(checkSelectedContainsWin(gameData.playerTwoSelectedIds)) {
+            gameData.gameResult = PLAYERTWO;
             currentTurnHTML.style.display = "none";
-            playerWinNameHTML.innerHTML = settingsData["OIcon"];
-            OScore++;
-            OScoreHTML.innerHTML = OScore;
+            playerWinNameHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
+            gameData.playerTwoScore++;
+            playerTwoScoreHTML.innerHTML = gameData.playerTwoScore;
             whoWonHTML.style.display = "block";
             mainMenuButton.style.display = "block";
             settingsPostGameButton.style.display = "block";
             playAgainButton.style.display = "block";
-            return 1;
+            return PLAYERTWO;
         } else {
-            if(XSelectedIds.length + OSelectedIds.length == 9) {
-                gameResult = 2;
+            if(gameData.playerOneSelectedIds.length + gameData.playerTwoSelectedIds.length == 9) {
+                gameData.gameResult = DRAW;
                 currentTurnHTML.style.display = "none";
                 itsATieHTML.style.display = "block";
                 mainMenuButton.style.display = "block";
                 settingsPostGameButton.style.display = "block";
                 playAgainButton.style.display = "block";
-                return 2;
+                return DRAW;
             }
         }
     }
-    return -1;
+    return NOTFINISHED;
 }
 
 function checkSelectedContainsWin(selectedIds) {
-    if((selectedIds.includes(0) && selectedIds.includes(1) && selectedIds.includes(2))
-    || (selectedIds.includes(3) && selectedIds.includes(4) && selectedIds.includes(5))
-    || (selectedIds.includes(6) && selectedIds.includes(7) && selectedIds.includes(8))
-    
-    || (selectedIds.includes(0) && selectedIds.includes(3) && selectedIds.includes(6))
-    || (selectedIds.includes(1) && selectedIds.includes(4) && selectedIds.includes(7))
-    || (selectedIds.includes(2) && selectedIds.includes(5) && selectedIds.includes(8))
-    
-
-    || (selectedIds.includes(0) && selectedIds.includes(4) && selectedIds.includes(8))
-    || (selectedIds.includes(2) && selectedIds.includes(4) && selectedIds.includes(6))) {
-        return true;
-    } else {
-        return false;
-    }
+    return (selectedIds.includes(TOPLEFT) && selectedIds.includes(TOPMIDDLE) && selectedIds.includes(TOPRIGHT))
+        || (selectedIds.includes(MIDDLELEFT) && selectedIds.includes(CENTER) && selectedIds.includes(MIDDLERIGHT))
+        || (selectedIds.includes(BOTTOMLEFT) && selectedIds.includes(BOTTOMMIDDLE) && selectedIds.includes(BOTTOMRIGHT))
+        || (selectedIds.includes(TOPLEFT) && selectedIds.includes(MIDDLELEFT) && selectedIds.includes(BOTTOMLEFT))
+        || (selectedIds.includes(TOPMIDDLE) && selectedIds.includes(CENTER) && selectedIds.includes(BOTTOMMIDDLE))
+        || (selectedIds.includes(TOPRIGHT) && selectedIds.includes(MIDDLERIGHT) && selectedIds.includes(BOTTOMRIGHT))
+        || (selectedIds.includes(TOPLEFT) && selectedIds.includes(CENTER) && selectedIds.includes(BOTTOMRIGHT))
+        || (selectedIds.includes(TOPRIGHT) && selectedIds.includes(CENTER) && selectedIds.includes(BOTTOMLEFT));
 }
 
-function showXSelectionOption(n) {
-    if (n > Xselections.length - 1) {
-        settingsData["XIconSlideIndex"] = 0;
-    }    
+function showPlayerOneSelectionOption(n) {
+    if (n > playerOneSelections.length - 1) {
+        gameData.settingsData["playerOneIconSlideIndex"] = 0;
+    }
     if (n < 0) {
-        settingsData["XIconSlideIndex"] = Xselections.length - 1;
+        gameData.settingsData["playerOneIconSlideIndex"] = playerOneSelections.length - 1;
     }
-    for (let i = 0; i < Xselections.length; i++) {
-        Xselections[i].style.display = "none";  
+    for (let i = 0; i < playerOneSelections.length; i++) {
+        playerOneSelections[i].style.display = "none";  
     }
 
-
-    Xselections[settingsData["XIconSlideIndex"]].style.display = "flex";  
-    settingsData["XIcon"] = Xselections[settingsData["XIconSlideIndex"]].innerHTML;
-    document.cookie = "XIconSlideIndex=" + settingsData["XIconSlideIndex"] + ";";
+    playerOneSelections[gameData.settingsData["playerOneIconSlideIndex"]].style.display = "flex";  
+    gameData.settingsData["playerOneIcon"] = playerOneSelections[gameData.settingsData["playerOneIconSlideIndex"]].innerHTML;
+    document.cookie = "playerOneIconSlideIndex=" + gameData.settingsData["playerOneIconSlideIndex"] + ";";
   }
 
-  function showOSelectionOption(n) {
-    if (n >= Oselections.length) {
-        settingsData["OIconSlideIndex"] = 0;
-    }    
+  function showPlayerTwoSelectionOption(n) {
+    if (n >= playerTwoSelections.length) {
+        gameData.settingsData["playerTwoIconSlideIndex"] = 0;
+    }
     if (n < 0) {
-        settingsData["OIconSlideIndex"] = Oselections.length - 1;
+        gameData.settingsData["playerTwoIconSlideIndex"] = playerTwoSelections.length - 1;
     }
-    for (let i = 0; i < Oselections.length; i++) {
-        Oselections[i].style.display = "none";  
+    for (let i = 0; i < playerTwoSelections.length; i++) {
+        playerTwoSelections[i].style.display = "none";  
     }
-    Oselections[settingsData["OIconSlideIndex"]].style.display = "flex";
-    settingsData["OIcon"] = Oselections[settingsData["OIconSlideIndex"]].innerHTML;
-    document.cookie = "OIconSlideIndex=" + settingsData["OIconSlideIndex"] + ";";
+    playerTwoSelections[gameData.settingsData["playerTwoIconSlideIndex"]].style.display = "flex";
+    gameData.settingsData["playerTwoIcon"] = playerTwoSelections[gameData.settingsData["playerTwoIconSlideIndex"]].innerHTML;
+    document.cookie = "playerTwoIconSlideIndex=" + gameData.settingsData["playerTwoIconSlideIndex"] + ";";
   }
 
   function updateVolume() {
-      XMoveAudio.volume = settingsData["volume"];
-      OMoveAudio.volume = settingsData["volume"];
-      hoverOverAudio.volume = settingsData["volume"];
-      clickAudio.volume = settingsData["volume"];
-      gameStartAudio.volume = settingsData["volume"];
-      WinnerAudio.volume = settingsData["volume"];
-      DrawAudio.volume = settingsData["volume"];
+      playerOneMoveAudio.volume = gameData.settingsData["volume"];
+      playerTwoMoveAudio.volume = gameData.settingsData["volume"];
+      hoverOverAudio.volume = gameData.settingsData["volume"];
+      clickAudio.volume = gameData.settingsData["volume"];
+      gameStartAudio.volume = gameData.settingsData["volume"];
+      WinnerAudio.volume = gameData.settingsData["volume"];
+      DrawAudio.volume = gameData.settingsData["volume"];
   }
 
   function stopHoverAudio() {
@@ -596,109 +585,99 @@ function showXSelectionOption(n) {
       hoverOverAudio.currentTime = 0;
   }
 
-  function AIPlayMove() {
-      let randomChance = Math.random();
-      if(randomChance < 0.85) {
-        if(AIEdgeWinTest(topMiddle, topLeft, topRight, center, bottomMiddle)) {
-            squareClick(gameboard[topMiddle], false);
-            return;
-        } else if(AIEdgeWinTest(middleRight, center, middleLeft, topRight, bottomRight)) {
-            squareClick(gameboard[middleRight], false);
-            return;
-        } else if(AIEdgeWinTest(bottomMiddle, bottomLeft, bottomRight, center, topMiddle)) {
-            squareClick(gameboard[bottomMiddle], false);
-            return;
-        } else if(AIEdgeWinTest(middleLeft, center, middleRight, bottomLeft, topLeft)) {
-            squareClick(gameboard[middleLeft], false);
-            return;
-        } else if(AICornerWinTest(topLeft, topMiddle, topRight, middleLeft, bottomLeft, bottomRight)) {
-            squareClick(gameboard[topLeft], false);
-            return;
-        } else if(AICornerWinTest(topRight, topMiddle, topLeft, middleRight, bottomRight, bottomLeft)) {
-            squareClick(gameboard[topRight], false);
-            return;
-        } else if(AICornerWinTest(bottomLeft, bottomMiddle, bottomRight, middleLeft, topLeft, topRight)) {
-            squareClick(gameboard[bottomLeft], false);
-            return;
-        } else if(AICornerWinTest(bottomRight, bottomMiddle, bottomLeft, middleRight, topRight, topLeft)) {
-            squareClick(gameboard[bottomRight], false);
-            return;
-        } else if(AIEdgeBlockTest(topMiddle, topLeft, topRight, center, bottomMiddle)) {
-            squareClick(gameboard[topMiddle], false);
-            return;
-        } else if(AIEdgeBlockTest(middleRight, center, middleLeft, topRight, bottomRight)) {
-            squareClick(gameboard[middleRight], false);
-            return;
-        } else if(AIEdgeBlockTest(bottomMiddle, bottomLeft, bottomRight, center, topMiddle)) {
-            squareClick(gameboard[bottomMiddle], false);
-            return;
-        } else if(AIEdgeBlockTest(middleLeft, center, middleRight, bottomLeft, topLeft)) {
-            squareClick(gameboard[middleLeft], false);
-            return;
-        } else if(AICornerBlockTest(topLeft, topMiddle, topRight, middleLeft, bottomLeft, bottomRight)) {
-            squareClick(gameboard[topLeft], false);
-            return;
-        } else if(AICornerBlockTest(topRight, topMiddle, topLeft, middleRight, bottomRight, bottomLeft)) {
-            squareClick(gameboard[topRight], false);
-            return;
-        } else if(AICornerBlockTest(bottomLeft, bottomMiddle, bottomRight, middleLeft, topLeft, topRight)) {
-            squareClick(gameboard[bottomLeft], false);
-            return;
-        } else if(AICornerBlockTest(bottomRight, bottomMiddle, bottomLeft, middleRight, topRight, topLeft)) {
-            squareClick(gameboard[bottomRight], false);
-            return;
-        } else if(!XSelected.includes(gameboard[center]) && !OSelected.includes(gameboard[center])) {
-            squareClick(gameboard[center], false);
-            return;
-        }
-      } else {
-          console.log("stupid");
-      }
-        let potentialSquare = Math.floor(Math.random() * 9);
-        while((XSelectedIds.includes(potentialSquare) || OSelectedIds.includes(potentialSquare))) {
-            potentialSquare = Math.floor(Math.random() * 9);
-        }
-        squareClick(gameboard[potentialSquare], false);
+  function playClickAudio() {
+    if(!clickAudio.paused) {
+        clickAudio.pause();
+        clickAudio.currentTime = 0;
     }
+    let promise = clickAudio.play();
+
+    promise.catch(function() {
+        clickAudio.currentTime = 0;
+    });
+ }
+
+  function AIPlayMove() {
+    let randomChance = Math.random();
+    if(randomChance < 0.80) {
+      if(AIEdgeWinTest(TOPMIDDLE, TOPLEFT, TOPRIGHT, CENTER, BOTTOMMIDDLE)) {
+          squareClick(gameboard[TOPMIDDLE], false);
+          return;
+      } else if(AIEdgeWinTest(MIDDLERIGHT, CENTER, MIDDLELEFT, TOPRIGHT, BOTTOMRIGHT)) {
+          squareClick(gameboard[MIDDLERIGHT], false);
+          return;
+      } else if(AIEdgeWinTest(BOTTOMMIDDLE, BOTTOMLEFT, BOTTOMRIGHT, CENTER, TOPMIDDLE)) {
+          squareClick(gameboard[BOTTOMMIDDLE], false);
+          return;
+      } else if(AIEdgeWinTest(MIDDLELEFT, CENTER, MIDDLERIGHT, BOTTOMLEFT, TOPLEFT)) {
+          squareClick(gameboard[MIDDLELEFT], false);
+          return;
+      } else if(AICornerWinTest(TOPLEFT, TOPMIDDLE, TOPRIGHT, MIDDLELEFT, BOTTOMLEFT, BOTTOMRIGHT)) {
+          squareClick(gameboard[TOPLEFT], false);
+          return;
+      } else if(AICornerWinTest(TOPRIGHT, TOPMIDDLE, TOPLEFT, MIDDLERIGHT, BOTTOMRIGHT, BOTTOMLEFT)) {
+          squareClick(gameboard[TOPRIGHT], false);
+          return;
+      } else if(AICornerWinTest(BOTTOMLEFT, BOTTOMMIDDLE, BOTTOMRIGHT, MIDDLELEFT, TOPLEFT, TOPRIGHT)) {
+          squareClick(gameboard[BOTTOMLEFT], false);
+          return;
+      } else if(AICornerWinTest(BOTTOMRIGHT, BOTTOMMIDDLE, BOTTOMLEFT, MIDDLERIGHT, TOPRIGHT, TOPLEFT)) {
+          squareClick(gameboard[BOTTOMRIGHT], false);
+          return;
+      } else if(AIEdgeBlockTest(TOPMIDDLE, TOPLEFT, TOPRIGHT, CENTER, BOTTOMMIDDLE)) {
+          squareClick(gameboard[TOPMIDDLE], false);
+          return;
+      } else if(AIEdgeBlockTest(MIDDLERIGHT, CENTER, MIDDLELEFT, TOPRIGHT, BOTTOMRIGHT)) {
+          squareClick(gameboard[MIDDLERIGHT], false);
+          return;
+      } else if(AIEdgeBlockTest(BOTTOMMIDDLE, BOTTOMLEFT, BOTTOMRIGHT, CENTER, TOPMIDDLE)) {
+          squareClick(gameboard[BOTTOMMIDDLE], false);
+          return;
+      } else if(AIEdgeBlockTest(MIDDLELEFT, CENTER, MIDDLERIGHT, BOTTOMLEFT, TOPLEFT)) {
+          squareClick(gameboard[MIDDLELEFT], false);
+          return;
+      } else if(AICornerBlockTest(TOPLEFT, TOPMIDDLE, TOPRIGHT, MIDDLELEFT, BOTTOMLEFT, BOTTOMRIGHT)) {
+          squareClick(gameboard[TOPLEFT], false);
+          return;
+      } else if(AICornerBlockTest(TOPRIGHT, TOPMIDDLE, TOPLEFT, MIDDLERIGHT, BOTTOMRIGHT, BOTTOMLEFT)) {
+          squareClick(gameboard[TOPRIGHT], false);
+          return;
+      } else if(AICornerBlockTest(BOTTOMLEFT, BOTTOMMIDDLE, BOTTOMRIGHT, MIDDLELEFT, TOPLEFT, TOPRIGHT)) {
+          squareClick(gameboard[BOTTOMLEFT], false);
+          return;
+      } else if(AICornerBlockTest(BOTTOMRIGHT, BOTTOMMIDDLE, BOTTOMLEFT, MIDDLERIGHT, TOPRIGHT, TOPLEFT)) {
+          squareClick(gameboard[BOTTOMRIGHT], false);
+          return;
+      } else if(!gameData.playerOneSelected.includes(gameboard[CENTER]) && !gameData.playerTwoSelected.includes(gameboard[CENTER])) {
+          squareClick(gameboard[CENTER], false);
+          return;
+      }
+    }
+      let potentialSquare = Math.floor(Math.random() * 9);
+      while((gameData.playerOneSelectedIds.includes(potentialSquare) || gameData.playerTwoSelectedIds.includes(potentialSquare))) {
+          potentialSquare = Math.floor(Math.random() * 9);
+      }
+      squareClick(gameboard[potentialSquare], false);
+  }
 
     function AIEdgeBlockTest(edge, horizontalOne, horizontalTwo, verticalOne, verticalTwo) {
-        if(
-            (!OSelectedIds.includes(edge) && XSelectedIds.includes(horizontalOne) && XSelectedIds.includes(horizontalTwo))
-         || (!OSelectedIds.includes(edge) && XSelectedIds.includes(verticalOne) && XSelectedIds.includes(verticalTwo))) {
-             return true;
-         } else {
-             return false;
-         }
+        return (!gameData.playerTwoSelectedIds.includes(edge) && gameData.playerOneSelectedIds.includes(horizontalOne) && gameData.playerOneSelectedIds.includes(horizontalTwo))
+            || (!gameData.playerTwoSelectedIds.includes(edge) && gameData.playerOneSelectedIds.includes(verticalOne) && gameData.playerOneSelectedIds.includes(verticalTwo));
      }
 
     function AICornerBlockTest(corner, horizontalOne, horizontalTwo, verticalOne, verticalTwo, diagonal) {
-        if(
-           (!OSelectedIds.includes(corner) && XSelectedIds.includes(horizontalOne) && XSelectedIds.includes(horizontalTwo))
-        || (!OSelectedIds.includes(corner) && XSelectedIds.includes(verticalOne) && XSelectedIds.includes(verticalTwo))
-        || (!OSelectedIds.includes(corner) && XSelectedIds.includes(center) && XSelectedIds.includes(diagonal))) {
-            return true;
-        } else {
-            return false;
-        }
+        return (!gameData.playerTwoSelectedIds.includes(corner) && gameData.playerOneSelectedIds.includes(horizontalOne) && gameData.playerOneSelectedIds.includes(horizontalTwo))
+            || (!gameData.playerTwoSelectedIds.includes(corner) && gameData.playerOneSelectedIds.includes(verticalOne) && gameData.playerOneSelectedIds.includes(verticalTwo))
+            || (!gameData.playerTwoSelectedIds.includes(corner) && gameData.playerOneSelectedIds.includes(CENTER) && gameData.playerOneSelectedIds.includes(diagonal));
     }
 
     function AIEdgeWinTest(edge, horizontalOne, horizontalTwo, verticalOne, verticalTwo) {
-        if(
-            (!XSelectedIds.includes(edge) && OSelectedIds.includes(horizontalOne) && OSelectedIds.includes(horizontalTwo))
-         || (!XSelectedIds.includes(edge) && OSelectedIds.includes(verticalOne) && OSelectedIds.includes(verticalTwo))) {
-             return true;
-         } else {
-             return false;
-         }
+        return (!gameData.playerOneSelectedIds.includes(edge) && gameData.playerTwoSelectedIds.includes(horizontalOne) && gameData.playerTwoSelectedIds.includes(horizontalTwo))
+            || (!gameData.playerOneSelectedIds.includes(edge) && gameData.playerTwoSelectedIds.includes(verticalOne) && gameData.playerTwoSelectedIds.includes(verticalTwo));
      }
 
      function AICornerWinTest(corner, horizontalOne, horizontalTwo, verticalOne, verticalTwo, diagonal) {
-        if(
-           (!XSelectedIds.includes(corner) && OSelectedIds.includes(horizontalOne) && OSelectedIds.includes(horizontalTwo))
-        || (!XSelectedIds.includes(corner) && OSelectedIds.includes(verticalOne) && OSelectedIds.includes(verticalTwo))
-        || (!XSelectedIds.includes(corner) && OSelectedIds.includes(center) && OSelectedIds.includes(diagonal))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+        return (!gameData.playerOneSelectedIds.includes(corner) && gameData.playerTwoSelectedIds.includes(horizontalOne) && gameData.playerTwoSelectedIds.includes(horizontalTwo))
+            || (!gameData.playerOneSelectedIds.includes(corner) && gameData.playerTwoSelectedIds.includes(verticalOne) && gameData.playerTwoSelectedIds.includes(verticalTwo))
+            || (!gameData.playerOneSelectedIds.includes(corner) && gameData.playerTwoSelectedIds.includes(CENTER) && gameData.playerTwoSelectedIds.includes(diagonal));
+     }
