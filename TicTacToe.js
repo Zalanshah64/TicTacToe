@@ -159,15 +159,15 @@ if(document.cookie.length == 0) {
     gameData.settingsData["AI"] = gameData.settingsData["AI"] === "true";
 
     if(gameData.settingsData["suggestions"]) {
-        suggestionsToggle.checked = !suggestionsToggle.checked;
+        suggestionsToggle.checked = true;
     }
 
     if(gameData.settingsData["switchTurns"]) {
-        switchTurnsToggle.checked = !switchTurnsToggle.checked;
+        switchTurnsToggle.checked = true;
     }
 
     if(gameData.settingsData["AI"]) {
-        AIToggle.checked = !AIToggle.checked;
+        AIToggle.checked = true;
     }
 
     gameData.settingsData["playerOneIconSlideIndex"] = parseInt(gameData.settingsData["playerOneIconSlideIndex"]);
@@ -330,37 +330,37 @@ settingsButton.addEventListener("click", function() {
 });
 
 playerOneIconSelectionprev.addEventListener("click", function() {
-    gameData.settingsData["playerOneIconSlideIndex"] -= 1;
+    (gameData.settingsData["playerOneIconSlideIndex"])--;
     showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
     if(gameData.settingsData["playerOneIconSlideIndex"] == gameData.settingsData["playerTwoIconSlideIndex"]) {
-        gameData.settingsData["playerOneIconSlideIndex"] -= 1;
+        (gameData.settingsData["playerOneIconSlideIndex"])--;
         showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
     }
 });
 
 playerOneIconSelectionnext.addEventListener("click", function() {
-    gameData.settingsData["playerOneIconSlideIndex"] += 1;
+    (gameData.settingsData["playerOneIconSlideIndex"])++;
     showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
     if(gameData.settingsData["playerOneIconSlideIndex"] == gameData.settingsData["playerTwoIconSlideIndex"]) {
-        gameData.settingsData["playerOneIconSlideIndex"] += 1;
+        (gameData.settingsData["playerOneIconSlideIndex"])++;
         showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
     }
 });
 
 playerTwoIconSelectionprev.addEventListener("click", function() {
-    gameData.settingsData["playerTwoIconSlideIndex"] -= 1;
+    (gameData.settingsData["playerTwoIconSlideIndex"])--;
     showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
     if(gameData.settingsData["playerTwoIconSlideIndex"] == gameData.settingsData["playerOneIconSlideIndex"]) {
-        gameData.settingsData["playerTwoIconSlideIndex"] -= 1;
+        (gameData.settingsData["playerTwoIconSlideIndex"])--;
         showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
     }
 });
 
 playerTwoIconSelectionnext.addEventListener("click", function() {
-    gameData.settingsData["playerTwoIconSlideIndex"] += 1;
+    (gameData.settingsData["playerTwoIconSlideIndex"])++;
     showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
     if(gameData.settingsData["playerTwoIconSlideIndex"] == gameData.settingsData["playerOneIconSlideIndex"]) {
-        gameData.settingsData["playerTwoIconSlideIndex"] += 1;
+        (gameData.settingsData["playerTwoIconSlideIndex"])++;
         showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
     }
 });
@@ -479,7 +479,7 @@ function squareClick(gamePiece, playerClicked) {
         DrawAudio.play();
     }
 
-    if(gameData.settingsData["AI"] && gameData.currentPlayer == 1 && gameData.gameResult == NOTFINISHED) {
+    if(gameData.settingsData["AI"] && gameData.currentPlayer == PLAYERTWO && gameData.gameResult == NOTFINISHED) {
         setTimeout(function(){
             AIPlayMove();
         }, gameData.AIwaitTime);
