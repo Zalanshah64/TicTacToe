@@ -33,6 +33,10 @@ button {
     grid-template-rows: 20% 65% 15%;
 }
 
+#hidden {
+    display: none;
+}
+
 @font-face {
     font-family: eightBit;
     src: url(../resources/8bitfont.ttf);

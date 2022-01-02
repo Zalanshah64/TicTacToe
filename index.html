@@ -3,8 +3,6 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="image" property="og:image" content="resources/Thumbnail.png" />
-
         <link rel="icon" href="resources/Icon.png">
         <!-- All stylesheets -->
         <link rel="stylesheet" href="Styles/Webpage.css" type="text/css">
@@ -19,33 +17,38 @@
     </head>
 
     <body>
-        <audio id="playerOneMoveAudio">
-            <source src="resources/Sounds/PlayerOneMove.wav" type="audio/wav">
-        </audio>
+        <div id="hidden">
 
-        <audio id="playerTwoMoveAudio">
-            <source src="resources/Sounds/PlayerTwoMove.wav" type="audio/wav">
-        </audio>
+            <audio id="playerOneMoveAudio">
+                <source src="resources/Sounds/PlayerOneMove.wav" type="audio/wav">
+            </audio>
+    
+            <audio id="playerTwoMoveAudio">
+                <source src="resources/Sounds/PlayerTwoMove.wav" type="audio/wav">
+            </audio>
+    
+            <audio id="hoverOverAudio">
+                <source src="resources/Sounds/HoverOverButton.wav" type="audio/wav">
+            </audio>
+    
+            <audio id="clickAudio">
+                <source src="resources/Sounds/ClickButton.wav" type="audio/wav">
+            </audio>
+    
+            <audio id="gameStartAudio">
+                <source src="resources/Sounds/GameStart.wav" type="audio/wav">
+            </audio>
+    
+            <audio id="WinnerAudio">
+                <source src="resources/Sounds/Winner.wav" type="audio/wav">
+            </audio>
+    
+            <audio id="DrawAudio">
+                <source src="resources/Sounds/Draw.wav" type="audio/wav">
+            </audio>
 
-        <audio id="hoverOverAudio">
-            <source src="resources/Sounds/HoverOverButton.wav" type="audio/wav">
-        </audio>
-
-        <audio id="clickAudio">
-            <source src="resources/Sounds/ClickButton.wav" type="audio/wav">
-        </audio>
-
-        <audio id="gameStartAudio">
-            <source src="resources/Sounds/GameStart.wav" type="audio/wav">
-        </audio>
-
-        <audio id="WinnerAudio">
-            <source src="resources/Sounds/Winner.wav" type="audio/wav">
-        </audio>
-
-        <audio id="DrawAudio">
-            <source src="resources/Sounds/Draw.wav" type="audio/wav">
-        </audio>
+            <img id="thumbnail"src="resources/Thumbnail.png">
+        </div>
 
         <!-- Main wrapper for webpage -->
         <div id="startMenuWrapper">
