@@ -18,7 +18,6 @@
 
     <body>
         <div id="hidden">
-
             <audio id="playerOneMoveAudio">
                 <source src="resources/Sounds/PlayerOneMove.wav" type="audio/wav">
             </audio>
@@ -48,16 +47,17 @@
             </audio>
 
             <img id="thumbnail"src="resources/Thumbnail.png">
-        </div>
 
+            <a id="downloadImageLink" src=""></a>
+        </div>
+        
         <!-- Main wrapper for webpage -->
         <div id="startMenuWrapper">
             <h1 id="startMenuTitle">Tic-Tac-Toe</h1>
             <h3 id="startMenuCredits">A game by Zalan Shah</h3>
             <h4 id="startMenuSubtitle">Press enter to start</h4>
         </div>
-
-
+        
         <div id="wrapper">
             <!-- Header that contains the title, information about what happened, and scores -->
             <div id="header">
@@ -263,11 +263,13 @@
                 <!-- Wrapper containing the button that allows the user to start the game again -->
                 <div id="footerRightSide">
                     <button id="playAgainButton" class="postGameButton hoverOverSound clickSound">Play Again</button>
+                    <button id="saveGameBoard" class="postGameButton hoverOverSound clickSound">Download This Round</button>
                 </div>
             </div>
         </div>
 
         <!-- Script that runs the game -->
+        <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
         <script type="text/javascript" src="TicTacToe.js"></script>
 
         <!-- Installation of ionicons that allows Github and LinkedIn icons to run -->

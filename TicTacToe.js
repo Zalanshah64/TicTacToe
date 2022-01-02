@@ -91,6 +91,9 @@ let playerTwoScoreHTML = document.getElementById("playerTwoScore");
 let mainMenuButton = document.getElementById("mainMenuButton");
 let settingsPostGameButton = document.getElementById("settingsPostGameButton")
 let playAgainButton = document.getElementById("playAgainButton");
+let saveGameBoard = document.getElementById("saveGameBoard");
+let downloadImageLink = document.getElementById("downloadImageLink");
+let downloadImageCanvas = document.getElementById("downloadImageCanvas");
 let playerOneName = document.getElementById("playerOneName");
 let playerTwoName = document.getElementById("playerTwoName");
 
@@ -237,7 +240,7 @@ startButton.addEventListener("click", function() {
     playerOneScoreHTML.innerHTML = gameData.playerOneScore;
     playerTwoScoreHTML.innerHTML = gameData.playerTwoScore;
     currentTurnHTML.style.display = "block";
-    game.style.display = "block";
+    game.style.display = "grid";
     scoreTitle[PLAYERONE].style.display = "block";
     scoreTitle[PLAYERTWO].style.display = "block";
     playerOneName.innerHTML = gameData.settingsData["playerOneIcon"];
@@ -264,6 +267,7 @@ playAgainButton.addEventListener("click", function() {
     mainMenuButton.style.display = "none";
     settingsPostGameButton.style.display = "none";
     playAgainButton.style.display = "none";
+    saveGameBoard.style.display = "none";
     itsATieHTML.style.display = "none";
     whoWonHTML.style.display = "none";
     currentTurnHTML.style.display = "block";
@@ -281,6 +285,16 @@ playAgainButton.addEventListener("click", function() {
     }
 });
 
+saveGameBoard.addEventListener("click", function() {
+    html2canvas(board).then(function(canvas) {
+        let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        console.log(image);
+        downloadImageLink.href = image;
+        downloadImageLink.download = gameData.playerOneScore + "-" + gameData.playerTwoScore + ".png";
+        downloadImageLink.click();
+    });
+})
+
 settingsPostGameButton.addEventListener("click", function() {
     game.style.display = "none";
     settingsMenu.style.display = "block";
@@ -288,6 +302,7 @@ settingsPostGameButton.addEventListener("click", function() {
     settingsPostGameButton.style.display = "none";
     wrapper.style.display = "block";
     playAgainButton.style.display = "none";
+    saveGameBoard.style.display = "none";
     scoreTitle[PLAYERONE].style.display = "none";
     scoreTitle[PLAYERTWO].style.display = "none";
     itsATieHTML.style.display = "none";
@@ -319,6 +334,7 @@ mainMenuButton.addEventListener("click", function() {
     mainMenuButton.style.display = "none";
     settingsPostGameButton.style.display = "none";
     playAgainButton.style.display = "none";
+    saveGameBoard.style.display = "none";
 });
 
 settingsButton.addEventListener("click", function() {
@@ -373,12 +389,13 @@ settingsBackButton.addEventListener("click", function() {
     if(gameData.settingsBackFromLocation == 0) {
         mainMenu.style.display = "grid";
     } else if(gameData.settingsBackFromLocation == 1) {
-        game.style.display = "block";
+        game.style.display = "grid";
         scoreTitle[PLAYERONE].style.display = "block";
         scoreTitle[PLAYERTWO].style.display = "block";
         mainMenuButton.style.display = "block";
         settingsPostGameButton.style.display = "block";
         playAgainButton.style.display = "block";
+        saveGameBoard.style.display = "block";
         if(gameData.gameResult == PLAYERONE || gameData.gameResult == PLAYERTWO) {
             whoWonHTML.style.display = "block";
         } else {
@@ -498,6 +515,7 @@ function checkWin() {
         mainMenuButton.style.display = "block";
         settingsPostGameButton.style.display = "block";
         playAgainButton.style.display = "block";
+        saveGameBoard.style.display = "block";
         return PLAYERONE;
     } else {
         if(checkSelectedContainsWin(gameData.playerTwoSelectedIds)) {
@@ -510,6 +528,7 @@ function checkWin() {
             mainMenuButton.style.display = "block";
             settingsPostGameButton.style.display = "block";
             playAgainButton.style.display = "block";
+            saveGameBoard.style.display = "block";
             return PLAYERTWO;
         } else {
             if(gameData.playerOneSelectedIds.length + gameData.playerTwoSelectedIds.length == 9) {
@@ -519,6 +538,7 @@ function checkWin() {
                 mainMenuButton.style.display = "block";
                 settingsPostGameButton.style.display = "block";
                 playAgainButton.style.display = "block";
+                saveGameBoard.style.display = "block";
                 return DRAW;
             }
         }
