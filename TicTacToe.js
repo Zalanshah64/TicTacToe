@@ -24,6 +24,11 @@ const PLAYERONE = 0;
 const PLAYERTWO = 1;
 const DRAW = 2;
 
+const EASY = 0;
+const NORMAL = 1;
+const HARD = 2;
+const IMPOSSIBLE = 3;
+
 let gameData = {
     currentPlayer: PLAYERONE,
     playerOneScore: 0,
@@ -35,6 +40,7 @@ let gameData = {
     gameResult: GAMEMENU,
     whoStarts: PLAYERONE,
     AIwaitTime: 400,
+    AIDifficultyChance: 0.8,
     settingsBackFromLocation: 0,
     fullscreenRequest: false,
     settingsData: {}
@@ -72,6 +78,10 @@ let suggestionsToggle = document.getElementById("suggestionsCheckBox");
 let switchTurnsToggle = document.getElementById("switchTurnsCheckBox");
 let AIToggle = document.getElementById("AICheckBox");
 let fullscreenToggle = document.getElementById("fullscreenCheckBox");
+let AIDIfficultySelections = document.getElementsByClassName("AIDifficultyselection");
+let AIDifficultySelectionprev = document.getElementById("AIDifficultySelectionprev");
+let AIDifficultySelectionnext = document.getElementById("AIDifficultySelectionnext");
+let canGray = document.getElementsByClassName("canGray");
 let playerOneSelections = document.getElementsByClassName("playerOneselection");
 let playerTwoSelections = document.getElementsByClassName("playerTwoselection");
 let playerOneIconSelectionnext = document.getElementById("playerOneIconSelectionnext");
@@ -135,15 +145,17 @@ if(document.cookie.length == 0) {
     document.cookie = "suggestions=true;";
     document.cookie = "switchTurns=false;"
     document.cookie = "AI=true";
+    document.cookie = "AIDifficulty=1";
     document.cookie = "playerOneIcon=X;";
     document.cookie = "playerTwoIcon=O;";
-    document.cookie = "playerOneIconSlideIndex=0;"
-    document.cookie = "playerTwoIconSlideIndex=1;"
-    document.cookie = "fullscreen=false"
+    document.cookie = "playerOneIconSlideIndex=0;";
+    document.cookie = "playerTwoIconSlideIndex=1;";
+    document.cookie = "fullscreen=false";
     gameData.settingsData["volume"] = 0.50;
     gameData.settingsData["suggestions"] = true;
     gameData.settingsData["switchTurns"] = false;
     gameData.settingsData["AI"] = true;
+    gameData.settingsData["AIDifficulty"] = 1;
     gameData.settingsData["fullscreen"] = false;
     gameData.settingsData["playerOneIcon"] = "X";
     gameData.settingsData["playerTwoIcon"] = "O";
@@ -164,9 +176,9 @@ if(document.cookie.length == 0) {
     gameData.settingsData["suggestions"] = gameData.settingsData["suggestions"] === "true";
     gameData.settingsData["switchTurns"] = gameData.settingsData["switchTurns"] === "true";
     gameData.settingsData["AI"] = gameData.settingsData["AI"] === "true";
+    gameData.settingsData["AIDifficulty"] = parseInt(gameData.settingsData["AIDifficulty"]);
     gameData.settingsData["fullscreen"] = gameData.settingsData["fullscreen"] === "true";
 
-    
     gameData.settingsData["playerOneIconSlideIndex"] = parseInt(gameData.settingsData["playerOneIconSlideIndex"]);
     gameData.settingsData["playerTwoIconSlideIndex"] = parseInt(gameData.settingsData["playerTwoIconSlideIndex"]);
 }
@@ -181,6 +193,7 @@ dateCookiesExpire.setDate(dateCookiesExpire.getDate() + 2);
 document.cookie = "expires=" + dateCookiesExpire.toUTCString() + ";";
 
 updateVolume();
+showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
 showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
 showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
 
@@ -246,10 +259,9 @@ for(let i = 0; i < hoverOverButtons.length; ++i) {
 }
 
 for(let i = 0; i < clickSoundButtons.length; ++i) {
-    clickSoundButtons[i].addEventListener("click", function() {
-        playClickAudio();
-    });
+    clickSoundButtons[i].addEventListener("click", playClickAudio);
 }
+updateGrayedOut();
 
 startButton.addEventListener("click", function() {
     gameData.gameResult = NOTFINISHED;
@@ -363,6 +375,29 @@ settingsButton.addEventListener("click", function() {
     wrapper.style.display = "block";
 });
 
+AIDifficultySelectionprev.addEventListener("click", function() {
+    if(gameData.settingsData["AI"]) {
+        (gameData.settingsData["AIDifficulty"])--;
+        showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
+        if(gameData.settingsData["AIDifficulty"] == EASY) {
+            gameData.AIDifficultyChance = 0.7;
+        } else if(gameData.settingsData["AIDiffculty"] == NORMAL) {
+            gameData.AIDifficultyChance = 0.8;
+        } else if(gameData.settingsData["AIDifficulty"] == HARD) {
+            gameData.AIDifficultyChance = 0.9;
+        } else {
+            gameData.AIDifficultyChance = 1;
+        }
+    }
+});
+
+AIDifficultySelectionnext.addEventListener("click", function() {
+    if(gameData.settingsData["AI"]) {
+        (gameData.settingsData["AIDifficulty"])++;
+        showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
+    }
+});
+
 playerOneIconSelectionprev.addEventListener("click", function() {
     (gameData.settingsData["playerOneIconSlideIndex"])--;
     showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
@@ -462,6 +497,8 @@ switchTurnsCheckBox.addEventListener("change", function() {
 AIToggle.addEventListener("change", function() {
     gameData.settingsData["AI"] = !gameData.settingsData["AI"];
     document.cookie = "AI=" + gameData.settingsData["AI"] + ";";
+
+    updateGrayedOut();
 });
 
 fullscreenToggle.addEventListener("change", function() {
@@ -587,6 +624,21 @@ function checkSelectedContainsWin(selectedIds) {
         || (selectedIds.includes(TOPRIGHT) && selectedIds.includes(CENTER) && selectedIds.includes(BOTTOMLEFT));
 }
 
+function showAIDifficultySelectionOption(n) {
+    if (n > AIDIfficultySelections.length - 1) {
+        gameData.settingsData["AIDifficulty"] = 0;
+    }
+    if (n < 0) {
+        gameData.settingsData["AIDifficulty"] = AIDIfficultySelections.length - 1;
+    }
+    for (let i = 0; i < AIDIfficultySelections.length; i++) {
+        AIDIfficultySelections[i].style.display = "none";  
+    }
+
+    AIDIfficultySelections[gameData.settingsData["AIDifficulty"]].style.display = "flex";  
+    document.cookie = "AIDifficulty=" + gameData.settingsData["AIDifficulty"] + ";";
+}
+
 function showPlayerOneSelectionOption(n) {
     if (n > playerOneSelections.length - 1) {
         gameData.settingsData["playerOneIconSlideIndex"] = 0;
@@ -647,9 +699,25 @@ function showPlayerOneSelectionOption(n) {
     });
  }
 
+ function updateGrayedOut() {
+    if(gameData.settingsData["AI"]) {
+        for(let i = 0; i < canGray.length; ++i) {
+            canGray[i].classList.remove("grayedOut");
+        }
+        canGray[4].addEventListener("click", playClickAudio);
+        canGray[9].addEventListener("click", playClickAudio);
+    } else {
+        for(let i = 0; i < canGray.length; ++i) {
+            canGray[i].classList.add("grayedOut");
+        }
+        canGray[4].removeEventListener("click", playClickAudio);
+        canGray[9].removeEventListener("click", playClickAudio);
+    }
+ }
+
   function AIPlayMove() {
     let randomChance = Math.random();
-    if(randomChance < 0.80) {
+    if(randomChance < gameData.AIDifficultyChance) {
       if(AIEdgeWinTest(TOPMIDDLE, TOPLEFT, TOPRIGHT, CENTER, BOTTOMMIDDLE)) {
           squareClick(gameboard[TOPMIDDLE], false);
           return;

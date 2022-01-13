@@ -117,6 +117,10 @@ input:checked + .toggleSlider:before {
     transform: translateX(4.7rem);
 }
 
+#AIDifficultyIconSelection {
+    width: 45%;
+}
+
 
 .iconSelectionWrapper {
     display: flex;
@@ -168,4 +172,11 @@ input:checked + .toggleSlider:before {
 #settingsBackButton {
     height: 2rem;
     width: 80%;
+}
+
+.grayedOut {
+    cursor: default;
+    color: gray;
+    border-color: gray;
+    opacity: 0.9;
 }
