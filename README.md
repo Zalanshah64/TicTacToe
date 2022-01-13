@@ -44,7 +44,7 @@ Once the game ends, the user will have four options:
 
 ## Author
 
-[Zalan Shah](www.linkedin.com/in/zalan-shah)
+[Zalan Shah](https://www.linkedin.com/in/zalan-shah)
 
 ## Acknowledgments
 
