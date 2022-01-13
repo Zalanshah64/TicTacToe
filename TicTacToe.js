@@ -380,7 +380,7 @@ AIDifficultySelectionprev.addEventListener("click", function() {
         (gameData.settingsData["AIDifficulty"])--;
         showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
         if(gameData.settingsData["AIDifficulty"] == EASY) {
-            gameData.AIDifficultyChance = 0.7;
+            gameData.AIDifficultyChance = 0.6;
         } else if(gameData.settingsData["AIDiffculty"] == NORMAL) {
             gameData.AIDifficultyChance = 0.8;
         } else if(gameData.settingsData["AIDifficulty"] == HARD) {
