@@ -23,10 +23,11 @@ Once in the game, at the top, the user will get useful information, including:
 * Who's turn it is
 * Who won the game
 
-Once the game ends, the user will have three options:
-* "Main Menu", which will take the user back to the main menu. This will reset the scoreboard.
-* "Settings", which will take the user to the settings menu.
-* "Play Again", which will reset the board and allow the user to play another game.
+Once the game ends, the user will have four options:
+* "Main Menu", which will take the user back to the main menu. This will reset the scoreboard
+* "Settings", which will take the user to the settings menu
+* "Play Again", which will reset the board and allow the user to play another game
+* "Download This Round", which will convert the gameboard to a png file and save it to the computer
 
 ## Features
 
@@ -34,8 +35,10 @@ Once the game ends, the user will have three options:
 * A computer opponent the user can play against
 * Ability to switch the turn order every game
 * Suggestions that provide the player with what the board will look like if they choose a location
+* The ability to save and download each round
 * Instruction guide on how to play Tic-Tac-Toe
 * Up to eleven icons per player
+* Fullscreen capabilities
 * Audio sounds
 * Settings saving through use of cookies
 
@@ -48,11 +51,14 @@ Once the game ends, the user will have three options:
 Information on different types of HTML elements and their CSS:
 * [W3 Schools](https://www.w3schools.com/)
 
+Font used:
+* [Zaydek MG on Dafont](https://www.dafont.com/8-bit-1-6.font)
+
 Use of LinkedIn and Github logos at footer of page:
 * [Ionic](https://ionic.io/ionicons)
 
 Tool used to produce audio sounds:
 * [Bfxr](https://www.bfxr.net/)
 
-Font used:
-* [Zaydek MG on Dafont](https://www.dafont.com/8-bit-1-6.font)
+html2canvas library that allowed for gameboard to image processing:
+* [Niklas Hertzen](https://hertzen.com/)

@@ -36,6 +36,7 @@ let gameData = {
     whoStarts: PLAYERONE,
     AIwaitTime: 400,
     settingsBackFromLocation: 0,
+    fullscreenRequest: false,
     settingsData: {}
 }
 
@@ -70,6 +71,7 @@ let settingsTitle = document.getElementById("settingsTitle");
 let suggestionsToggle = document.getElementById("suggestionsCheckBox");
 let switchTurnsToggle = document.getElementById("switchTurnsCheckBox");
 let AIToggle = document.getElementById("AICheckBox");
+let fullscreenToggle = document.getElementById("fullscreenCheckBox");
 let playerOneSelections = document.getElementsByClassName("playerOneselection");
 let playerTwoSelections = document.getElementsByClassName("playerTwoselection");
 let playerOneIconSelectionnext = document.getElementById("playerOneIconSelectionnext");
@@ -132,15 +134,17 @@ if(document.cookie.length == 0) {
     document.cookie = "volume=0.50;";
     document.cookie = "suggestions=true;";
     document.cookie = "switchTurns=false;"
-    document.cookie = "AI=false";
+    document.cookie = "AI=true";
     document.cookie = "playerOneIcon=X;";
     document.cookie = "playerTwoIcon=O;";
     document.cookie = "playerOneIconSlideIndex=0;"
     document.cookie = "playerTwoIconSlideIndex=1;"
+    document.cookie = "fullscreen=false"
     gameData.settingsData["volume"] = 0.50;
     gameData.settingsData["suggestions"] = true;
     gameData.settingsData["switchTurns"] = false;
-    gameData.settingsData["AI"] = false;
+    gameData.settingsData["AI"] = true;
+    gameData.settingsData["fullscreen"] = false;
     gameData.settingsData["playerOneIcon"] = "X";
     gameData.settingsData["playerTwoIcon"] = "O";
     gameData.settingsData["playerOneIconSlideIndex"] = PLAYERONE;
@@ -160,22 +164,18 @@ if(document.cookie.length == 0) {
     gameData.settingsData["suggestions"] = gameData.settingsData["suggestions"] === "true";
     gameData.settingsData["switchTurns"] = gameData.settingsData["switchTurns"] === "true";
     gameData.settingsData["AI"] = gameData.settingsData["AI"] === "true";
+    gameData.settingsData["fullscreen"] = gameData.settingsData["fullscreen"] === "true";
 
-    if(gameData.settingsData["suggestions"]) {
-        suggestionsToggle.checked = true;
-    }
-
-    if(gameData.settingsData["switchTurns"]) {
-        switchTurnsToggle.checked = true;
-    }
-
-    if(gameData.settingsData["AI"]) {
-        AIToggle.checked = true;
-    }
-
+    
     gameData.settingsData["playerOneIconSlideIndex"] = parseInt(gameData.settingsData["playerOneIconSlideIndex"]);
     gameData.settingsData["playerTwoIconSlideIndex"] = parseInt(gameData.settingsData["playerTwoIconSlideIndex"]);
 }
+suggestionsToggle.checked = gameData.settingsData["suggestions"];
+switchTurnsToggle.checked = gameData.settingsData["switchTurns"];
+AIToggle.checked = gameData.settingsData["AI"];
+fullscreenToggle.checked = gameData.settingsData["fullscreen"];
+
+
 let dateCookiesExpire = new Date();
 dateCookiesExpire.setDate(dateCookiesExpire.getDate() + 2);
 document.cookie = "expires=" + dateCookiesExpire.toUTCString() + ";";
@@ -191,8 +191,26 @@ document.addEventListener("keyup", function(event) {
         startMenuWrapper.style.display = "none";
         wrapper.style.display = "grid";
         gameStartAudio.play();
+
+        if(gameData.settingsData["fullscreen"]) {
+            gameData.fullscreenRequest = true;
+            document.documentElement.requestFullscreen();
+        }
     }
 });
+
+document.addEventListener("fullscreenchange", function() {
+    if(gameData.fullscreenRequest) {
+        gameData.fullscreenRequest = false;
+        return;
+    } else {
+        gameData.settingsData["fullscreen"] = false;
+        document.cookie = "fullscreen=false;"
+        fullscreenToggle.checked = !fullscreenToggle.checked;
+        document.isOpenFullScreen = false;
+        playClickAudio();
+    }
+})
 
 
 for(let i = 0; i < 9; ++i) {
@@ -445,6 +463,18 @@ AIToggle.addEventListener("change", function() {
     gameData.settingsData["AI"] = !gameData.settingsData["AI"];
     document.cookie = "AI=" + gameData.settingsData["AI"] + ";";
 });
+
+fullscreenToggle.addEventListener("change", function() {
+    gameData.settingsData["fullscreen"] = !gameData.settingsData["fullscreen"];
+    document.cookie = "fullscreen=" + gameData.settingsData["fullscreen"] + ";";
+    gameData.fullscreenRequest = true;
+
+    if(document.webkitIsFullScreen) {
+        document.exitFullscreen();
+    } else {
+        document.documentElement.requestFullscreen();
+    }
+})
 
 instructionsButton.addEventListener("click", function() {
     mainMenu.style.display = "none";
