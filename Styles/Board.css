@@ -54,6 +54,10 @@
     background-color: black;
 }
 
+.boardpiece:focus {
+    outline: none;
+}
+
 .unclicked {
     cursor: pointer;
 }

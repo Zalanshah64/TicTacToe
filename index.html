@@ -89,34 +89,36 @@
                 <!-- Wrapper containing the start menu -->
                 <div id="mainMenu">
                     <!-- Starts the game -->
-                    <button id="startButton" class="mainMenuButton hoverOverSound clickSound">Play</button>
+                    <button id="startButton" class="mainMenuButton hoverOverSound clickSound focusable">Play</button>
 
                     <!-- Opens up the instructions -->
-                    <button id="instructionsButton" class="mainMenuButton hoverOverSound clickSound">How to Play</button>
+                    <button id="instructionsButton" class="mainMenuButton hoverOverSound clickSound focusable">How to Play</button>
 
                     <!-- Opens up the settings menu -->
-                    <button id="settingsButton" class="mainMenuButton hoverOverSound clickSound">Settings</button>
+                    <button id="settingsButton" class="mainMenuButton hoverOverSound clickSound focusable">Settings</button>
                 </div>
 
                 <!-- Wrapper containing the actual game board -->
                 <div id="game">
                     <div id="board">
-                        <div id="topLeft" class="boardpiece unclicked"></div>
-                        <div id="topMiddle" class="boardpiece unclicked"></div>
-                        <div id="topRight" class="boardpiece unclicked"></div>
-                        <div id="middleLeft" class="boardpiece unclicked"></div>
-                        <div id="center" class="boardpiece unclicked"></div>
-                        <div id="middleRight" class="boardpiece unclicked"></div>
-                        <div id="bottomLeft" class="boardpiece unclicked"></div>
-                        <div id="bottomMiddle" class="boardpiece unclicked"></div>
-                        <div id="bottomRight" class="boardpiece unclicked"></div>
+                        <div tabindex="-1" id="topLeft" class="boardpiece unclicked"></div>
+                        <div tabindex="-1" id="topMiddle" class="boardpiece unclicked"></div>
+                        <div tabindex="-1" id="topRight" class="boardpiece unclicked"></div>
+                        <div tabindex="-1" id="middleLeft" class="boardpiece unclicked"></div>
+                        <div tabindex="-1" id="center" class="boardpiece unclicked"></div>
+                        <div tabindex="-1" id="middleRight" class="boardpiece unclicked"></div>
+                        <div tabindex="-1" id="bottomLeft" class="boardpiece unclicked"></div>
+                        <div tabindex="-1" id="bottomMiddle" class="boardpiece unclicked"></div>
+                        <div tabindex="-1" id="bottomRight" class="boardpiece unclicked"></div>
                     </div>
                 </div>
 
                 <!-- Wrapper containing the instructions on how to play, with images put in for visuals -->
                 <div id="instructionsMenu">
-                    <p class="instruction">Tic-Tac-Toe, also known as Noughts and Crosses, is a game played by many children around the world. The game is very old, and early versions of it can be found in ancient Egypt and the Roman Empire.</p>
-                    <p class="instruction">The game starts with a three by three grid of squares, or a pound symbol.</p>
+                    <p class="instructionTitle">PLAYING THE GAME</p>
+                    <p class="instruction">Tic-Tac-Toe, also known as Noughts and Crosses, is a game played by many children around the world. The game is very old, 
+                        and early versions of it can be found in ancient Egypt and the Roman Empire.
+                        <br>The game starts with a three by three grid of squares, or a pound symbol.</p>
                     <img src="resources/Instructions/InstructionsFirstImage.png" title="An empty Tic-Tac-Toe board" class="instructionImage">
                     <p class="instruction">Two players take turns filling in the grid with their respective symbol (X or O). X always starts, and O goes second.</p>
                     <img src="resources/Instructions/InstructionsSecondImage.png" title="An example of the first move in a Tic-Tac-Toe board" class="instructionImage">
@@ -130,19 +132,118 @@
                     </div>
                     <p class="instruction">If every space has been filled in and there has not been a three-in-a-row yet, the game is considered a tie and is over.</p>
                     <img src="resources/Instructions/InstructionsSeventhImage.png" class="instructionImage">
-                    <p class="instruction">When the game ends, the user will have the ability to play again or go to the main menu. Playing again will restart the game, but it will keep the scores. Exiting to the main menu will reset the scoreboard.</p>
-                    <p class="instruction">Suggestions are a useful tool that allow you to see what the board would look like if you clicked a certain square on that turn.</p>
-                    <p class="instruction">The settings menu has many useful tools that allow you to change the look and feel of the game. They include:</p>
-                    <ul>
-                        <li class="instruction">The volume bar, which allows you to change the volume of all sounds</li>
-                        <li class="instruction">The suggestions switch, which allows you to turn on and off suggestions</li>
-                        <li class="instruction">The switch order button, which will player one to go first in the first round, player two to go first on the second, and so on.</li>
-                        <li class="instruction">The play against an AI switch, which will allow the user to play against a computer opponent</li>
-                        <li class="instruction">The icon options for each player, which allow you to set the icon representing player one and player two</li>
+
+                    <p class="instructionTitle">VOLUME</p>
+                    <p class="instruction">This game features sound effects for every possible interaction you can have with the game.</p>
+                    <p class="instruction">You can change the volume in the settings menu.</p>
+                    <p class="instruction">Additionally, you can toggle mute with the "M" key.</p>
+
+                    <p class="instructionTitle">SUGGESTIONS</p>
+                    <p class="instruction">Suggestions show you a ghost of your icon on the board on the square you hover over. If you use the keyboard for input, the suggestion
+                        will move according to the keys you press.</p>
+                    <p class="instruction">To turn suggestions off, go to the settings menu.</p>
+
+                    <p class="instructionTitle">SWITCHING TURNS</p>
+                    <p class="instruction">By default, player one will always go first and player two will always go second.</p>
+                    <p class="instruction">If you would like to switch who goes first each turn, you can enable this in the settings.</p>
+
+                    <p class="instructionTitle">THE AI</p>
+                    <p class="instruction">You can either play against another human player, or play against an AI. The AI is a computer generated player you can play a game against. It will always be player two.</p>
+                    <p class="instruction">The AI has four difficulty options: easy, normal, hard, and impossible. As you go up each level, the AI becomes smarter and smarter, making fewer mistakes each level. </p>
+                    <p class="instruction">The AI will recognize when you are about to win and block it, as well as when it is can win and play the necessary move, too.</p>
+                    <p class="instruction">By default, the AI will be enabled. To turn it off, go to the settings.</p>
+
+                    <p class="instructionTitle">FULLSCREEN</p>
+                    <p class="instruction">You can enable fullscreen by going to the settings menu. This will make the game take up the entirety of your screen.</p>
+                    <p class="instruction">You can exit fullscreen mode by going to the settings menu, pressing F, or pressing escape.</p>
+
+                    <p class="instructionTitle">ICONS</p>
+                    <p class="instruction">In addition to the traditional X and O, you have an array of other icons you can choose for either player.</p>
+                    <p class="instruction">Player One and Player Two can each individually have their icons changed to anything different.</p>
+                    <p class="instruction">In order to change the icon for each player, go to the settings menu.</p>
+
+                    <p class="instructionTitle">CONTROLS</p>
+                    <p class="instruction">You can play this game through the use of a mouse, but the ability to move and play with a keyboard is available.</p>
+                    <p class="instruction">Note that in order to fully utilize keyboard controls, suggestions must be turned on.</p>
+
+                    <table id="instructionsKeyPressTable">
+                        <tbody id="instructionsKeyPressBody">
+                            <tr class="instructionsRow">
+                                <th scope="col" class="instructionsKeyPressTitles">Key</th>
+                                <th scope="col" class="instructionsKeyPressTitles">Action</th>
+                            </tr>
+    
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">Enter, Spacebar</td>
+                                <td class="instructionstd">Press a button, choose a square</td>
+                            </tr>
+    
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">Up, W</td>
+                                <td class="instructionstd">Go up an option</td>
+                            </tr>
+    
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">Down, S</td>
+                                <td class="instructionstd">Go down an option</td>
+                            </tr>
+    
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">Left, A</td>
+                                <td class="instructionstd">Go Left an option</td>
+                            </tr>
+    
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">Right, D</td>
+                                <td class="instructionstd">Go Right an option</td>
+                            </tr>
+
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">M</td>
+                                <td class="instructionstd">Mute, Unmute</td>
+                            </tr>
+
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">F</td>
+                                <td class="instructionstd">Toggle fullscreen</td>
+                            </tr>
+    
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">Escape</td>
+                                <td class="instructionstd">Return to main menu mid-game, exit fullscreen mode</td>
+                            </tr>
+    
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">Backspace</td>
+                                <td class="instructionstd">Return to previous menu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="instructionTitle">DOWNLOADING A GAME</p>
+                    <p class="instruction">Once a round has ended, you are able to download a png image of the round you just played.</p>
+                    <p class="instruction">This will save an image to your computer of the round, and will save the score as the title of the image.</p>
+                    <p class="instruction">Please note that on some computers and browsers, this feature may be broken.</p>
+
+                    <p class="instructionTitle">SAVING SETTINGS AND COOKIES</p>
+                    <p class="instruction">This game uses cookies in your browser to save your settings. They will delete exactly two days after the last time you open this webpage.</p>
+                    <p class="instruction">Upon leaving the website and returning later, all your settings data will be loaded and immediately set for a game.</p>
+
+                    <p class="instructionTitle">CREDITS AND ACKNOWLEDGEMENTS</p>
+                    <ul class="instruction">
+                        <li>Zalan Shah is the sole creator of this webpage. All sounds are custom made.
+                            The algorithm for the AI, the layout of the game, and all game logic was made from scratch.
+                            His LinkedIn and Github are available at the bottom of the page.</li>
+
+                        <li><a class="link" href="https://www.w3schools.com/">W3 Schools</a> provided information on many different types of HTML elements and their use cases.</li>
+                        <li><a class="link" href="https://www.dafont.com/8-bit-1-6.font">Zaydek MG on Dafont</a> provided the font used for this page.</li>
+                        <li><a class="link" href="https://ionic.io/ionicons">Ionic</a> provided the LinkedIn and Github icons at the footer of the page.</li>
+                        <li><a class="link" href="https://www.bfxr.net/">Bfxr</a> provided the software used to create the custom sounds.</li>
+                        <li><a class="link" href="https://hertzen.com/">Niklas Hertzen</a> provided the library html2canvas that allows for each round to be saved and downloaded.</li>
                     </ul>
-                    
+
                     <!-- Button to return to the previous window -->
-                    <button id="instructionsBackButton" class="hoverOverSound clickSound">Back</button>
+                    <button id="instructionsBackButton" class="hoverOverSound clickSound focusable">Back</button>
                 </div>
 
                 <!-- Div containing the settings menu -->
@@ -217,7 +318,7 @@
                         <p id="playerOneIconSelectionCaption" class="settingsCaption">Player One Icon:</p>
                         <div id="playerOneIconSelectionWrapper" class="iconSelectionWrapper">
                             <div id="playerOneIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
-                                <div id="playerOneIconSelection" class="iconSelection">
+                                <div id="playerOne  IconSelection" class="iconSelection">
                                     <div id="playerOneIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
                                     <div class="playerOneselection selection">X</div>
                                     <div class="playerOneselection selection">O</div>

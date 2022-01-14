@@ -5,12 +5,34 @@
     display: none;
 }
 
+.instructionTitle {
+    line-height: 150%;
+    font-size: 2rem;
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
 .instruction {
     line-height: 150%;
+    margin: 0rem 1.5rem 0rem 1.5rem;
+    font-size: 1.25rem;
 }
 
 #winImages {
     display: flex;
+}
+
+#instructionsKeyPressTable {
+    display: flex;
+    justify-content: center;
+    font-size: 1.25rem;
+    border-collapse: collapse;
+}
+
+.instructionsRow {
+    text-align: center;
+    border: solid white 0.1rem;
 }
 
 #instructionsBackButton {

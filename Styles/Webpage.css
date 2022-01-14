@@ -24,6 +24,11 @@ button {
     cursor: pointer;
 }
 
+.focusable:focus {
+    background-color: lightgray;
+    outline: none;
+}
+
 #wrapper {
     width: 100%;
     height: 100%;
@@ -35,6 +40,18 @@ button {
 
 #hidden {
     display: none;
+}
+
+.link:link {
+    color: white;
+}
+
+.link:visited {
+    color: white;
+}
+
+.link:hover {
+    color: lightgray;
 }
 
 @font-face {
