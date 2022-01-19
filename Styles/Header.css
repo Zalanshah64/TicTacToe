@@ -46,6 +46,10 @@
     display: none;
 }
 
+#changelogTitle {
+    display: none;
+}
+
 #interactionWrapper {
     display: block;
 }

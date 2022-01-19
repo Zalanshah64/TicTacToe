@@ -1,6 +1,10 @@
 # Tic-Tac-Toe
 
-A webpage that allows the user to play a game of Tic-Tac-Toe
+## Table of Contents
+* [Description](#Description)
+* [Features](#Features)
+* [Author](#Author)
+* [Acknowledgments](#Acknowledgments)
 
 ## Description
 
@@ -52,7 +56,7 @@ Information on different types of HTML elements and their CSS:
 * [W3 Schools](https://www.w3schools.com/)
 
 Font used:
-* [Zaydek MG on Dafont](https://www.dafont.com/8-bit-1-6.font)
+* [CodeMan38 on Google Fonts](https://fonts.google.com/specimen/Press+Start+2P)
 
 Use of LinkedIn and Github logos at footer of page:
 * [Ionic](https://ionic.io/ionicons)

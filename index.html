@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="Styles/MainMenu.css" type="text/css">
         <link rel="stylesheet" href="Styles/Board.css" type="text/css">
         <link rel="stylesheet" href="Styles/Instructions.css" type="text/css">
+        <link rel="stylesheet" href="Styles/Changelog.css" type="text/css">
         <link rel="stylesheet" href="Styles/Settings.css" type="text/css">
         <link rel="stylesheet" href="Styles/Footer.css" type="text/css">
         <title>Tic-Tac-Toe</title>
@@ -50,14 +51,14 @@
 
             <a id="downloadImageLink" src=""></a>
         </div>
-        
+
         <!-- Main wrapper for webpage -->
         <div id="startMenuWrapper">
-            <h1 id="startMenuTitle">Tic-Tac-Toe</h1>
-            <h3 id="startMenuCredits">A game by Zalan Shah</h3>
-            <h4 id="startMenuSubtitle">Press enter to start</h4>
+            <h1 id="startMenuTitle">⠀</h1>
+            <h3 id="startMenuCredits">⠀</h3>
+            <h4 id="startMenuSubtitle">⠀</h4>
         </div>
-        
+
         <div id="wrapper">
             <!-- Header that contains the title, information about what happened, and scores -->
             <div id="header">
@@ -74,7 +75,8 @@
                     <h2 id="currentTurn">Current Turn: <span id="currentPlayer"></span></h2>
                     <h2 id="itsATie">It's a Tie!</h2>
                     <h2 id="settingsTitle">Settings</h2>
-                    <h2 id="instructionsTitle">How to Play</h2>
+                    <h2 id="instructionsTitle">Instructions</h2>
+                    <h2 id="changelogTitle">Changelog</h2>
                 </div>
 
                 <!-- Contains data about player two's score -->
@@ -92,7 +94,7 @@
                     <button id="startButton" class="mainMenuButton hoverOverSound clickSound focusable">Play</button>
 
                     <!-- Opens up the instructions -->
-                    <button id="instructionsButton" class="mainMenuButton hoverOverSound clickSound focusable">How to Play</button>
+                    <button id="instructionsButton" class="mainMenuButton hoverOverSound clickSound focusable">Instructions</button>
 
                     <!-- Opens up the settings menu -->
                     <button id="settingsButton" class="mainMenuButton hoverOverSound clickSound focusable">Settings</button>
@@ -172,27 +174,27 @@
                                 <th scope="col" class="instructionsKeyPressTitles">Key</th>
                                 <th scope="col" class="instructionsKeyPressTitles">Action</th>
                             </tr>
-    
+
                             <tr class="instructionsRow">
                                 <td class="instructionstd">Enter, Spacebar</td>
                                 <td class="instructionstd">Press a button, choose a square</td>
                             </tr>
-    
+
                             <tr class="instructionsRow">
                                 <td class="instructionstd">Up, W</td>
                                 <td class="instructionstd">Go up an option</td>
                             </tr>
-    
+
                             <tr class="instructionsRow">
                                 <td class="instructionstd">Down, S</td>
                                 <td class="instructionstd">Go down an option</td>
                             </tr>
-    
+
                             <tr class="instructionsRow">
                                 <td class="instructionstd">Left, A</td>
                                 <td class="instructionstd">Go Left an option</td>
                             </tr>
-    
+
                             <tr class="instructionsRow">
                                 <td class="instructionstd">Right, D</td>
                                 <td class="instructionstd">Go Right an option</td>
@@ -207,12 +209,18 @@
                                 <td class="instructionstd">F</td>
                                 <td class="instructionstd">Toggle fullscreen</td>
                             </tr>
-    
+
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">Control + Save</td>
+                                <td class="instructionstd">Save a round</td>
+                            </tr>
+
+
                             <tr class="instructionsRow">
                                 <td class="instructionstd">Escape</td>
                                 <td class="instructionstd">Return to main menu mid-game, exit fullscreen mode</td>
                             </tr>
-    
+
                             <tr class="instructionsRow">
                                 <td class="instructionstd">Backspace</td>
                                 <td class="instructionstd">Return to previous menu</td>
@@ -221,30 +229,63 @@
                     </table>
 
                     <p class="instructionTitle">DOWNLOADING A GAME</p>
-                    <p class="instruction">Once a round has ended, you are able to download a png image of the round you just played.</p>
-                    <p class="instruction">This will save an image to your computer of the round, and will save the score as the title of the image.</p>
+                    <p class="instruction">Once a round has ended, you are able to download a png image of the round you just played.
+                        This will save an image to your computer of the round, and will save the score as the title of the image.</p>
                     <p class="instruction">Please note that on some computers and browsers, this feature may be broken.</p>
 
                     <p class="instructionTitle">SAVING SETTINGS AND COOKIES</p>
                     <p class="instruction">This game uses cookies in your browser to save your settings. They will delete exactly two days after the last time you open this webpage.</p>
                     <p class="instruction">Upon leaving the website and returning later, all your settings data will be loaded and immediately set for a game.</p>
 
+                    <p class="instructionTitle">CHANGELOG</p>
+                    <button id="changelogButton" class="hoverOverSound clickSound focusable">View Changelog</button>
+
                     <p class="instructionTitle">CREDITS AND ACKNOWLEDGEMENTS</p>
                     <ul class="instruction">
                         <li>Zalan Shah is the sole creator of this webpage. All sounds are custom made.
                             The algorithm for the AI, the layout of the game, and all game logic was made from scratch.
                             His LinkedIn and Github are available at the bottom of the page.</li>
-
                         <li><a class="link" href="https://www.w3schools.com/">W3 Schools</a> provided information on many different types of HTML elements and their use cases.</li>
-                        <li><a class="link" href="https://www.dafont.com/8-bit-1-6.font">Zaydek MG on Dafont</a> provided the font used for this page.</li>
+                        <li><a class="link" href="https://fonts.google.com/specimen/Press+Start+2P">CodeMan38 on Google Fonts</a> provided the font used for this website.</li>
                         <li><a class="link" href="https://ionic.io/ionicons">Ionic</a> provided the LinkedIn and Github icons at the footer of the page.</li>
                         <li><a class="link" href="https://www.bfxr.net/">Bfxr</a> provided the software used to create the custom sounds.</li>
                         <li><a class="link" href="https://hertzen.com/">Niklas Hertzen</a> provided the library html2canvas that allows for each round to be saved and downloaded.</li>
                     </ul>
 
+                    <p class="instructionTitle">LICENSE</p>
+                    <p class="instruction license">MIT License</p>
+                    <p class="instruction license"><br>
+                        Copyright (c) 2022 Zalan Shah<br>
+                        <br></p>
+                        <p class="instruction license">
+                        Permission is hereby granted, free of charge, to any person obtaining a copy
+                        of this software and associated documentation files (the "Software"), to deal
+                        in the Software without restriction, including without limitation the rights
+                        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                        copies of the Software, and to permit persons to whom the Software is
+                        furnished to do so, subject to the following conditions:<br>
+                        <br>
+                    </p>
+                    <p class="instruction license">
+                        The above copyright notice and this permission notice shall be included in all
+                        copies or substantial portions of the Software.<br>
+                        <br>
+                    </p>
+                    <p class="instruction license">
+                        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                        SOFTWARE.<br>
+                        <br>
+                    </p>
+
                     <!-- Button to return to the previous window -->
-                    <button id="instructionsBackButton" class="hoverOverSound clickSound focusable">Back</button>
+                    <button tabindex="-1" id="instructionsBackButton" class="hoverOverSound clickSound focusable">Back</button>
                 </div>
+
 
                 <!-- Div containing the settings menu -->
                 <div id="settingsMenu">
@@ -253,36 +294,36 @@
                         <!-- Slider that determines the volume of the webpage -->
                         <p id="volumeSliderCaption" class="settingsCaption">Volume:</p>
                         <div id="volumeSliderInfo" class="settingsInfo">
-                            <input type="range" min="0" max="100" value="50" id="volumeSlider"></slider>
+                            <input type="range" min="0" max="100" value="50" tabindex="-1" id="volumeSlider"></input>
                         </div>
-    
+
                         <!-- Toggle that turns on or off suggestions -->
                         <p id="suggestionsToggleCaption" class="settingsCaption">Suggestions:</p>
                         <div id="suggestionsToggleInfo" class="settingsInfo toggleInfo">
                             <div id="suggestionsToggleDiv" class="toggleDiv">
-                                <label id="suggestionsSwitch" class="toggleSwitch clickSound" checked>
-                                    <input type="checkbox" id="suggestionsCheckBox">
+                                <label checked tabindex="-1" id="suggestionsSwitch" class="toggleSwitch clickSound focusable">
+                                    <input tabindex="-1" type="checkbox" id="suggestionsCheckBox" class="focusable">
                                     <span id="suggestionsSlider" class="toggleSlider"></span>
                                 </label>
                             </div>
                         </div>
-    
+
                         <!-- Toggle that turns on or off switching turns -->
                         <p id="switchTurnsToggleCaption" class="settingsCaption">Switch order each game:</p>
                         <div id="switchTurnsToggleInfo" class="settingsInfo toggleInfo">
                             <div id="switchTurnsToggleDiv" class="toggleDiv">
-                                <label id="switchTurnsSwitch" class="toggleSwitch clickSound">
+                                <label tabindex="-1" id="switchTurnsSwitch" class="toggleSwitch clickSound focusable">
                                     <input type="checkbox" id="switchTurnsCheckBox">
                                     <span id="switchTurnsSlider" class="toggleSlider"></span>
                                 </label>
                             </div>
                         </div>
-    
+
                         <!-- Toggle that turns on or off AI -->
                         <p id="AIToggleCaption" class="settingsCaption">Play against AI:</p>
                         <div id="AIToggleInfo" class="settingsInfo toggleInfo">
                             <div id="AIToggleDiv" class="toggleDiv">
-                                <label id="AISwitch" class="toggleSwitch clickSound">
+                                <label tabindex="-1" id="AISwitch" class="toggleSwitch clickSound focusable">
                                     <input type="checkbox" id="AICheckBox">
                                     <span id="AISlider" class="toggleSlider"></span>
                                 </label>
@@ -292,7 +333,7 @@
                         <p id="AIDifficultySelectionCaption" class="settingsCaption canGray">AI Difficulty:</p>
                         <div id="AIDifficultyIconSelectionWrapper" class="iconSelectionWrapper canGray">
                             <div id="AIDifficultyIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption canGray">
-                                <div id="AIDifficultyIconSelection" class="iconSelection canGray">
+                                <div tabindex="-1" id="AIDifficultySelection" class="iconSelection canGray focusable carousel">
                                     <div id="AIDifficultySelectionprev" class="iconSelectionprev iconSelectionButton clickSound canGray">&lt</div>
                                     <div class="AIDifficultyselection selection canGray">Easy</div>
                                     <div class="AIDifficultyselection selection canGray">Normal</div>
@@ -307,19 +348,18 @@
                         <p id="fullscreenToggleCaption" class="settingsCaption">Fullscreen:</p>
                         <div id="fullscreenToggleInfo" class="settingsInfo toggleInfo">
                             <div id="fullscreenToggleDiv" class="toggleDiv">
-                                <label id="fullscreenSwitch" class="toggleSwitch clickSound">
+                                <label tabindex="-1" id="fullscreenSwitch" class="toggleSwitch clickSound focusable">
                                     <input type="checkbox" id="fullscreenCheckBox">
                                     <span id="fullscreenSlider" class="toggleSlider"></span>
                                 </label>
                             </div>
                         </div>
 
-    
                         <p id="playerOneIconSelectionCaption" class="settingsCaption">Player One Icon:</p>
                         <div id="playerOneIconSelectionWrapper" class="iconSelectionWrapper">
                             <div id="playerOneIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
-                                <div id="playerOne  IconSelection" class="iconSelection">
-                                    <div id="playerOneIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
+                                <div tabindex="-1" id="playerOneIconSelection" class="iconSelection focusable carousel">
+                                    <div id="playerOneIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound focusable">&lt</div>
                                     <div class="playerOneselection selection">X</div>
                                     <div class="playerOneselection selection">O</div>
                                     <div class="playerOneselection selection">1</div>
@@ -331,15 +371,15 @@
                                     <div class="playerOneselection selection">&lt;/3</div>
                                     <div class="playerOneselection selection">$</div>
                                     <div class="playerOneselection selection">#</div>
-                                    <div id="playerOneIconSelectionnext" class="iconSelectionnext iconSelectionButton clickSound">&gt</div>
+                                    <div id="playerOneIconSelectionnext" class="iconSelectionnext iconSelectionButton clickSound focusable">&gt</div>
                                 </div>
                             </div>
                         </div>
-    
+
                         <p id="playerTwoIconSelectionCaption" class="settingsCaption">Player Two Icon:</p>
                         <div id="playerTwoIconSelectionWrapper" class="iconSelectionWrapper">
                             <div id="playerTwoIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption">
-                                <div id="playerTwoIconSelection" class="iconSelection">
+                                <div tabindex="-1" id="playerTwoIconSelection" class="iconSelection focusable carousel">
                                     <div id="playerTwoIconSelectionprev" class="iconSelectionprev iconSelectionButton clickSound">&lt</div>
                                     <div class="playerTwoselection selection ">X</div>
                                     <div class="playerTwoselection selection">O</div>
@@ -360,20 +400,721 @@
 
                     <!-- Button that returns user to previous window -->
                     <div id="settingsBackButtonWrapper">
-                        <button id="settingsBackButton" class="hoverOverSound clickSound">Back</button>
+                        <button tabindex="-1" id="settingsBackButton" class="hoverOverSound clickSound focusable">Back</button>
                     </div>
+                </div>
+
+                <!-- Wrapper that contains the changelog -->
+                <div id="changelogWrapper">
+
+                    <div class="update">
+                        <p class="version">V1.16.1: New Font; More Keyboard Functionality; Revamped Instructions</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added more information to Instructions</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Information on how to change volume</li>
+                                <li class="updateExtraInfoli">Information on suggestions</li>
+                                <li class="updateExtraInfoli">Information on switching turns</li>
+                                <li class="updateExtraInfoli">Information on playing against AI</li>
+                                <li class="updateExtraInfoli">Information on entering fullscreen</li>
+                                <li class="updateExtraInfoli">Information on changing icons</li>
+                                <li class="updateExtraInfoli">Information on keyboard controls</li>
+                                <li class="updateExtraInfoli">Information on downloading rounds</li>
+                                <li class="updateExtraInfoli">Information on saving with cookies</li>
+                                <li class="updateExtraInfoli">Information on credits and acknowledgements</li>
+                                <li class="updateExtraInfoli">License</ul>
+                            </ul>
+                            <li class="updateli">Added Changelog Menu</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Can be accessed through instructions</li>
+                                <li class="updateExtraInfoli">Contains information on nearly every single git commit and change</li>
+                            </ul>
+                            <li class="updateli">Added more functionality to keyboard controls</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Added functionality to mute and unmute when pressing M key</li>
+                                <li class="updateExtraInfoli">Added functionality for all settings options</li>
+                                <li class="updateExtraInfoli">Added changed colors for when setting button is selected.</li>
+                            </ul>
+                            <li class="updateli">Changed scrollbar to fit in with theme of page</li>
+                            <li class="updateli">Changed font for website</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Update images in instructions</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Consider also adding more images</li>
+                            </ul>
+                            <li class="updateli">Comment all code to be more legible</li>
+                            <li class="updateli">Figure out bug with controls and all items being taken</li>
+                            <li class="updateli">Find cause of play request being interrupted by pause and fix it</li>
+                            <li class="updateli">Consider finding a better way to represent focus on toggles</li>
+                            <li class="updateli">Add easter eggs</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.15.1: First Keyboard Functionality</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added functionality that allows the user to select options using arrow keys/WASD with enter/spacebar in main menu</li>
+                            <li class="updateli">Added functionality that allows the user to select a square using arrow keys/WASD and enter/spacebar in game</li>
+                            <li class="updateli">Added functionality that allows the user to return to the main menu in game using escape</li>
+                            <li class="updateli">Added functionality that allows the user to return to the previous page from instructions/settings using backspace/escape</li>
+                            <li class="updateli">Added functionality that allows the user to mute and unmute the volume using M</li>
+                            <li class="updateli">Added functionality that allows the user to toggle fullscreen using F</li>
+                            <li class="updateli">Updated Instruction manual to be significantly more informative</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add functionality for keyboard commands in settings menu</li>
+                            <li class="updateli">Add easter eggs</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.14.2: Updated README</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Updated Readme</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add easter eggs</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.14.1: Difficulty Levels</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added Difficulty option to AI in settings Menu</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add easter eggs</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.13.1: Fullscreen</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added Fullscreen</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Can be changed through toggle</li>
+                                <li class="updateExtraInfoli">Can be turned off through use of escape key</li>
+                                <li class="updateExtraInfoli">Sounds work completely</li>
+                                <li class="updateExtraInfoli">Saves to cookies</li>
+                            </ul>
+                            <li class="updateli">Made AI on by default</li>
+                            <li class="updateli">Updated README</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add difficulty levels for AI</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Easy, Medium, Hard, Impossible</li>
+                            </ul>
+                            <li class="updateli">Add easter eggs</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.12.1: Downloading Rounds</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added ability to download a png of each round</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.11.9: LICENSE</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Created License</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.11.8: Buttons Initialization Issue</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Fixed buttons not initializing on correct option</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.11.7: Fixed Board Displaying Incorrectly</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Fixed bug with board displaying incorrectly I didn't notice before</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.11.6: Many Backend Changes; Fixed Audio Spam-click Issue</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Restructured all code to be in terms of PlayerOne and PlayerTwo rather than X and O</li>
+                            <li class="updateli">Changed from Audio class to audio HTML tags</li>
+                            <li class="updateli">Fixed audio issues with buttons; should now consistently keep up with clicks</li>
+                            <li class="updateli">added constant variables for game states to make understanding code easier</li>
+                            <li class="updateli">Put all relevant game data in gameData object</li>
+                            <li class="updateli">Put settingsData in gameData</li>
+                            <li class="updateli">Changed default volume to 50%</li>
+                            <li class="updateli">Changed default to not switch turns</li>
+                            <li class="updateli">Restructured many code elements to be significantly more efficient</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.11.5: Even More Bugfixes</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Fixed slight issues with carousels allowing for same option at end of carousel</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.11.4: More Bugfixes</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Fixed all buttons on cookie start</li>
+                            <li class="updateli">Made it impossible for players to have the same symbol</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.11.3: Fixed AI Toggle Initialization</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Fixed bug where AI Toggle initialized incorrectly</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.11.2: Minor Bugfixes to AI</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Minor bugfixes to AI</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.11.1: AI; Switch Turns</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added fully functioning AI</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Can be toggled on and off ingame</li>
+                                <li class="updateExtraInfoli">Can recognize win conditions and act on them</li>
+                                <li class="updateExtraInfoli">Can make mistakes occasionally to give players a chance (intentional)</li>
+                                <li class="updateExtraInfoli"></li>
+                            </ul>
+                            <li class="updateli">Added switch turns button that allows players to switch who goes first each round</li>
+                            <li class="updateli">Updated instruction manual to reflect new options</li>
+                            <li class="updateli">Updated README</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.10.4: New Symbols</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added $ and # to list of symbols</li>
+                            <li class="updateli">Updated README</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.10.3: Minor Tweaks to View</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added slight padding to sides of volume menu</li>
+                            <li class="updateli">Reversed suggestions switch</li>
+                            <li class="updateli">Made settings back button thicker</li>
+                            <li class="updateli">Spaced out settings menu to be more visually appealing</li>
+                            <li class="updateli">Added more information to instruction manual</li>
+                            <li class="updateli">Made no text selectable/highlightable</li>
+                            <li class="updateli">Updated README</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.10.2: Finished Sound Effects</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added remaining sounds</li>
+                            <li class="updateli">Made volume bar show sound once released</li>
+                            <li class="updateli">Added sounds to all settings buttons</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.10.1: New Sound Effects; Game Menu</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added new sound effects for player one movement</li>
+                            <li class="updateli">Added new sound effects for player two movement</li>
+                            <li class="updateli">Added sound for hovering over buttons or squares</li>
+                            <li class="updateli">Added sound for clicking buttons</li>
+                            <li class="updateli">Added entrance start menu</li>
+                            <li class="updateli">Fixed instructions being horizontally scrollable</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Make new sounds for:</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">winning game</li>
+                                <li class="updateExtraInfoli">Tie</li>
+                                <li class="updateExtraInfoli">Getting past Start Menu</li>
+                            </ul>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.9.1: Cookies</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added cookies</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Will now keep track of volume</li>
+                                <li class="updateExtraInfoli">Will now keep track of whether suggestions are on or not</li>
+                                <li class="updateExtraInfoli">Will now keep track of previous X icon</li>
+                                <li class="updateExtraInfoli"></li>Will now keep track of previous O icon</li>
+                            </ul>
+                            <li class="updateli">Added function that updates audio</li>
+                            <li class="updateli">Put all settings data in one object</li>
+                            <li class="updateli">Updated README</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Consider adding cookies that remember settings</li>
+                            <li class="updateli">Make all new sounds</li>
+                            <li class="updateli">Fix instructions being horizontally scrollable</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.8.2: README</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added README</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Consider adding cookies that remember settings</li>
+                            <li class="updateli">Make all new sounds</li>
+                            <li class="updateli">Fix instructions being horizontally scrollable</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.8.1: Customizable Icons</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Make suggestions get slightly smaller when clicked and held</li>
+                            <li class="updateli">Added customizable icons for each player in settings</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Adjust before the game starts</li>
+                                <li class="updateExtraInfoli">After the game has been finished, updates board and scoreboard/result information to reflect new changes</li>
+                            </ul>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Consider adding cookies that remember settings</li>
+                            <li class="updateli">Make all new sounds</li>
+                            <li class="updateli">Fix instructions being horizontally scrollable</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.7.2: Backend Fixes</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Fixed style of post game buttons</li>
+                            <li class="updateli">Added framework to allow for different symbol use</li>
+                            <li class="updateli">Broke up stylesheet into smaller stylesheets based on category</li>
+                            <li class="updateli">Commented all HTML</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Add more options to Settings</li>
+                            <li class="updateli">Consider adding cookies that remember volume level previously</li>
+                            <li class="updateli">Make new sounds for X movement and O movement</li>
+                            <li class="updateli">Add sound for game ending</li>
+                            <li class="updateli">Add sound for game starting</li>
+                            <li class="updateli">Add AI for game</li>
+                            <li class="updateli">Fix instructions being horizontally scrollable</li>
+                            <li class="updateli">Add options for other symbols to be used</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.7.1: Post-game Buttons</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added play again button that allows users to play again</li>
+                            <li class="updateli">Added settings button after the game</li>
+                            <li class="updateli">Added Main Menu button that takes user to the menu and restarts the game</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Add more options to Settings</li>
+                            <li class="updateli">Consider adding cookies that remember volume level previously</li>
+                            <li class="updateli">Make new sounds for X movement and O movement</li>
+                            <li class="updateli">Add sound for game ending</li>
+                            <li class="updateli">Add sound for game starting</li>
+                            <li class="updateli">Add AI for game</li>
+                            <li class="updateli">Fix instructions being horizontally scrollable</li>
+                            <li class="updateli">Add options for other symbols to be used</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.6.4: Polish</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Fixed bug where clicking suggestions doesn't register as click</li>
+                            <li class="updateli">Made suggestions and clicked squares default cursor</li>
+                            <li class="updateli">Added Scoreboard that updates at end of game</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Add more options to Settings</li>
+                            <li class="updateli">Consider adding cookies that remember volume level previously</li>
+                            <li class="updateli">Make new sounds for X movement and O movement</li>
+                            <li class="updateli">Add sound for game ending</li>
+                            <li class="updateli">Add sound for game starting</li>
+                            <li class="updateli">Add AI for game</li>
+                            <li class="updateli">Fix instructions being horizontally scrollable</li>
+                            <li class="updateli">Add options for other symbols to be used</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.6.3: Toggle Suggestions</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added ability to turn off suggestions in settings</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Add more options to Settings</li>
+                            <li class="updateli">Consider adding cookies that remember volume level previously</li>
+                            <li class="updateli">Make new sounds for X movement and O movement</li>
+                            <li class="updateli">Add sound for game ending</li>
+                            <li class="updateli">Add sound for game starting</li>
+                            <li class="updateli">Add AI for game</li>
+                            <li class="updateli">Reverse colors for toggle buttons</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.6.2: &ltDOCTYPE html&gt</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added DOCTYPE html tag</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Made all menus work in acommodation to it</li>
+                            </ul>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Add more options to Settings</li>
+                            <li class="updateli">Consider adding cookies that remember volume level previously</li>
+                            <li class="updateli">Make new sounds for X movement and O movement</li>
+                            <li class="updateli">Add sound for game ending</li>
+                            <li class="updateli">Add sound for game starting</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.6.1: Suggestions</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added images to instruction manual</li>
+                            <li class="updateli">Added suggestions to see what the board would look like with mouse hovered over certain square</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Add more options to Settings</li>
+                            <li class="updateli">Consider adding cookies that remember volume level previously</li>
+                            <li class="updateli">Make new sounds for X movement and O movement</li>
+                            <li class="updateli">Add sound for game ending</li>
+                            <li class="updateli">Add sound for game starting</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.5.1: Instructions</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added instructions, title for instructions,and back button for instructions</li>
+                            <li class="updateli">Fixed minor bug that caused current player's turn to not appear</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Add more options to Settings</li>
+                            <li class="updateli">Add pictures to instructions</li>
+                            <li class="updateli">Consider adding cookies that remember volume level previously</li>
+                            <li class="updateli">Make new sounds for X movement and O movement</li>
+                            <li class="updateli">Add sound for game ending</li>
+                            <li class="updateli">Add sound for game starting</li>
+                            <li class="updateli">Consider adding some form of hint for mouse hovering over square</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.4.1: Menus</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added start menu</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Start goes to the main game</li>
+                                <li class="updateExtraInfoli">How to Play has yet to be implemented, but will act as an instruction manual</li>
+                                <li class="updateExtraInfoli">Settings provides the ability to change volume using a range slider</li>
+                            </ul>
+                            <li class="updateli">Made linkedIn and Github icons redirect in a new tab</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add button that allows user to mute all sounds</li>
+                            <li class="updateli">Add more options to Settings</li>
+                            <li class="updateli">Add instructions in How to Play menu</li>
+                            <li class="updateli">Consider adding cookies that remember volume level previously</li>
+                            <li class="updateli">Make new sounds for X movement and O movement</li>
+                            <li class="updateli">Add sound for game ending</li>
+                            <li class="updateli">Add sound for game starting</li>
+                            <li class="updateli">Consider adding some form of hint for mouse hovering over square</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.3.2: Delete .vscode Directory</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Deleted .vscode directory from github</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add start menu</li>
+                            <li class="updateli">Add audio sounds</li>
+                            <li class="updateli">Make new sounds for X movement and O movement</li>
+                            <li class="updateli">Add sound for game ending</li>
+                            <li class="updateli">Add sound for game starting</li>
+                            <li class="updateli">Consider adding some form of hint for mouse hovering over square</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.3.1: Initial Sounds and External Links</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added code for sounds to be played</li>
+                            <li class="updateli">Added temporary custom sounds for X move and O move</li>
+                            <li class="updateli">Added Github and LinkedIn links in footer</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add start menu</li>
+                            <li class="updateli">Add audio sounds</li>
+                            <li class="updateli">Make new sounds for X movement and O movement</li>
+                            <li class="updateli">Add sound for game ending</li>
+                            <li class="updateli">Add sound for game starting</li>
+                            <li class="updateli">Consider adding some form of hint for mouse hovering over square</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.2.3: Favicon</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added custom made favicon for tab bar</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add start menu</li>
+                            <li class="updateli">Add audio sounds</li>
+                            <li class="updateli">Add custom sounds</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.2.2: Minor Visual Improvements</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added check for tie</li>
+                            <li class="updateli">Added 8-bit font to better fit the theme of the game</li>
+                            <li class="updateli">Added resources folder for all fonts, images, etc. that may later be added</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add start menu</li>
+                            <li class="updateli">Add audio sounds</li>
+                            <li class="updateli">Add custom sounds</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.2.1: Recognition for End of Game</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added code that determines who won the game</li>
+                            <li class="updateli">Display the winner on screen</li>
+                            <li class="updateli">Prevent clicking after the game has ended</li>
+                            <li class="updateli">Added functionality to show current player turn</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add check for tie</li>
+                            <li class="updateli">Add option to restart game</li>
+                            <li class="updateli">Add scoreboard</li>
+                            <li class="updateli">Add start menu</li>
+                            <li class="updateli">Add audio sounds</li>
+                            <li class="updateli">Add custom sounds</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.1.1: Made Buttons Work</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added code that updates square with "X" or "O"</li>
+                            <li class="updateli">Added gamePiece class</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Stores idElement, which is the HTMLElement of that piece</li>
+                                <li class="updateExtraInfoli">Stores pieceNumber, which is the number of that specific piece in the gameboardList</li>
+                                <li class="updateExtraInfoli">Stores isSelected, which determines whether the piece has already been selected or not</li>
+                            </ul>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add functionality for checking for win</li>
+                            <li class="updateli">Add functionality to show who's turn it is</li>
+                            <li class="updateli">Add start menu</li>
+                            <li class="updateli">Add audio sounds</li>
+                            <li class="updateli">Add custom sounds</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
+                        <p class="version">V1.0.1: Initial Commit</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added Header</li>
+                            <li class="updateli">Added Board</li>
+                            <li class="updateli">Added Credits</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add functionality for clicking buttons</li>
+                            <li class="updateli">Add functionality for checking for win</li>
+                            <li class="updateli">Add functionality to show who's turn it is</li>
+                            <li class="updateli">Add start menu</li>
+                            <li class="updateli">Add audio sounds</li>
+                            <li class="updateli">Add custom sounds</li>
+                            <li class="updateli">Add AI for game</li>
+                        </ol>
+                    </div>
+
+                    <button tabindex="-1" id="changelogBackButton" class="hoverOverSound clickSound focusable">Back</button>
                 </div>
             </div>
 
             <!-- Wrapper that contains credits, my links, and all buttons post-game -->
             <div id="footer">
-                
+
                 <!-- Contains left two buttons -->
                 <div id="footerLeftSide">
                     <!-- Button that allows user to go to the main menu and restart the game -->
-                    <button id="mainMenuButton" class="postGameButton hoverOverSound clickSound">Main Menu</button>
+                    <button id="mainMenuButton" class="postGameButton hoverOverSound clickSound focusable">Main Menu</button>
                     <!-- Button that takes user to settings -->
-                    <button id="settingsPostGameButton" class="postGameButton hoverOverSound clickSound">Settings</button>
+                    <button id="settingsPostGameButton" class="postGameButton hoverOverSound clickSound focusable">Settings</button>
                 </div>
 
                 <!-- Wrapper containing credits -->
@@ -389,8 +1130,8 @@
 
                 <!-- Wrapper containing the button that allows the user to start the game again -->
                 <div id="footerRightSide">
-                    <button id="playAgainButton" class="postGameButton hoverOverSound clickSound">Play Again</button>
-                    <button id="saveGameBoard" class="postGameButton hoverOverSound clickSound">Download This Round</button>
+                    <button id="playAgainButton" class="postGameButton hoverOverSound clickSound focusable">Play Again</button>
+                    <button id="saveGameBoard" class="postGameButton hoverOverSound clickSound focusable">Download This Round</button>
                 </div>
             </div>
         </div>
@@ -403,6 +1144,4 @@
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     </body>
-
-
-</html>
+    </html>

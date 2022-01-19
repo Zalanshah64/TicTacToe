@@ -17,6 +17,7 @@ const BOTTOMLEFT = 6;
 const BOTTOMMIDDLE = 7;
 const BOTTOMRIGHT = 8;
 
+const CHANGELOG = -6;
 const SETTINGSMENU = -5;
 const INSTRUCTIONSMENU = -4;
 const GAMEMENU = -3;
@@ -47,6 +48,9 @@ let focusable = document.getElementsByClassName("focusable");
 
 //Document Elements related to start menu
 let startMenuWrapper = document.getElementById("startMenuWrapper");
+let startMenuTitle = document.getElementById("startMenuTitle");
+let startMenuCredits = document.getElementById("startMenuCredits");
+let startMenuSubtitle = document.getElementById("startMenuSubtitle");
 
 //Document Elements related to main menu
 let mainMenu = document.getElementById("mainMenu");
@@ -63,13 +67,20 @@ let settingsTitle = document.getElementById("settingsTitle");
 let suggestionsToggle = document.getElementById("suggestionsCheckBox");
 let switchTurnsToggle = document.getElementById("switchTurnsCheckBox");
 let AIToggle = document.getElementById("AICheckBox");
-let fullscreenToggle = document.getElementById("fullscreenCheckBox");
+let AIDifficultySelection = document.getElementById("AIDifficultySelection");
 let AIDIfficultySelections = document.getElementsByClassName("AIDifficultyselection");
 let AIDifficultySelectionprev = document.getElementById("AIDifficultySelectionprev");
+let fullscreenSwitch = document.getElementById("fullscreenSwitch");
+let suggestionsSwitch = document.getElementById("suggestionsSwitch")
+let switchTurnsSwitch = document.getElementById("switchTurnsSwitch");
+let AISwitch = document.getElementById("AISwitch");
+let fullscreenToggle = document.getElementById("fullscreenCheckBox");
 let AIDifficultySelectionnext = document.getElementById("AIDifficultySelectionnext");
 let canGray = document.getElementsByClassName("canGray");
 let playerOneSelections = document.getElementsByClassName("playerOneselection");
 let playerTwoSelections = document.getElementsByClassName("playerTwoselection");
+let playerOneIconSelection = document.getElementById("playerOneIconSelection");
+let playerTwoIconSelection = document.getElementById("playerTwoIconSelection");
 let playerOneIconSelectionnext = document.getElementById("playerOneIconSelectionnext");
 let playerOneIconSelectionprev = document.getElementById("playerOneIconSelectionprev");
 let playerTwoIconSelectionnext = document.getElementById("playerTwoIconSelectionnext");
@@ -79,7 +90,12 @@ let playerTwoIconSelectionprev = document.getElementById("playerTwoIconSelection
 let instructionsMenu = document.getElementById("instructionsMenu");
 let instructionsTitle = document.getElementById("instructionsTitle");
 let instructionsBackButton = document.getElementById("instructionsBackButton");
+let changelogButton = document.getElementById("changelogButton");
 
+//Document Elements related to changelog
+let changelog = document.getElementById("changelogWrapper");
+let changelogBackButton = document.getElementById("changelogBackButton");
+let changelogTitle = document.getElementById("changelogTitle");
 
 //Document Elements related to the game
 let game = document.getElementById("game");
@@ -127,6 +143,7 @@ let gameData = {
     gameResult: GAMEMENU,
     currentMenu: GAMEMENU,
     currentFocus: startButton,
+    ChangelogButtonOffset: 0,
     whoStarts: PLAYERONE,
     rememberedVolume: 0.5,
     AIwaitTime: 400,
@@ -135,6 +152,18 @@ let gameData = {
     fullscreenRequest: false,
     settingsData: {}
 }
+
+let startMenuData = {
+    i: 0,
+    title: "Tic-Tac-Toe",
+    titleCompleted: false,
+    credits: "A game by Zalan Shah",
+    creditsCompleted: false,
+    subtitle: "Press Enter to start",
+    subtitleCompleted: false,
+    speed: 150,
+}
+
 
 let gameboard = [new gamePiece(topLeftId, TOPLEFT),
                  new gamePiece(topMiddleId, TOPMIDDLE),
@@ -203,6 +232,15 @@ showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
 showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
 showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
 
+window.addEventListener("load", function() {
+    setTimeout(writeStartMenu, 500);
+});
+
+document.addEventListener("keydown", function(event) {
+    if((event.key === "s" || event.key === "S") && event.ctrlKey) {
+        event.preventDefault();
+    }
+});
 
 document.addEventListener("keyup", function(event) {
 
@@ -219,32 +257,94 @@ document.addEventListener("keyup", function(event) {
                     document.documentElement.requestFullscreen();
                 }
                 gameData.currentMenu = MAINMENU;
-                gameData.currentFocus = startButton;
-                startButton.focus();
+                focusOn(startButton);
                 return;
             }
 
         case " ":
             if(gameData.currentMenu === NOTFINISHED && gameData.gameResult === NOTFINISHED && typeof gameData.currentFocus == "number") {
                 gameboard[gameData.currentFocus].idElement.click();
+            } else if(gameData.currentMenu === SETTINGSMENU) {
+                if(gameData.currentFocus != volumeSlider) {
+                    gameData.currentFocus.click()
+                }
+                return;
             }
             return;
-
+        case "s":
         case "S":
+            if(gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED)) {
+                if(event.ctrlKey) {
+                    saveGameBoard.click();
+                    return;
+                }
+            }
         case "Down":
         case "ArrowDown":
             if(gameData.currentMenu == MAINMENU) {
                 if(gameData.currentFocus === startButton) {
-                    gameData.currentFocus = instructionsButton;
-                    instructionsButton.focus();
+                    focusOn(instructionsButton);
                 } else if(gameData.currentFocus === instructionsButton) {
-                    gameData.currentFocus = settingsButton;
-                    settingsButton.focus();
+                    focusOn(settingsButton);
                 } else if(gameData.currentFocus === settingsButton) {
-                    gameData.currentFocus = startButton;
-                    startButton.focus();
+                    focusOn(startButton);
                 }
-            } else if(gameData.currentMenu == NOTFINISHED) {
+            } else if(gameData.currentMenu == INSTRUCTIONSMENU) {
+                if(gameData.currentFocus === changelogButton) {
+                    focusOn(instructionsBackButton);
+                } else {
+                    focusOn(changelogButton);
+                }
+            } else if(gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED)) {
+                switch(gameData.currentFocus) {
+                    case mainMenuButton:
+                        focusOn(settingsPostGameButton);
+                        return;
+                    case settingsPostGameButton:
+                        focusOn(mainMenuButton);
+                        return;
+                    case playAgainButton:
+                        focusOn(saveGameBoard);
+                        return;
+                    case saveGameBoard:
+                        focusOn(playAgainButton);
+                }
+            } else if(gameData.currentMenu == SETTINGSMENU) {
+                switch(gameData.currentFocus) {
+                    case volumeSlider:
+                        event.preventDefault();
+                        focusOn(suggestionsSwitch);
+                        return;
+                    case suggestionsSwitch:
+                        focusOn(switchTurnsSwitch);
+                        return;
+                    case switchTurnsSwitch:
+                        focusOn(AISwitch);
+                        return;
+                    case AISwitch:
+                        if(gameData.settingsData["AI"]) {
+                            focusOn(AIDifficultySelection);
+                            return;
+                        } else {
+                            focusOn(fullscreenSwitch);
+                        }
+                        return;
+                    case AIDifficultySelection:
+                        focusOn(fullscreenSwitch);
+                        return;
+                    case fullscreenSwitch:
+                        focusOn(playerOneIconSelection);
+                        return;
+                    case playerOneIconSelection:
+                        focusOn(playerTwoIconSelection);
+                        return;
+                    case playerTwoIconSelection:
+                        focusOn(settingsBackButton);
+                        return;
+                    case settingsBackButton:
+                        focusOn(volumeSlider);
+                }
+            }else if(gameData.currentMenu == NOTFINISHED && gameData.gameResult == NOTFINISHED) {
                 if(gameData.currentFocus > MIDDLERIGHT || !gameData.settingsData["suggestions"]) {
                     return;
                 }
@@ -259,19 +359,71 @@ document.addEventListener("keyup", function(event) {
             }
             return;
 
+        case "w":
         case "W":
         case "Up":
         case "ArrowUp":
             if(gameData.currentMenu == MAINMENU) {
                 if(gameData.currentFocus === startButton) {
-                    gameData.currentFocus = settingsButton;
-                    settingsButton.focus();
+                    focusOn(settingsButton);
                 } else if(gameData.currentFocus === instructionsButton) {
-                    gameData.currentFocus = startButton;
-                    startButton.focus();
+                    focusOn(startButton);
                 } else if(gameData.currentFocus === settingsButton) {
-                    gameData.currentFocus = instructionsButton;
-                    instructionsButton.focus();
+                    focusOn(instructionsButton);
+                }
+            } else if(gameData.currentMenu == INSTRUCTIONSMENU) {
+                if(gameData.currentFocus === changelogButton) {
+                    focusOn(instructionsBackButton);
+                } else {
+                    focusOn(changelogButton);
+                }
+            } else if(gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED)) {
+                switch(gameData.currentFocus) {
+                    case mainMenuButton:
+                        focusOn(settingsPostGameButton);
+                        return;
+                    case settingsPostGameButton:
+                        focusOn(mainMenuButton);
+                        return;
+                    case playAgainButton:
+                        focusOn(saveGameBoard);
+                        return;
+                    case saveGameBoard:
+                        focusOn(playAgainButton);
+                }
+            } else if(gameData.currentMenu == SETTINGSMENU) {
+                switch(gameData.currentFocus) {
+                    case volumeSlider:
+                        event.preventDefault();
+                        focusOn(settingsBackButton);
+                        return;
+                    case suggestionsSwitch:
+                        focusOn(volumeSlider);
+                        return;
+                    case switchTurnsSwitch:
+                        focusOn(suggestionsSwitch);
+                        return;
+                    case AISwitch:
+                        focusOn(switchTurnsSwitch);
+                        return;
+                    case AIDifficultySelection:
+                        focusOn(AISwitch);
+                        return;
+                    case fullscreenSwitch:
+                        if(gameData.settingsData["AI"]) {
+                            focusOn(AIDifficultySelection)
+                        } else {
+                            focusOn(AISwitch);
+                        }
+                        return;
+                    case playerOneIconSelection:
+                        focusOn(fullscreenSwitch);
+                        return;
+                    case playerTwoIconSelection:
+                        focusOn(playerOneIconSelection);
+                        return;
+                    case settingsBackButton:
+                        focusOn(playerTwoIconSelection);
                 }
             } else if(gameData.currentMenu == NOTFINISHED) {
                 if(gameData.currentFocus < MIDDLELEFT || !gameData.settingsData["suggestions"]) {
@@ -288,10 +440,26 @@ document.addEventListener("keyup", function(event) {
             }
             return;
 
+        case "a":
         case "A":
         case "Left":
         case "ArrowLeft":
-            if(gameData.currentMenu == NOTFINISHED) {
+            if((gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED))) {
+                switch(gameData.currentFocus) {
+                    case mainMenuButton:
+                        focusOn(playAgainButton);
+                        return;
+                    case playAgainButton:
+                        focusOn(mainMenuButton);
+                        return;
+                    case settingsPostGameButton:
+                        focusOn(saveGameBoard);
+                        return;
+                    case saveGameBoard:
+                        focusOn(settingsPostGameButton);
+                        return;
+                }
+            } else if(gameData.currentMenu == NOTFINISHED) {
                 if(gameData.currentFocus % 3 == 0 || !gameData.settingsData["suggestions"]) {
                     return;
                 }
@@ -304,13 +472,35 @@ document.addEventListener("keyup", function(event) {
                     gameData.currentFocus -= 2;
                     gameboard[gameData.currentFocus].idElement.focus();
                 }
+            } else if(gameData.currentFocus == AIDifficultySelection) {
+                AIDifficultySelectionprev.click();
+            } else if(gameData.currentFocus == playerOneIconSelection) {
+                playerOneIconSelectionprev.click();
+            }else if(gameData.currentFocus == playerTwoIconSelection) {
+                playerTwoIconSelectionprev.click();
             }
             return;
 
+        case "d":
         case "D":
         case "Right":
         case "ArrowRight":
-            if(gameData.currentMenu == NOTFINISHED) {
+            if((gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED))) {
+                switch(gameData.currentFocus) {
+                    case mainMenuButton:
+                        focusOn(playAgainButton);
+                        return;
+                    case playAgainButton:
+                        focusOn(mainMenuButton);
+                        return;
+                    case settingsPostGameButton:
+                        focusOn(saveGameBoard);
+                        return;
+                    case saveGameBoard:
+                        focusOn(settingsPostGameButton);
+                        return;
+                }
+            } else if(gameData.currentMenu == NOTFINISHED) {
                 if((gameData.currentFocus - 2) % 3 == 0 || !gameData.settingsData["suggestions"]) {
                     return;
                 }
@@ -323,6 +513,12 @@ document.addEventListener("keyup", function(event) {
                     gameData.currentFocus += 2;
                     gameboard[gameData.currentFocus].idElement.focus();
                 }
+            } else if(gameData.currentFocus == AIDifficultySelection) {
+                AIDifficultySelectionnext.click();
+            } else if(gameData.currentFocus == playerOneIconSelection) {
+                playerOneIconSelectionnext.click();
+            } else if(gameData.currentFocus == playerTwoIconSelection) {
+                playerTwoIconSelectionnext.click();
             }
             return;
 
@@ -336,11 +532,13 @@ document.addEventListener("keyup", function(event) {
                 instructionsBackButton.click();
             } else if(gameData.currentMenu == SETTINGSMENU) {
                 settingsBackButton.click();
+            } else if(gameData.currentMenu == CHANGELOG) {
+                changelogBackButton.click();
             }
             return;
 
-        case "M":
         case "m":
+        case "M":
             if(gameData.settingsData["volume"] == 0) {
                 gameData.settingsData["volume"] = gameData.rememberedVolume;
             } else {
@@ -349,6 +547,7 @@ document.addEventListener("keyup", function(event) {
             }
 
             volumeSlider.value = gameData.settingsData["volume"] * 100;
+            document.cookie = "volume=" + gameData.settingsData["volume"] + ";";
             updateVolume();
             playClickAudio();
             return;
@@ -357,7 +556,6 @@ document.addEventListener("keyup", function(event) {
         case "f":
             gameData.settingsData["fullscreen"] = !gameData.settingsData["fullscreen"];
             document.cookie = "fullscreen=" + gameData.settingsData["fullscreen"] + ";";
-            fullscreenToggle.checked = !fullscreenToggle.checked;
 
             if(document.webkitIsFullScreen) {
                 document.exitFullscreen();
@@ -381,15 +579,20 @@ document.addEventListener("fullscreenchange", function() {
 })
 
 for(let i = 0; i < focusable.length; ++i) {
-    focusable[i].addEventListener("focus", playClickAudio);
+    focusable[i].addEventListener("focus", function() {
+        stopHoverAudio();
+        hoverOverAudio.play();
+    });
 }
 
 for(let i = 0; i < 9; ++i) {
     gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i], true)});
 
     gameboard[i].idElement.addEventListener("mouseenter", function() {
-        gameData.currentFocus = gameboard[i].pieceNumber;
-        gameboard[i].idElement.focus();
+        if(gameData.gameResult === NOTFINISHED) {
+            gameData.currentFocus = gameboard[i].pieceNumber;
+            gameboard[i].idElement.focus();
+        }
     });
 
     gameboard[i].idElement.addEventListener("focus", function(e) {
@@ -408,7 +611,9 @@ for(let i = 0; i < 9; ++i) {
     }, true);
 
     gameboard[i].idElement.addEventListener("mouseleave", function() {
-        gameboard[i].idElement.blur();
+        if(gameData.gameResult === NOTFINISHED) {
+            gameboard[i].idElement.blur();
+        }
     });
 
     gameboard[i].idElement.addEventListener("blur", function(e) {
@@ -422,8 +627,7 @@ for(let i = 0; i < 9; ++i) {
 
 for(let i = 0; i < hoverOverButtons.length; ++i) {
     hoverOverButtons[i].addEventListener("mouseenter", function() {
-        stopHoverAudio();
-        hoverOverAudio.play();
+        focusOn(hoverOverButtons[i]);
     });
 }
 
@@ -523,6 +727,7 @@ mainMenuButton.addEventListener("click", function() {
     gameData.playerTwoScore = 0;
     gameData.currentPlayer = PLAYERONE;
     gameData.gameResult = MAINMENU;
+    gameData.currentMenu = MAINMENU;
     currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
     whoWonHTML.style.display = "none";
     currentTurnHTML.style.display = "none";
@@ -540,8 +745,8 @@ mainMenuButton.addEventListener("click", function() {
     settingsPostGameButton.style.display = "none";
     playAgainButton.style.display = "none";
     saveGameBoard.style.display = "none";
-    gameData.currentFocus = startButton;
-    startButton.focus();
+    focusOn(startButton);
+    stopHoverAudio();
 });
 
 settingsButton.addEventListener("click", function() {
@@ -551,6 +756,10 @@ settingsButton.addEventListener("click", function() {
     gameData.currentMenu = SETTINGSMENU;
     settingsMenu.style.display = "block";
     wrapper.style.display = "block";
+    setTimeout(function() {
+        focusOn(volumeSlider);
+        stopHoverAudio();
+    }, 100);
 });
 
 AIDifficultySelectionprev.addEventListener("click", function() {
@@ -620,6 +829,8 @@ settingsBackButton.addEventListener("click", function() {
     if(gameData.settingsBackFromLocation == MAINMENU) {
         gameData.currentMenu = MAINMENU;
         mainMenu.style.display = "grid";
+        focusOn(settingsButton);
+        stopHoverAudio();
     } else if(gameData.settingsBackFromLocation == NOTFINISHED) {
         game.style.display = "grid";
         scoreTitle[PLAYERONE].style.display = "block";
@@ -628,6 +839,9 @@ settingsBackButton.addEventListener("click", function() {
         settingsPostGameButton.style.display = "block";
         playAgainButton.style.display = "block";
         saveGameBoard.style.display = "block";
+        gameData.currentMenu = NOTFINISHED;
+        focusOn(settingsPostGameButton);
+        stopHoverAudio();
         if(gameData.gameResult == PLAYERONE || gameData.gameResult == PLAYERTWO) {
             whoWonHTML.style.display = "block";
         } else {
@@ -665,18 +879,24 @@ volumeSlider.addEventListener("mouseup", function() {
 suggestionsToggle.addEventListener("change", function() {
     gameData.settingsData["suggestions"] = !gameData.settingsData["suggestions"];
     document.cookie = "suggestions=" + gameData.settingsData["suggestions"] + ";";
+    focusOn(suggestionsSwitch);
+    stopHoverAudio();
 });
 
 switchTurnsCheckBox.addEventListener("change", function() {
     gameData.settingsData["switchTurns"] = !gameData.settingsData["switchTurns"];
     gameData.whoStarts = 0;
     document.cookie = "switchTurns=" + gameData.settingsData["switchTurns"] + ";";
+    focusOn(switchTurnsSwitch);
+    stopHoverAudio();
 });
 
 AIToggle.addEventListener("change", function() {
     gameData.settingsData["AI"] = !gameData.settingsData["AI"];
     document.cookie = "AI=" + gameData.settingsData["AI"] + ";";
 
+    focusOn(AISwitch);
+    stopHoverAudio();
     updateGrayedOut();
 });
 
@@ -684,6 +904,8 @@ fullscreenToggle.addEventListener("change", function() {
     gameData.settingsData["fullscreen"] = !gameData.settingsData["fullscreen"];
     document.cookie = "fullscreen=" + gameData.settingsData["fullscreen"] + ";";
     gameData.fullscreenRequest = true;
+    focusOn(fullscreenSwitch);
+    stopHoverAudio();
 
     if(document.webkitIsFullScreen) {
         document.exitFullscreen();
@@ -698,10 +920,33 @@ instructionsButton.addEventListener("click", function() {
     instructionsTitle.style.display = "block";
     wrapper.style.display = "block"
     gameData.currentMenu = INSTRUCTIONSMENU;
-    gameData.currentFocus = instructionsBackButton;
-    instructionsBackButton.focus();
+    focusOn(changelogButton);
+    stopHoverAudio();
     window.scrollTo(0, 0);
 });
+
+changelogButton.addEventListener("click", function() {
+    gameData.currentMenu = CHANGELOG;
+    gameData.ChangelogButtonOffset = window.pageYOffset;
+    instructionsMenu.style.display = "none";
+    instructionsTitle.style.display = "none";
+    changelog.style.display = "grid";
+    changelogTitle.style.display = "block";
+    focusOn(changelogBackButton);
+    stopHoverAudio();
+    window.scrollTo(0, 0);
+});
+
+changelogBackButton.addEventListener("click", function() {
+    gameData.currentMenu = INSTRUCTIONSMENU;
+    instructionsMenu.style.display = "grid";
+    instructionsTitle.style.display = "block";
+    changelog.style.display = "none";
+    changelogTitle.style.display = "none";
+    focusOn(changelogButton);
+    stopHoverAudio();
+    window.scrollTo(0, gameData.ChangelogButtonOffset);
+})
 
 instructionsBackButton.addEventListener("click", function() {
     instructionsMenu.style.display = "none";
@@ -709,8 +954,8 @@ instructionsBackButton.addEventListener("click", function() {
     mainMenu.style.display = "grid";
     wrapper.style.display = "grid";
     gameData.currentMenu = MAINMENU;
-    gameData.currentFocus = startButton;
-    startButton.focus();
+    focusOn(startButton);
+    stopHoverAudio();
 });
 
 
@@ -769,6 +1014,8 @@ function checkWin() {
         settingsPostGameButton.style.display = "block";
         playAgainButton.style.display = "block";
         saveGameBoard.style.display = "block";
+        focusOn(mainMenuButton);
+        stopHoverAudio();
         return PLAYERONE;
     } else {
         if(checkSelectedContainsWin(gameData.playerTwoSelectedIds)) {
@@ -782,6 +1029,8 @@ function checkWin() {
             settingsPostGameButton.style.display = "block";
             playAgainButton.style.display = "block";
             saveGameBoard.style.display = "block";
+            focusOn(mainMenuButton);
+            stopHoverAudio();
             return PLAYERTWO;
         } else {
             if(gameData.playerOneSelectedIds.length + gameData.playerTwoSelectedIds.length == 9) {
@@ -792,6 +1041,8 @@ function checkWin() {
                 settingsPostGameButton.style.display = "block";
                 playAgainButton.style.display = "block";
                 saveGameBoard.style.display = "block";
+                focusOn(mainMenuButton);
+                stopHoverAudio();
                 return DRAW;
             }
         }
@@ -818,10 +1069,10 @@ function showAIDifficultySelectionOption(n) {
         gameData.settingsData["AIDifficulty"] = AIDIfficultySelections.length - 1;
     }
     for (let i = 0; i < AIDIfficultySelections.length; i++) {
-        AIDIfficultySelections[i].style.display = "none";  
+        AIDIfficultySelections[i].style.display = "none";
     }
 
-    AIDIfficultySelections[gameData.settingsData["AIDifficulty"]].style.display = "flex";  
+    AIDIfficultySelections[gameData.settingsData["AIDifficulty"]].style.display = "flex";
     document.cookie = "AIDifficulty=" + gameData.settingsData["AIDifficulty"] + ";";
 }
 
@@ -833,10 +1084,10 @@ function showPlayerOneSelectionOption(n) {
         gameData.settingsData["playerOneIconSlideIndex"] = playerOneSelections.length - 1;
     }
     for (let i = 0; i < playerOneSelections.length; i++) {
-        playerOneSelections[i].style.display = "none";  
+        playerOneSelections[i].style.display = "none";
     }
 
-    playerOneSelections[gameData.settingsData["playerOneIconSlideIndex"]].style.display = "flex";  
+    playerOneSelections[gameData.settingsData["playerOneIconSlideIndex"]].style.display = "flex";
     gameData.settingsData["playerOneIcon"] = playerOneSelections[gameData.settingsData["playerOneIconSlideIndex"]].innerHTML;
     document.cookie = "playerOneIconSlideIndex=" + gameData.settingsData["playerOneIconSlideIndex"] + ";";
   }
@@ -849,11 +1100,16 @@ function showPlayerOneSelectionOption(n) {
         gameData.settingsData["playerTwoIconSlideIndex"] = playerTwoSelections.length - 1;
     }
     for (let i = 0; i < playerTwoSelections.length; i++) {
-        playerTwoSelections[i].style.display = "none";  
+        playerTwoSelections[i].style.display = "none";
     }
     playerTwoSelections[gameData.settingsData["playerTwoIconSlideIndex"]].style.display = "flex";
     gameData.settingsData["playerTwoIcon"] = playerTwoSelections[gameData.settingsData["playerTwoIconSlideIndex"]].innerHTML;
     document.cookie = "playerTwoIconSlideIndex=" + gameData.settingsData["playerTwoIconSlideIndex"] + ";";
+  }
+
+  function focusOn(element) {
+      gameData.currentFocus = element;
+      element.focus();
   }
 
   function updateVolume() {
@@ -985,3 +1241,43 @@ function showPlayerOneSelectionOption(n) {
             || (!gameData.playerOneSelectedIds.includes(corner) && gameData.playerTwoSelectedIds.includes(verticalOne) && gameData.playerTwoSelectedIds.includes(verticalTwo))
             || (!gameData.playerOneSelectedIds.includes(corner) && gameData.playerTwoSelectedIds.includes(CENTER) && gameData.playerTwoSelectedIds.includes(diagonal));
      }
+
+     function writeStartMenu() {
+         if(!startMenuData.titleCompleted) {
+             startMenuTitle.innerHTML += startMenuData.title.charAt(startMenuData.i);
+             startMenuData.i++;
+             if(startMenuData.i == startMenuData.title.length) {
+                startMenuData.i = 0;
+                startMenuData.titleCompleted = true;
+            }
+            setTimeout(writeStartMenu, startMenuData.speed);
+         } else if(!startMenuData.creditsCompleted) {
+            startMenuCredits.innerHTML += startMenuData.credits.charAt(startMenuData.i);
+            startMenuData.i++;
+            if(startMenuData.i == startMenuData.credits.length) {
+                startMenuData.i = 0;
+                startMenuData.creditsCompleted = true;
+            }
+
+            if(startMenuData.credits.charAt(startMenuData.i) == " ") {
+                startMenuCredits.innerHTML += startMenuData.credits.charAt(startMenuData.i);
+                startMenuData.i++;
+            }
+
+            setTimeout(writeStartMenu, startMenuData.speed);
+         } else if(!startMenuData.subtitleCompleted) {
+            startMenuSubtitle.innerHTML += startMenuData.subtitle.charAt(startMenuData.i);
+            startMenuData.i++;
+            if(startMenuData.i == startMenuData.subtitle.length) {
+                startMenuData.i = 0;
+                startMenuData.subtitleCompleted = true;
+            }
+
+            if(startMenuData.subtitle.charAt(startMenuData.i) == " ") {
+                startMenuSubtitle.innerHTML += startMenuData.subtitle.charAt(startMenuData.i);
+                startMenuData.i++;
+            }
+
+            setTimeout(writeStartMenu, startMenuData.speed);
+         }
+    }

@@ -1,0 +1,30 @@
+#changelogWrapper {
+    display: none;
+    font-size: 1.5 rem;
+    line-height: 1.25rem;
+}
+
+.update {
+    margin: 0.5rem 2rem 0rem 2rem;
+    border-bottom: 0.25rem solid lightgray;
+}
+
+.version {
+    font-size: 2rem;
+    text-align: center;
+    line-height: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.CHANGELOG, .TODO{
+    font-size: 1.8rem;
+}
+
+
+#changelogBackButton {
+    width: 70%;
+    justify-self: center;
+    padding: 1.5rem;
+    font-size: 1.25rem;
+    margin: 1rem;
+}

@@ -3,7 +3,6 @@
 
 #settingsMenu {
     display: none;
-    
 }
 
 #settingsWrapper {
@@ -36,7 +35,7 @@
   #volumeSlidecontainer {
     width: 100%;
   }
-  
+
 #volumeSlider {
     -webkit-appearance: none;
     width: 80%;
@@ -47,11 +46,11 @@
     -webkit-transition: .2s;
     transition: opacity .2s;
 }
-  
+
 #volumeSlider:hover {
     background: lightgray;
 }
-  
+
 #volumeSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -79,7 +78,7 @@
     height: 3rem;
     border: 0.2rem solid white;
 }
-  
+
 .toggleSlider {
     position: absolute;
     cursor: pointer;
@@ -91,7 +90,7 @@
     -webkit-transition: .2s;
     transition: .2s;
 }
-  
+
 .toggleSlider:before {
     position: absolute;
     content: "";
@@ -103,11 +102,11 @@
     -webkit-transition: .2s;
     transition: .2s;
 }
-  
+
 input:checked + .toggleSlider {
     background-color: white;
 }
-  
+
 input:checked + .toggleSlider:before {
     background-color: black;
     -webkit-transition: .2s;
@@ -117,10 +116,9 @@ input:checked + .toggleSlider:before {
     transform: translateX(4.7rem);
 }
 
-#AIDifficultyIconSelection {
+#AIDifficultySelection {
     width: 45%;
 }
-
 
 .iconSelectionWrapper {
     display: flex;
@@ -140,15 +138,13 @@ input:checked + .toggleSlider:before {
     width: 20%;
     grid-template-columns: 25% 50% 25%;
     font-size: 2rem;
-    
   }
-  
   .selection {
     display: flex;
     justify-content: center;
     align-self: center;
   }
-  
+
   .iconSelectionButton {
     height: 100%;
     width: 100%;
@@ -179,4 +175,26 @@ input:checked + .toggleSlider:before {
     color: gray;
     border-color: gray;
     opacity: 0.9;
+}
+
+.carousel.focusable:focus {
+    background-color: lightgray;
+    border-color: lightgray;
+    color: black;
+}
+
+.toggleSwitch:focus {
+    border: 0.2rem solid gray;
+}
+
+.toggleSwitch:focus > .toggleSlider:before {
+    background-color: lightgray;
+}
+
+.toggleSwitch:focus > input:checked + .toggleSlider:before {
+    background-color: black;
+}
+
+.toggleSwitch:focus > input:checked + .toggleSlider {
+    background-color: lightgray;
 }
