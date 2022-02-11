@@ -32,6 +32,10 @@ const NORMAL = 1;
 const HARD = 2;
 const IMPOSSIBLE = 3;
 
+const UP = 0;
+const DOWN = 1;
+const LEFT = 2;
+const RIGHT = 3;
 
 let currentPlayerHTML = document.getElementById("currentPlayer");
 let currentTurnHTML = document.getElementById("currentTurn");
@@ -146,11 +150,12 @@ let gameData = {
     ChangelogButtonOffset: 0,
     whoStarts: PLAYERONE,
     rememberedVolume: 0.5,
-    AIwaitTime: 400,
+    AIwaitTime: 600,
     AIDifficultyChance: 0.8,
     settingsBackFromLocation: MAINMENU,
     fullscreenRequest: false,
-    settingsData: {}
+    settingsData: {},
+    keyPress: false
 }
 
 let startMenuData = {
@@ -244,8 +249,13 @@ document.addEventListener("keydown", function(event) {
 
 document.addEventListener("keyup", function(event) {
 
+    if(gameData.keyPress) {
+        return;
+    }
+
     switch(event.key) {
         case "Enter":
+            gameData.keyPress = true;
             if(gameData.currentMenu === GAMEMENU) {
                 gameData.gameResult = MAINMENU;
                 startMenuWrapper.style.display = "none";
@@ -258,287 +268,355 @@ document.addEventListener("keyup", function(event) {
                 }
                 gameData.currentMenu = MAINMENU;
                 focusOn(startButton);
+                gameData.keyPress = false;
                 return;
             }
-
+            gameData.keyPress = false;
         case " ":
+            gameData.keyPress = true;
             if(gameData.currentMenu === NOTFINISHED && gameData.gameResult === NOTFINISHED && typeof gameData.currentFocus == "number") {
                 gameboard[gameData.currentFocus].idElement.click();
             } else if(gameData.currentMenu === SETTINGSMENU) {
                 if(gameData.currentFocus != volumeSlider) {
                     gameData.currentFocus.click()
                 }
+                gameData.keyPress = false;
                 return;
             }
+            gameData.keyPress = false;
             return;
+
         case "s":
         case "S":
+            gameData.keyPress = true;
             if(gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED)) {
                 if(event.ctrlKey) {
                     saveGameBoard.click();
-                    return;
                 }
             }
+            gameData.keyPress = false;
+            return;
         case "Down":
         case "ArrowDown":
+            gameData.keyPress = true;
             if(gameData.currentMenu == MAINMENU) {
                 if(gameData.currentFocus === startButton) {
                     focusOn(instructionsButton);
+                    gameData.keyPress = false;
+                    return;
                 } else if(gameData.currentFocus === instructionsButton) {
                     focusOn(settingsButton);
+                    gameData.keyPress = false;
+                    return;
                 } else if(gameData.currentFocus === settingsButton) {
                     focusOn(startButton);
+                    gameData.keyPress = false;
+                    return;
                 }
             } else if(gameData.currentMenu == INSTRUCTIONSMENU) {
                 if(gameData.currentFocus === changelogButton) {
                     focusOn(instructionsBackButton);
+                    gameData.keyPress = false;
+                    return;
                 } else {
                     focusOn(changelogButton);
+                    gameData.keyPress = false;
+                    return;
                 }
             } else if(gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED)) {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(settingsPostGameButton);
+                        gameData.keyPress = false;
                         return;
                     case settingsPostGameButton:
                         focusOn(mainMenuButton);
+                        gameData.keyPress = false;
                         return;
                     case playAgainButton:
                         focusOn(saveGameBoard);
+                        gameData.keyPress = false;
                         return;
                     case saveGameBoard:
                         focusOn(playAgainButton);
+                        gameData.keyPress = false;
+                        return;
                 }
             } else if(gameData.currentMenu == SETTINGSMENU) {
                 switch(gameData.currentFocus) {
                     case volumeSlider:
                         event.preventDefault();
                         focusOn(suggestionsSwitch);
+                        gameData.keyPress = false;
                         return;
                     case suggestionsSwitch:
                         focusOn(switchTurnsSwitch);
+                        gameData.keyPress = false;
                         return;
                     case switchTurnsSwitch:
                         focusOn(AISwitch);
+                        gameData.keyPress = false;
                         return;
                     case AISwitch:
                         if(gameData.settingsData["AI"]) {
                             focusOn(AIDifficultySelection);
+                            gameData.keyPress = false;
                             return;
                         } else {
                             focusOn(fullscreenSwitch);
+                            gameData.keyPress = false;
+                            return;
                         }
-                        return;
                     case AIDifficultySelection:
                         focusOn(fullscreenSwitch);
+                        gameData.keyPress = false;
                         return;
                     case fullscreenSwitch:
                         focusOn(playerOneIconSelection);
+                        gameData.keyPress = false;
                         return;
                     case playerOneIconSelection:
                         focusOn(playerTwoIconSelection);
+                        gameData.keyPress = false;
                         return;
                     case playerTwoIconSelection:
                         focusOn(settingsBackButton);
+                        gameData.keyPress = false;
                         return;
                     case settingsBackButton:
                         focusOn(volumeSlider);
+                        gameData.keyPress = false;
+                        return;
                 }
             }else if(gameData.currentMenu == NOTFINISHED && gameData.gameResult == NOTFINISHED) {
-                if(gameData.currentFocus > MIDDLERIGHT || !gameData.settingsData["suggestions"]) {
+                if(!gameData.settingsData["suggestions"]) {
+                    gameData.keyPress = false;
                     return;
                 }
 
-                if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 3) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 3))) {
-                    gameData.currentFocus += 3;
-                    gameboard[gameData.currentFocus].idElement.focus();
-                } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 6) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 6))) {
-                    gameData.currentFocus += 6;
-                    gameboard[gameData.currentFocus].idElement.focus();
-                }
+                moveSuggestion(DOWN);
             }
+            gameData.keyPress = false;
             return;
 
         case "w":
         case "W":
         case "Up":
         case "ArrowUp":
+            gameData.keyPress = true;
             if(gameData.currentMenu == MAINMENU) {
                 if(gameData.currentFocus === startButton) {
                     focusOn(settingsButton);
+                    gameData.keyPress = false;
+                    return;
                 } else if(gameData.currentFocus === instructionsButton) {
                     focusOn(startButton);
+                    gameData.keyPress = false;
+                    return;
                 } else if(gameData.currentFocus === settingsButton) {
                     focusOn(instructionsButton);
+                    gameData.keyPress = false;
+                    return;
                 }
             } else if(gameData.currentMenu == INSTRUCTIONSMENU) {
                 if(gameData.currentFocus === changelogButton) {
                     focusOn(instructionsBackButton);
+                    gameData.keyPress = false;
+                    return;
                 } else {
                     focusOn(changelogButton);
+                    gameData.keyPress = false;
+                    return;
                 }
             } else if(gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED)) {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(settingsPostGameButton);
+                        gameData.keyPress = false;
                         return;
                     case settingsPostGameButton:
                         focusOn(mainMenuButton);
+                        gameData.keyPress = false;
                         return;
                     case playAgainButton:
                         focusOn(saveGameBoard);
+                        gameData.keyPress = false;
                         return;
                     case saveGameBoard:
                         focusOn(playAgainButton);
+                        gameData.keyPress = false;
+                        return;
                 }
             } else if(gameData.currentMenu == SETTINGSMENU) {
                 switch(gameData.currentFocus) {
                     case volumeSlider:
                         event.preventDefault();
                         focusOn(settingsBackButton);
+                        gameData.keyPress = false;
                         return;
                     case suggestionsSwitch:
                         focusOn(volumeSlider);
+                        gameData.keyPress = false;
                         return;
                     case switchTurnsSwitch:
                         focusOn(suggestionsSwitch);
+                        gameData.keyPress = false;
                         return;
                     case AISwitch:
                         focusOn(switchTurnsSwitch);
+                        gameData.keyPress = false;
                         return;
                     case AIDifficultySelection:
                         focusOn(AISwitch);
+                        gameData.keyPress = false;
                         return;
                     case fullscreenSwitch:
                         if(gameData.settingsData["AI"]) {
-                            focusOn(AIDifficultySelection)
+                            focusOn(AIDifficultySelection);
+                            gameData.keyPress = false;
+                            return;
                         } else {
                             focusOn(AISwitch);
+                            gameData.keyPress = false;
+                            return;
                         }
-                        return;
                     case playerOneIconSelection:
                         focusOn(fullscreenSwitch);
+                        gameData.keyPress = false;
                         return;
                     case playerTwoIconSelection:
                         focusOn(playerOneIconSelection);
+                        gameData.keyPress = false;
                         return;
                     case settingsBackButton:
                         focusOn(playerTwoIconSelection);
+                        gameData.keyPress = false;
                 }
             } else if(gameData.currentMenu == NOTFINISHED) {
-                if(gameData.currentFocus < MIDDLELEFT || !gameData.settingsData["suggestions"]) {
+                if(!gameData.settingsData["suggestions"]) {
+                    gameData.keyPress = false;
                     return;
                 }
 
-                if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 3) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 3))) {
-                    gameData.currentFocus -= 3;
-                    gameboard[gameData.currentFocus].idElement.focus();
-                } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 6) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 6))) {
-                    gameData.currentFocus -= 6;
-                    gameboard[gameData.currentFocus].idElement.focus();
-                }
+                moveSuggestion(UP);
             }
+            gameData.keyPress = false;
             return;
 
         case "a":
         case "A":
         case "Left":
         case "ArrowLeft":
+            gameData.keyPress = true;
             if((gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED))) {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(playAgainButton);
+                        gameData.keyPress = false;
                         return;
                     case playAgainButton:
                         focusOn(mainMenuButton);
+                        gameData.keyPress = false;
                         return;
                     case settingsPostGameButton:
                         focusOn(saveGameBoard);
+                        gameData.keyPress = false;
                         return;
                     case saveGameBoard:
                         focusOn(settingsPostGameButton);
+                        gameData.keyPress = false;
                         return;
                 }
             } else if(gameData.currentMenu == NOTFINISHED) {
-                if(gameData.currentFocus % 3 == 0 || !gameData.settingsData["suggestions"]) {
+                if(!gameData.settingsData["suggestions"]) {
+                    gameData.keyPress = false;
                     return;
                 }
 
-                if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 1))) {
-                    gameData.currentFocus--;
-                    gameboard[gameData.currentFocus].idElement.focus();
-                } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 2) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 2))
-                          && (gameData.currentFocus - 1) % 3 != 0) {
-                    gameData.currentFocus -= 2;
-                    gameboard[gameData.currentFocus].idElement.focus();
-                }
+                moveSuggestion(LEFT);
+
             } else if(gameData.currentFocus == AIDifficultySelection) {
+                gameData.keyPress = false;
                 AIDifficultySelectionprev.click();
             } else if(gameData.currentFocus == playerOneIconSelection) {
+                gameData.keyPress = false;
                 playerOneIconSelectionprev.click();
             }else if(gameData.currentFocus == playerTwoIconSelection) {
+                gameData.keyPress = false;
                 playerTwoIconSelectionprev.click();
             }
+            gameData.keyPress = false;
             return;
 
         case "d":
         case "D":
         case "Right":
         case "ArrowRight":
+            gameData.keyPress = true;
             if((gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED))) {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(playAgainButton);
+                        gameData.keyPress = false;
                         return;
                     case playAgainButton:
                         focusOn(mainMenuButton);
+                        gameData.keyPress = false;
                         return;
                     case settingsPostGameButton:
                         focusOn(saveGameBoard);
+                        gameData.keyPress = false;
                         return;
                     case saveGameBoard:
                         focusOn(settingsPostGameButton);
+                        gameData.keyPress = false;
                         return;
                 }
             } else if(gameData.currentMenu == NOTFINISHED) {
-                if((gameData.currentFocus - 2) % 3 == 0 || !gameData.settingsData["suggestions"]) {
+                if(!gameData.settingsData["suggestions"]) {
+                    gameData.keyPress = false;
                     return;
                 }
 
-                if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 1))) {
-                    gameData.currentFocus++;
-                    gameboard[gameData.currentFocus].idElement.focus();
-                } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 2) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 2))
-                           && (gameData.currentFocus - 1) % 3 != 0) {
-                    gameData.currentFocus += 2;
-                    gameboard[gameData.currentFocus].idElement.focus();
-                }
+                gameData.keyPress = false;
+                moveSuggestion(RIGHT);
+
             } else if(gameData.currentFocus == AIDifficultySelection) {
+                gameData.keyPress = false;
                 AIDifficultySelectionnext.click();
             } else if(gameData.currentFocus == playerOneIconSelection) {
+                gameData.keyPress = false;
                 playerOneIconSelectionnext.click();
             } else if(gameData.currentFocus == playerTwoIconSelection) {
+                gameData.keyPress = false;
                 playerTwoIconSelectionnext.click();
             }
             return;
 
         case "Escape":
+            gameData.keyPress = true;
             if(gameData.currentMenu == NOTFINISHED) {
                 mainMenuButton.click();
+                gameData.keyPress = false;
                 return;
             }
         case "Backspace":
+            gameData.keyPress = true;
             if(gameData.currentMenu == INSTRUCTIONSMENU) {
                 instructionsBackButton.click();
+                gameData.keyPress = false;
             } else if(gameData.currentMenu == SETTINGSMENU) {
                 settingsBackButton.click();
+                gameData.keyPress = false;
             } else if(gameData.currentMenu == CHANGELOG) {
                 changelogBackButton.click();
+                gameData.keyPress = false;
             }
             return;
 
         case "m":
         case "M":
+            gameData.keyPress = true;
             if(gameData.settingsData["volume"] == 0) {
                 gameData.settingsData["volume"] = gameData.rememberedVolume;
             } else {
@@ -550,10 +628,12 @@ document.addEventListener("keyup", function(event) {
             document.cookie = "volume=" + gameData.settingsData["volume"] + ";";
             updateVolume();
             playClickAudio();
+            gameData.keyPress = false;
             return;
 
         case "F":
         case "f":
+            gameData.keyPress = true;
             gameData.settingsData["fullscreen"] = !gameData.settingsData["fullscreen"];
             document.cookie = "fullscreen=" + gameData.settingsData["fullscreen"] + ";";
 
@@ -562,6 +642,9 @@ document.addEventListener("keyup", function(event) {
             } else {
                 document.documentElement.requestFullscreen();
             }
+
+            gameData.keyPress = false;
+            return;
     }
 });
 
@@ -580,8 +663,7 @@ document.addEventListener("fullscreenchange", function() {
 
 for(let i = 0; i < focusable.length; ++i) {
     focusable[i].addEventListener("focus", function() {
-        stopHoverAudio();
-        hoverOverAudio.play();
+        playHoverAudio();
     });
 }
 
@@ -590,6 +672,7 @@ for(let i = 0; i < 9; ++i) {
 
     gameboard[i].idElement.addEventListener("mouseenter", function() {
         if(gameData.gameResult === NOTFINISHED) {
+            clearSelections();
             gameData.currentFocus = gameboard[i].pieceNumber;
             gameboard[i].idElement.focus();
         }
@@ -599,16 +682,16 @@ for(let i = 0; i < 9; ++i) {
         if(gameboard[i].isSelected || gameData.gameResult != NOTFINISHED || !gameData.settingsData["suggestions"]) {
             return;
         }
+        clearSelections();
         if(gameData.currentPlayer == PLAYERONE) {
-            gameboard[i].idElement.innerHTML = '<p id="hoverOver">' + gameData.settingsData["playerOneIcon"] + '</p>';
+            gameboard[i].idElement.innerHTML = '<p class="selected">' + gameData.settingsData["playerOneIcon"] + '</p>';
         } else if(!gameData.settingsData["AI"]){
-            gameboard[i].idElement.innerHTML = '<p id="hoverOver">'+ gameData.settingsData["playerTwoIcon"] + '</p>';
+            gameboard[i].idElement.innerHTML = '<p class="selected">'+ gameData.settingsData["playerTwoIcon"] + '</p>';
         } else {
             return;
         }
-        stopHoverAudio();
-        hoverOverAudio.play();
-    }, true);
+        playHoverAudio();
+    });
 
     gameboard[i].idElement.addEventListener("mouseleave", function() {
         if(gameData.gameResult === NOTFINISHED) {
@@ -746,7 +829,10 @@ mainMenuButton.addEventListener("click", function() {
     playAgainButton.style.display = "none";
     saveGameBoard.style.display = "none";
     focusOn(startButton);
-    stopHoverAudio();
+
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    }
 });
 
 settingsButton.addEventListener("click", function() {
@@ -758,7 +844,9 @@ settingsButton.addEventListener("click", function() {
     wrapper.style.display = "block";
     setTimeout(function() {
         focusOn(volumeSlider);
-        stopHoverAudio();
+        if(!hoverOverAudio.paused) {
+            hoverOverAudio.pause();
+        }
     }, 100);
 });
 
@@ -830,7 +918,9 @@ settingsBackButton.addEventListener("click", function() {
         gameData.currentMenu = MAINMENU;
         mainMenu.style.display = "grid";
         focusOn(settingsButton);
-        stopHoverAudio();
+        if(!hoverOverAudio.paused) {
+            hoverOverAudio.pause();
+        }
     } else if(gameData.settingsBackFromLocation == NOTFINISHED) {
         game.style.display = "grid";
         scoreTitle[PLAYERONE].style.display = "block";
@@ -841,7 +931,9 @@ settingsBackButton.addEventListener("click", function() {
         saveGameBoard.style.display = "block";
         gameData.currentMenu = NOTFINISHED;
         focusOn(settingsPostGameButton);
-        stopHoverAudio();
+        if(!hoverOverAudio.paused) {
+            hoverOverAudio.pause();
+        }
         if(gameData.gameResult == PLAYERONE || gameData.gameResult == PLAYERTWO) {
             whoWonHTML.style.display = "block";
         } else {
@@ -880,7 +972,9 @@ suggestionsToggle.addEventListener("change", function() {
     gameData.settingsData["suggestions"] = !gameData.settingsData["suggestions"];
     document.cookie = "suggestions=" + gameData.settingsData["suggestions"] + ";";
     focusOn(suggestionsSwitch);
-    stopHoverAudio();
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    }
 });
 
 switchTurnsCheckBox.addEventListener("change", function() {
@@ -888,7 +982,9 @@ switchTurnsCheckBox.addEventListener("change", function() {
     gameData.whoStarts = 0;
     document.cookie = "switchTurns=" + gameData.settingsData["switchTurns"] + ";";
     focusOn(switchTurnsSwitch);
-    stopHoverAudio();
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    }
 });
 
 AIToggle.addEventListener("change", function() {
@@ -896,7 +992,9 @@ AIToggle.addEventListener("change", function() {
     document.cookie = "AI=" + gameData.settingsData["AI"] + ";";
 
     focusOn(AISwitch);
-    stopHoverAudio();
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    }
     updateGrayedOut();
 });
 
@@ -905,7 +1003,9 @@ fullscreenToggle.addEventListener("change", function() {
     document.cookie = "fullscreen=" + gameData.settingsData["fullscreen"] + ";";
     gameData.fullscreenRequest = true;
     focusOn(fullscreenSwitch);
-    stopHoverAudio();
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    }
 
     if(document.webkitIsFullScreen) {
         document.exitFullscreen();
@@ -921,7 +1021,9 @@ instructionsButton.addEventListener("click", function() {
     wrapper.style.display = "block"
     gameData.currentMenu = INSTRUCTIONSMENU;
     focusOn(changelogButton);
-    stopHoverAudio();
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    };
     window.scrollTo(0, 0);
 });
 
@@ -933,7 +1035,9 @@ changelogButton.addEventListener("click", function() {
     changelog.style.display = "grid";
     changelogTitle.style.display = "block";
     focusOn(changelogBackButton);
-    stopHoverAudio();
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    };
     window.scrollTo(0, 0);
 });
 
@@ -944,7 +1048,9 @@ changelogBackButton.addEventListener("click", function() {
     changelog.style.display = "none";
     changelogTitle.style.display = "none";
     focusOn(changelogButton);
-    stopHoverAudio();
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    };
     window.scrollTo(0, gameData.ChangelogButtonOffset);
 })
 
@@ -955,7 +1061,9 @@ instructionsBackButton.addEventListener("click", function() {
     wrapper.style.display = "grid";
     gameData.currentMenu = MAINMENU;
     focusOn(startButton);
-    stopHoverAudio();
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    };
 });
 
 
@@ -964,14 +1072,18 @@ function squareClick(gamePiece, playerClicked) {
         gamePiece.idElement.innerHTML = '<p class="clicked">'+ gameData.settingsData["playerOneIcon"] + '</p>';
         gameData.playerOneSelected.push(gamePiece);
         gameData.playerOneSelectedIds.push(gamePiece.pieceNumber);
-        stopHoverAudio();
+        if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    };
         currentPlayerHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
 
     } else if(!gamePiece.isSelected && gameData.gameResult == NOTFINISHED && ((!playerClicked && gameData.settingsData["AI"]) || (playerClicked && !gameData.settingsData["AI"]))) {
         gamePiece.idElement.innerHTML = '<p class="clicked">' + gameData.settingsData["playerTwoIcon"] + '</p>';
         gameData.playerTwoSelected.push(gamePiece);
         gameData.playerTwoSelectedIds.push(gamePiece.pieceNumber);
-        stopHoverAudio();
+        if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    };
         currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
     } else {
         return;
@@ -1015,7 +1127,9 @@ function checkWin() {
         playAgainButton.style.display = "block";
         saveGameBoard.style.display = "block";
         focusOn(mainMenuButton);
-        stopHoverAudio();
+        if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    };
         return PLAYERONE;
     } else {
         if(checkSelectedContainsWin(gameData.playerTwoSelectedIds)) {
@@ -1030,7 +1144,9 @@ function checkWin() {
             playAgainButton.style.display = "block";
             saveGameBoard.style.display = "block";
             focusOn(mainMenuButton);
-            stopHoverAudio();
+            if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    };
             return PLAYERTWO;
         } else {
             if(gameData.playerOneSelectedIds.length + gameData.playerTwoSelectedIds.length == 9) {
@@ -1042,7 +1158,9 @@ function checkWin() {
                 playAgainButton.style.display = "block";
                 saveGameBoard.style.display = "block";
                 focusOn(mainMenuButton);
-                stopHoverAudio();
+                if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    };
                 return DRAW;
             }
         }
@@ -1122,17 +1240,20 @@ function showPlayerOneSelectionOption(n) {
       DrawAudio.volume = gameData.settingsData["volume"];
   }
 
-  function stopHoverAudio() {
+  function playHoverAudio() {
     if(!hoverOverAudio.paused) {
         hoverOverAudio.pause();
+        hoverOverAudio.currentTime = 0;
     }
-      hoverOverAudio.currentTime = 0;
+
+    hoverOverAudio.play().catch(function() {
+        hoverOverAudio.currentTime = 0;
+    });
   }
 
   function playClickAudio() {
     if(!clickAudio.paused) {
         clickAudio.pause();
-        clickAudio.currentTime = 0;
     }
     let promise = clickAudio.play();
 
@@ -1281,3 +1402,218 @@ function showPlayerOneSelectionOption(n) {
             setTimeout(writeStartMenu, startMenuData.speed);
          }
     }
+
+function moveSuggestion(direction) {
+    switch(direction) {
+        case UP:
+            if(onEdge(gameData.currentFocus, UP)) {
+                return;
+            }
+
+            if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 3)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 3)))) {
+                gameData.currentFocus -= 3;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 6)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 6)))
+                   && onEdge(gameData.currentFocus, DOWN)) {
+                gameData.currentFocus -= 6;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 4)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 4)))
+                   && !onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus -= 4;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 2) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 2))
+                   && !onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus -= 2;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 7))
+                    && onEdge(gameData.currentFocus, DOWN) && !onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus -= 7;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
+                   && !onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus -= 5;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
+                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus -= 5;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 8))
+                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus -= 8;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 1))
+                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus--;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 4))
+                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus -= 4;
+                gameboard[gameData.currentFocus].idElement.focus();
+            }
+
+            return;
+
+        case DOWN:
+            if(onEdge(gameData.currentFocus, DOWN)) {
+                return;
+            }
+
+            if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 3)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 3)))) {
+                gameData.currentFocus += 3;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 6)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 6)))
+                   && onEdge(gameData.currentFocus, UP)) {
+                gameData.currentFocus += 6;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 2)))
+                    && !onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus += 2;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
+                    && !onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus += 4;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
+                    && onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus += 5;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 7))
+                    && onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus += 7;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
+            && onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus += 5;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 8))
+            && onEdge(gameData.currentFocus, UP) && onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus += 8;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 1))
+            && onEdge(gameData.currentFocus, UP) && onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus++;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
+            && onEdge(gameData.currentFocus, UP) && onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus += 4;
+                gameboard[gameData.currentFocus].idElement.focus();
+            }
+
+            return;
+
+        case LEFT:
+            if(onEdge(gameData.currentFocus, LEFT)) {
+                return;
+            }
+
+            if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 1)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 1)))) {
+                gameData.currentFocus--;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 2)))
+                   && onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus -= 2;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 4)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 4)))
+                   && !onEdge(gameData.currentFocus, UP)) {
+                gameData.currentFocus -= 4;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 2) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 2))
+                   && !onEdge(gameData.currentFocus, DOWN)) {
+                gameData.currentFocus += 2;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 1))
+                   && onEdge(gameData.currentFocus, RIGHT) && !onEdge(gameData.currentFocus, DOWN)) {
+                gameData.currentFocus++;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
+                   && !onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, UP)) {
+                gameData.currentFocus += 5;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
+                   && onEdge(gameData.currentFocus, RIGHT) && onEdge(gameData.currentFocus, UP)) {
+                gameData.currentFocus += 4;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
+                   && onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus -= 5;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 7))
+                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus -= 7;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 8))
+                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
+                gameData.currentFocus -= 8;
+                gameboard[gameData.currentFocus].idElement.focus();
+            }
+
+            return;
+
+        case RIGHT:
+            if(onEdge(gameData.currentFocus, RIGHT)) {
+                return;
+            }
+
+            if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 1)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 1)))) {
+                gameData.currentFocus++;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 2)))
+                   && onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus += 2;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 2)))
+                   && !onEdge(gameData.currentFocus, UP)) {
+                gameData.currentFocus -= 2;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
+                   && !onEdge(gameData.currentFocus, DOWN)) {
+                gameData.currentFocus += 4;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 1))
+                   && onEdge(gameData.currentFocus, LEFT) && !onEdge(gameData.currentFocus, UP)) {
+                gameData.currentFocus--;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
+                   && !onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus += 5;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 7))
+                   && onEdge(gameData.currentFocus, LEFT) && onEdge(gameData.currentFocus, UP)) {
+                gameData.currentFocus += 7;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 8))
+                   && onEdge(gameData.currentFocus, LEFT) && onEdge(gameData.currentFocus, UP)) {
+                gameData.currentFocus += 8;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
+                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus -= 5;
+                gameboard[gameData.currentFocus].idElement.focus();
+            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 4))
+                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
+                gameData.currentFocus -= 4;
+                gameboard[gameData.currentFocus].idElement.focus();
+            }
+
+            return;
+    }
+}
+
+function onEdge(square, edge) {
+    if(edge == UP) {
+        return square < 3;
+    } else if(edge == DOWN) {
+        return square > 5;
+    } else if(edge == LEFT) {
+        return square % 3 == 0;
+    } else if(edge == RIGHT) {
+        return (square - 2) % 3 == 0;
+    }
+}
+
+function clearSelections() {
+    toBeDeleted = document.getElementsByClassName("selected");
+    while(toBeDeleted.length != 0) {
+        toBeDeleted[0].parentNode.removeChild(toBeDeleted[0]);
+    }
+}
