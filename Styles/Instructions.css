@@ -32,7 +32,7 @@
 
 .instructionsRow {
     text-align: center;
-    border: solid white 0.1rem;
+    border: solid var(--mainSecondary) 0.1rem;
 }
 
 #instructionsBackButton {

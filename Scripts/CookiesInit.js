@@ -1,0 +1,83 @@
+//Get the cookies, and parse through them
+let cookies = document.cookie.split(';');
+
+for(let i = 0; i < cookies.length; ++i) {
+    if(cookies[i][0] == " ") {
+        cookies[i] = cookies[i].substring(1);
+    }
+    gameData.settingsData[cookies[i].split("=")[0]] = cookies[i].split("=")[1];
+}
+
+
+//For each type of cookie, check if it exists.
+//If it doesn't, generate it. If it does, get its value from the cookie
+if(gameData.settingsData["volume"] != null) {
+    volumeSlider.value = gameData.settingsData["volume"] * 100;
+} else {
+    document.cookie = document.cookie = "volume=0.50;";
+    gameData.settingsData["volume"] = 0.50;
+}
+
+if(gameData.settingsData["suggestions"] != null) {
+    gameData.settingsData["suggestions"] = gameData.settingsData["suggestions"] === "true";
+} else {
+    document.cookie = "suggestions=true;";
+    gameData.settingsData["suggestions"] = true;
+}
+
+if(gameData.settingsData["switchTurns"] != null) {
+    gameData.settingsData["switchTurns"] = gameData.settingsData["switchTurns"] === "true";
+} else {
+    document.cookie = "switchTurns=false;"
+    gameData.settingsData["switchTurns"] = false;
+}
+
+if(gameData.settingsData["AI"] != null) {
+    gameData.settingsData["AI"] = gameData.settingsData["AI"] === "true";
+} else {
+    document.cookie = "AI=true";
+    gameData.settingsData["AI"] = true;
+}
+
+if(gameData.settingsData["AIDifficulty"] != null) {
+    gameData.settingsData["AIDifficulty"] = parseInt(gameData.settingsData["AIDifficulty"]);
+} else {
+    document.cookie = "AIDifficulty=1";
+    gameData.settingsData["AIDifficulty"] = 1;
+}
+
+if(gameData.settingsData["fullscreen"] != null) {
+    gameData.settingsData["fullscreen"] = gameData.settingsData["fullscreen"] === "true";
+} else {
+    document.cookie = "fullscreen=false";
+    gameData.settingsData["fullscreen"] = false;
+}
+
+if(gameData.settingsData["playerOneIconSlideIndex"] != null
+&& gameData.settingsData["playerTwoIconSlideIndex"] != null) {
+    gameData.settingsData["playerOneIconSlideIndex"] = parseInt(gameData.settingsData["playerOneIconSlideIndex"]);
+    gameData.settingsData["playerTwoIconSlideIndex"] = parseInt(gameData.settingsData["playerTwoIconSlideIndex"]);
+} else {
+    document.cookie = "playerOneIconSlideIndex=0;";
+    document.cookie = "playerTwoIconSlideIndex=1;";
+    gameData.settingsData["playerOneIcon"] = "X";
+    gameData.settingsData["playerTwoIcon"] = "O";
+    gameData.settingsData["playerOneIconSlideIndex"] = PLAYERONE;
+    gameData.settingsData["playerTwoIconSlideIndex"] = PLAYERTWO;
+}
+
+
+//Update all visual information to reflect the settings
+suggestionsToggle.checked = gameData.settingsData["suggestions"];
+switchTurnsToggle.checked = gameData.settingsData["switchTurns"];
+AIToggle.checked = gameData.settingsData["AI"];
+fullscreenToggle.checked = gameData.settingsData["fullscreen"];
+updateVolume();
+showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
+showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
+showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
+
+//Generate the new expiry date for the cookies
+let dateCookiesExpire = new Date();
+dateCookiesExpire.setDate(dateCookiesExpire.getDate() + 2);
+document.cookie = "expires=" + dateCookiesExpire.toUTCString() + ";";

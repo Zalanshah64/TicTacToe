@@ -41,7 +41,7 @@
     margin: auto;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    background-color: black;
+    background-color: var(--mainBackground);
 }
 
 .boardpiece {
@@ -51,7 +51,7 @@
     font-size: 4rem;
     font-weight: bold;
     min-height: 6rem;
-    background-color: black;
+    background-color: var(--mainBackground);
 }
 
 .boardpiece:focus {
@@ -63,13 +63,13 @@
 }
 
 .unclicked:active:hover {
-    color: lightgray;
+    color: var(--highlightColor);
     font-size: 3.5rem;
     cursor: pointer;
 }
 
 #topLeft {
-    border-color: white;
+    border-color: var(--mainSecondary);
     border-style: solid;
     border-top-width: 0rem;
     border-right-width: 0.6rem;
@@ -79,7 +79,7 @@
 }
 
 #topMiddle {
-    border-color: white;
+    border-color: var(--mainSecondary);
     border-style: solid;
     border-top-width: 0rem;
     border-right-width: 0.6rem;
@@ -88,7 +88,7 @@
 }
 
 #topRight {
-    border-color: white;
+    border-color: var(--mainSecondary);
     border-style: solid;
     border-top-width: 0rem;
     border-right-width: 0rem;
@@ -97,7 +97,7 @@
 }
 
 #middleLeft {
-    border-color: white;
+    border-color: var(--mainSecondary);
     border-style: solid;
     border-top-width: 0rem;
     border-right-width: 0.6rem;
@@ -106,7 +106,7 @@
 }
 
 #center {
-    border-color: white;
+    border-color: var(--mainSecondary);
     border-style: solid;
     border-top-width: 0rem;
     border-right-width: 0.6rem;
@@ -115,7 +115,7 @@
 }
 
 #middleRight {
-    border-color: white;
+    border-color: var(--mainSecondary);
     border-style: solid;
     border-top-width: 0rem;
     border-right-width: 0rem;
@@ -124,7 +124,7 @@
 }
 
 #bottomLeft {
-    border-color: white;
+    border-color: var(--mainSecondary);
     border-style: solid;
     border-top-width: 0rem;
     border-right-width: 0.6rem;
@@ -133,7 +133,7 @@
 }
 
 #bottomMiddle {
-    border-color: white;
+    border-color: var(--mainSecondary);
     border-style: solid;
     border-top-width: 0rem;
     border-right-width: 0.6rem;
@@ -142,7 +142,7 @@
 }
 
 #bottomRight {
-    border-color: white;
+    border-color: var(--mainSecondary);
     border-style: solid;
     border-top-width: 0rem;
     border-right-width: 0rem;

@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="resources/Icon.png">
         <!-- All stylesheets -->
+        <link rel="stylesheet" href="Styles/Colors.css" type="text/css">
         <link rel="stylesheet" href="Styles/Webpage.css" type="text/css">
         <link rel="stylesheet" href="Styles/StartMenu.css" type="text/css">
         <link rel="stylesheet" href="Styles/Header.css" type="text/css">
@@ -22,27 +23,27 @@
             <audio id="playerOneMoveAudio">
                 <source src="resources/Sounds/PlayerOneMove.wav" type="audio/wav">
             </audio>
-    
+
             <audio id="playerTwoMoveAudio">
                 <source src="resources/Sounds/PlayerTwoMove.wav" type="audio/wav">
             </audio>
-    
+
             <audio id="hoverOverAudio">
                 <source src="resources/Sounds/HoverOverButton.wav" type="audio/wav">
             </audio>
-    
+
             <audio id="clickAudio">
                 <source src="resources/Sounds/ClickButton.wav" type="audio/wav">
             </audio>
-    
+
             <audio id="gameStartAudio">
                 <source src="resources/Sounds/GameStart.wav" type="audio/wav">
             </audio>
-    
+
             <audio id="WinnerAudio">
                 <source src="resources/Sounds/Winner.wav" type="audio/wav">
             </audio>
-    
+
             <audio id="DrawAudio">
                 <source src="resources/Sounds/Draw.wav" type="audio/wav">
             </audio>
@@ -413,6 +414,29 @@
                 <!-- Wrapper that contains the changelog -->
                 <div id="changelogWrapper">
 
+                    <div class="update">
+                        <p class="version">V1.16.3: Beckend Organization and Fixes</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Seperated javascript file into smaller files</li>
+                            <li class="updateli">Reformatted css to make use of variables in place of colors for future theme support</li>
+                            <li class="updateli">Updated cookies to acommodate for new changes rather than needing to delete all cookies</li>
+                            <li class="updateli">Commented through most of the code</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Update images in instructions</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Consider also adding more images</li>
+                            </ul>
+                            <li class="updateli">Consider finding a better way to represent focus on toggles</li>
+                            <li class="updateli">Add easter eggs</li>
+                            <li class="updateli">Add online multiplayer support</li>
+                            <li class="updateli">Add themes</li>
+                            <li class="updateli">Figure out bug of switching between mouse and keyboard controls</li>
+                        </ol>
+                    </div>
 
                     <div class="update">
                         <p class="version">V1.16.2: Fixed Keyboard Controls</p>
@@ -1171,8 +1195,14 @@
         </div>
 
         <!-- Script that runs the game -->
+        <script type="text/javascript" src="Scripts/Classes.js"></script>
+        <script type="text/javascript" src="Scripts/Constants.js"></script>
+        <script type="text/javascript" src="Scripts/Elements.js"></script>
+        <script type="text/javascript" src="Scripts/GameObjects.js"></script>
+        <script type="text/javascript" src="Scripts/Functions.js"></script>
         <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-        <script type="text/javascript" src="TicTacToe.js"></script>
+        <script type="text/javascript" src="Scripts/CookiesInit.js"></script>
+        <script type="text/javascript" src="Scripts/EventListeners.js"></script>
 
         <!-- Installation of ionicons that allows Github and LinkedIn icons to run -->
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

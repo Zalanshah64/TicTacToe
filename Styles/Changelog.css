@@ -6,7 +6,7 @@
 
 .update {
     margin: 0.5rem 2rem 0rem 2rem;
-    border-bottom: 0.25rem solid lightgray;
+    border-bottom: 0.25rem solid var(--highlightColor);
 }
 
 .version {

@@ -1,7 +1,7 @@
 /* Stylesheet for HTML tags and the overarching wrapper for the page, as well as any custom font families or other CSS items*/
 body {
-    background-color: black;
-    color: white;
+    background-color: var(--mainBackground);
+    color: var(--mainSecondary);
     height: 100vh;
     /* max-height: 100vh; */
     max-width: 100vw;
@@ -22,11 +22,14 @@ p {
 button {
     font-family: eightBit;
     font-size: 110%;
+    color: var(--mainBackground);
+    border: var(--mainBackground);
+    background-color: var(--mainSecondary);
     cursor: pointer;
 }
 
 .focusable:focus {
-    background-color: lightgray;
+    background-color: var(--highlightColor);;
     outline: none;
 }
 
@@ -44,15 +47,15 @@ button {
 }
 
 .link:link {
-    color: white;
+    color: var(--mainSecondary);
 }
 
 .link:visited {
-    color: white;
+    color: var(--mainSecondary);
 }
 
 .link:hover {
-    color: lightgray;
+    color: var(--highlightColor);;
 }
 
 ::-webkit-scrollbar {
@@ -60,15 +63,15 @@ button {
   }
 
   ::-webkit-scrollbar-track {
-    background: black;
+    background: var(--mainBackground);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: white;
+    background: var(--mainSecondary);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: lightgray;
+    background: var(--highlightColor);;
   }
 
 @font-face {
