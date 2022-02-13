@@ -295,7 +295,7 @@
                         <!-- Slider that determines the volume of the webpage -->
                         <p id="volumeSliderCaption" class="settingsCaption">Volume:</p>
                         <div id="volumeSliderInfo" class="settingsInfo">
-                            <input type="range" min="0" max="100" value="50" tabindex="-1" id="volumeSlider"></input>
+                            <input type="range" min="0" max="100" value="50" tabindex="-1" id="volumeSlider" class="focusable"></input>
                         </div>
 
                         <!-- Toggle that turns on or off suggestions -->
@@ -413,6 +413,37 @@
 
                 <!-- Wrapper that contains the changelog -->
                 <div id="changelogWrapper">
+
+                    <div class="update">
+                        <p class="version">V1.16.4: Bugfixes and Backend Color Themes</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added 2 new themes to CSS variables</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Gameboy</li>
+                                <li class="updateExtraInfoli">University of Michigan Maize and Blue</li>
+                            </ul>
+                            <li class="updateli">Added cookie memory support for current selected theme</li>
+                            <li class="updateli">Fixed bugs with volume slider</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">arrow keys change volume when changing focus</li>
+                                <li class="updateExtraInfoli">slider now changes to highlight color when focused on</li>
+                            </ul>
+                            <li class="updateli">Changed toggles to be more visually appealing when focused on</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Update images in instructions</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Consider also adding more images</li>
+                            </ul>
+                            <li class="updateli">Add easter eggs</li>
+                            <li class="updateli">Add online multiplayer support</li>
+                            <li class="updateli">Add themes</li>
+                            <li class="updateli">Figure out bug of switching between mouse and keyboard controls</li>
+                        </ol>
+                    </div>
 
                     <div class="update">
                         <p class="version">V1.16.3: Beckend Organization and Fixes</p>

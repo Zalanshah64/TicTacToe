@@ -5,7 +5,9 @@ window.addEventListener("load", function() {
 
 //If a user presses ctrl + S, don't save the webpage
 document.addEventListener("keydown", function(event) {
-    if((event.key === "s" || event.key === "S") && event.ctrlKey) {
+    if(((event.key === "s" || event.key === "S") && event.ctrlKey)
+    || (event.key === "Down" || event.key === "ArrowDown")
+    || (event.key === "Up" || event.key === "ArrowUp")) {
         event.preventDefault();
     }
 });
@@ -19,6 +21,8 @@ document.addEventListener("keyup", function(event) {
 
     switch(event.key) {
         case "Enter":
+            document.querySelector(":root").style.setProperty("--mainBackground", "red");
+            document.querySelector(":root").style.setProperty("--mainSecondary", "blue");
             gameData.keyPress = true;
             //If the key pressed was enter and we are in the start menu, open the main menu
             if(gameData.currentMenu === GAMEMENU) {

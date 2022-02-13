@@ -138,7 +138,7 @@ function showAIDifficultySelectionOption(n) {
         AIDIfficultySelections[i].style.display = "none";
     }
 
-    AIDIfficultySelections[gameData.settingsData["AIDifficulty"]].stye.display = "flex";
+    AIDIfficultySelections[gameData.settingsData["AIDifficulty"]].style.display = "flex";
     document.cookie = "AIDifficulty=" + gameData.settingsData["AIDifficulty"] + ";";
 }
 

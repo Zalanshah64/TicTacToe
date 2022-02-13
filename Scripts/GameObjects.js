@@ -21,7 +21,7 @@ let gameData = {
     keyPress: false
 }
 
-//Stores all user settings
+//Stores all settings for loading the start menu
 let startMenuData = {
     i: 0,
     title: "Tic-Tac-Toe",
@@ -34,12 +34,14 @@ let startMenuData = {
 }
 
 //The gameboard the entire game runs on
-let gameboard = [new gamePiece(topLeftId, TOPLEFT),
-                 new gamePiece(topMiddleId, TOPMIDDLE),
-                 new gamePiece(topRightId, TOPRIGHT),
-                 new gamePiece(middleLeftId, MIDDLELEFT),
-                 new gamePiece(centerId, CENTER),
-                 new gamePiece(middleRightId, MIDDLERIGHT),
-                 new gamePiece(bottomLeftId, BOTTOMLEFT),
-                 new gamePiece(bottomMiddleId, BOTTOMMIDDLE),
-                 new gamePiece(bottomRightId, BOTTOMRIGHT)];
+let gameboard = [
+    new gamePiece(topLeftId, TOPLEFT),
+    new gamePiece(topMiddleId, TOPMIDDLE),
+    new gamePiece(topRightId, TOPRIGHT),
+    new gamePiece(middleLeftId, MIDDLELEFT),
+    new gamePiece(centerId, CENTER),
+    new gamePiece(middleRightId, MIDDLERIGHT),
+    new gamePiece(bottomLeftId, BOTTOMLEFT),
+    new gamePiece(bottomMiddleId, BOTTOMMIDDLE),
+    new gamePiece(bottomRightId, BOTTOMRIGHT)
+                ];

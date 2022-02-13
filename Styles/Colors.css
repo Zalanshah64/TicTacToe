@@ -1,5 +1,17 @@
 :root {
-    --mainBackground: #000000;
-    --mainSecondary: #ffffff;
-    --highlightColor: #d3d3d3;
+    --main: var(--monoMain);
+    --secondary: var(--monoSecondary);
+    --highlight: var(--monoHighlight);
+
+    --monoMain: #000000;
+    --monoSecondary: #ffffff;
+    --monoHighlight: #d3d3d3;
+
+    --gameboyMain: #0f380f;
+    --gameboySecondary: #8bac0f;
+    --gameboyHighlight: #9bbc0f;
+
+    --umichMain: #00274C;
+    --umichSecondary: #FFFFFF;
+    --umichHighlight: #FFCB05;
 }

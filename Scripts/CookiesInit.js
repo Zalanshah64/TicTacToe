@@ -35,21 +35,21 @@ if(gameData.settingsData["switchTurns"] != null) {
 if(gameData.settingsData["AI"] != null) {
     gameData.settingsData["AI"] = gameData.settingsData["AI"] === "true";
 } else {
-    document.cookie = "AI=true";
+    document.cookie = "AI=true;";
     gameData.settingsData["AI"] = true;
 }
 
 if(gameData.settingsData["AIDifficulty"] != null) {
     gameData.settingsData["AIDifficulty"] = parseInt(gameData.settingsData["AIDifficulty"]);
 } else {
-    document.cookie = "AIDifficulty=1";
+    document.cookie = "AIDifficulty=1;";
     gameData.settingsData["AIDifficulty"] = 1;
 }
 
 if(gameData.settingsData["fullscreen"] != null) {
     gameData.settingsData["fullscreen"] = gameData.settingsData["fullscreen"] === "true";
 } else {
-    document.cookie = "fullscreen=false";
+    document.cookie = "fullscreen=false;";
     gameData.settingsData["fullscreen"] = false;
 }
 
@@ -66,6 +66,11 @@ if(gameData.settingsData["playerOneIconSlideIndex"] != null
     gameData.settingsData["playerTwoIconSlideIndex"] = PLAYERTWO;
 }
 
+if(gameData.settingsData["theme"] != null) {
+    gameData.settingsData["theme"] = parseInt(gameData.settingsData["theme"]);
+} else {
+    document.cookie = "theme=0;";
+}
 
 //Update all visual information to reflect the settings
 suggestionsToggle.checked = gameData.settingsData["suggestions"];

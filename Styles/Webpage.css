@@ -1,7 +1,7 @@
 /* Stylesheet for HTML tags and the overarching wrapper for the page, as well as any custom font families or other CSS items*/
 body {
-    background-color: var(--mainBackground);
-    color: var(--mainSecondary);
+    background-color: var(--main);
+    color: var(--secondary);
     height: 100vh;
     /* max-height: 100vh; */
     max-width: 100vw;
@@ -22,14 +22,19 @@ p {
 button {
     font-family: eightBit;
     font-size: 110%;
-    color: var(--mainBackground);
-    border: var(--mainBackground);
-    background-color: var(--mainSecondary);
+    color: var(--main);
+    border: var(--main);
+    background-color: var(--secondary);
     cursor: pointer;
 }
 
+#volumeSlider:focus {
+    background-color: var(--highlight);;
+    outline: none;
+}
+
 .focusable:focus {
-    background-color: var(--highlightColor);;
+    background-color: var(--highlight);;
     outline: none;
 }
 
@@ -47,15 +52,15 @@ button {
 }
 
 .link:link {
-    color: var(--mainSecondary);
+    color: var(--secondary);
 }
 
 .link:visited {
-    color: var(--mainSecondary);
+    color: var(--secondary);
 }
 
 .link:hover {
-    color: var(--highlightColor);;
+    color: var(--highlight);;
 }
 
 ::-webkit-scrollbar {
@@ -63,15 +68,15 @@ button {
   }
 
   ::-webkit-scrollbar-track {
-    background: var(--mainBackground);
+    background: var(--main);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--mainSecondary);
+    background: var(--secondary);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--highlightColor);;
+    background: var(--highlight);;
   }
 
 @font-face {
