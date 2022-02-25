@@ -150,6 +150,10 @@ document.addEventListener("keyup", function(event) {
                         gameData.keyPress = false;
                         return;
                     case playerTwoIconSelection:
+                        focusOn(themeSelection);
+                        gameData.keyPress = false;
+                        return;
+                    case themeSelection:
                         focusOn(settingsBackButton);
                         gameData.keyPress = false;
                         return;
@@ -258,8 +262,12 @@ document.addEventListener("keyup", function(event) {
                         focusOn(playerOneIconSelection);
                         gameData.keyPress = false;
                         return;
-                    case settingsBackButton:
+                    case themeSelection:
                         focusOn(playerTwoIconSelection);
+                        gameData.keyPress = false;
+                        return;
+                    case settingsBackButton:
+                        focusOn(themeSelection);
                         gameData.keyPress = false;
                 }
             } else if(gameData.currentMenu == NOTFINISHED) {
@@ -306,14 +314,13 @@ document.addEventListener("keyup", function(event) {
                 moveSuggestion(LEFT);
 
             } else if(gameData.currentFocus == AIDifficultySelection) {
-                gameData.keyPress = false;
                 AIDifficultySelectionprev.click();
             } else if(gameData.currentFocus == playerOneIconSelection) {
-                gameData.keyPress = false;
                 playerOneIconSelectionprev.click();
             }else if(gameData.currentFocus == playerTwoIconSelection) {
-                gameData.keyPress = false;
                 playerTwoIconSelectionprev.click();
+            } else if(gameData.currentFocus == themeSelection) {
+                themeSelectionPrev.click();
             }
             gameData.keyPress = false;
             return;
@@ -352,15 +359,15 @@ document.addEventListener("keyup", function(event) {
                 moveSuggestion(RIGHT);
 
             } else if(gameData.currentFocus == AIDifficultySelection) {
-                gameData.keyPress = false;
                 AIDifficultySelectionnext.click();
             } else if(gameData.currentFocus == playerOneIconSelection) {
-                gameData.keyPress = false;
                 playerOneIconSelectionnext.click();
             } else if(gameData.currentFocus == playerTwoIconSelection) {
-                gameData.keyPress = false;
                 playerTwoIconSelectionnext.click();
+            } else if(gameData.currentFocus == themeSelection) {
+                themeSelectionNext.click();
             }
+            gameData.keyPress = false;
             return;
 
         case "Escape":
@@ -798,6 +805,7 @@ instructionsButton.addEventListener("click", function() {
 });
 
 changelogButton.addEventListener("click", function() {
+    document.getElementsByTagName("html")[0].style.scrollBehavior = "auto";
     gameData.currentMenu = CHANGELOG;
     gameData.ChangelogButtonOffset = window.pageYOffset;
     instructionsMenu.style.display = "none";
@@ -809,9 +817,11 @@ changelogButton.addEventListener("click", function() {
         hoverOverAudio.pause();
     };
     window.scrollTo(0, 0);
+    document.getElementsByTagName("html")[0].style.scrollBehavior = "smooth";
 });
 
 changelogBackButton.addEventListener("click", function() {
+    document.getElementsByTagName("html")[0].style.scrollBehavior = "auto";
     gameData.currentMenu = INSTRUCTIONSMENU;
     instructionsMenu.style.display = "grid";
     instructionsTitle.style.display = "block";
@@ -822,6 +832,7 @@ changelogBackButton.addEventListener("click", function() {
         hoverOverAudio.pause();
     };
     window.scrollTo(0, gameData.ChangelogButtonOffset);
+    document.getElementsByTagName("html")[0].style.scrollBehavior = "smooth";
 })
 
 instructionsBackButton.addEventListener("click", function() {
@@ -834,4 +845,12 @@ instructionsBackButton.addEventListener("click", function() {
     if(!hoverOverAudio.paused) {
         hoverOverAudio.pause();
     };
+});
+
+themeSelectionNext.addEventListener("click", function() {
+    updateTheme(gameData["theme"] + 1);
+});
+
+themeSelectionPrev.addEventListener("click", function() {
+    updateTheme(gameData["theme"] - 1);
 });

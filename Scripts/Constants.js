@@ -31,3 +31,11 @@ const UP = 0;
 const DOWN = 1;
 const LEFT = 2;
 const RIGHT = 3;
+
+//Refer to indexes of themes
+const MONO = 0;
+const GAMEBOY = 1;
+const VAMPIRE = 2;
+const SNES = 3;
+const HALLOWEEN = 4;
+const UMICH = 5;

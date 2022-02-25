@@ -81,6 +81,7 @@ updateVolume();
 showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
 showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
 showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
+updateTheme(gameData.settingsData["theme"]);
 
 //Generate the new expiry date for the cookies
 let dateCookiesExpire = new Date();

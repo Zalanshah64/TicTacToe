@@ -55,9 +55,9 @@
 
         <!-- Main wrapper for webpage -->
         <div id="startMenuWrapper">
-            <h1 id="startMenuTitle">⠀</h1>
-            <h3 id="startMenuCredits">⠀</h3>
-            <h4 id="startMenuSubtitle">⠀</h4>
+            <h1 id="startMenuTitle"></h1>
+            <h3 id="startMenuCredits"></h3>
+            <h4 id="startMenuSubtitle"></h4>
         </div>
 
         <div id="wrapper">
@@ -403,6 +403,22 @@
                                 </div>
                             </div>
                         </div>
+
+                        <p id="themeSelectionCaption" class="settingsCaption canGray">Theme:</p>
+                        <div id="themeIconSelectionWrapper" class="iconSelectionWrapper canGray">
+                            <div id="themeIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption canGray">
+                                <div tabindex="-1" id="themeSelection" class="iconSelection canGray focusable carousel">
+                                    <div id="themeSelectionprev" class="iconSelectionprev iconSelectionButton clickSound canGray">&lt</div>
+                                    <div class="themeselection selection canGray">Mono</div>
+                                    <div class="themeselection selection canGray">Gameboy</div>
+                                    <div class="themeselection selection canGray">Vampire</div>
+                                    <div class="themeselection selection canGray">SNES</div>
+                                    <div class="themeselection selection canGray">Halloween</div>
+                                    <div class="themeselection selection canGray">Go Blue</div>
+                                    <div id="themeSelectionnext" class="iconSelectionnext iconSelectionButton clickSound canGray">&gt</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Button that returns user to previous window -->
@@ -415,21 +431,34 @@
                 <div id="changelogWrapper">
 
                     <div class="update">
-                        <p class="version">V1.16.4: Bugfixes and Backend Color Themes</p>
+                        <p class="version">V1.17.1: World of Color</p>
                         <p class="CHANGELOG">CHANGELOG:</p>
                         <ol class="updateList">
-                            <li class="updateli">Added 2 new themes to CSS variables</li>
+                            <li class="updateli">Added themes</li>
+                            <li class="updateli">Added 5 new themes</li>
                             <ul class="updateExtraInfo">
                                 <li class="updateExtraInfoli">Gameboy</li>
+                                <li class="updateExtraInfoli">Vampire</li>
+                                <li class="updateExtraInfoli">SNES</li>
+                                <li class="updateExtraInfoli">Halloween</li>
                                 <li class="updateExtraInfoli">University of Michigan Maize and Blue</li>
                             </ul>
                             <li class="updateli">Added cookie memory support for current selected theme</li>
+                            <li class="updateli">Changed toggles to be more visually appealing when focused on</li>
                             <li class="updateli">Fixed bugs with volume slider</li>
                             <ul class="updateExtraInfo">
                                 <li class="updateExtraInfoli">arrow keys change volume when changing focus</li>
                                 <li class="updateExtraInfoli">slider now changes to highlight color when focused on</li>
                             </ul>
-                            <li class="updateli">Changed toggles to be more visually appealing when focused on</li>
+                            <li class="updateli">Fixed bugs associated with start menu</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Fixed bug where Tic-Tac-Toe start menu text isn't centered</li>
+                                <li class="updateExtraInfoli">Fixed bug where strange character appears at beginning of each line on Mac</li>
+                            </ul>
+                            <li class="updateli">Made keyboard control scrolling smooth</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Jumping from instructions to changelog and back will not be smooth and automatically jump</li>
+                            </ul>
                         </ol>
 
                         <p class="TODO">TO DO:</p>
@@ -440,7 +469,6 @@
                             </ul>
                             <li class="updateli">Add easter eggs</li>
                             <li class="updateli">Add online multiplayer support</li>
-                            <li class="updateli">Add themes</li>
                             <li class="updateli">Figure out bug of switching between mouse and keyboard controls</li>
                         </ol>
                     </div>

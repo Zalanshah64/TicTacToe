@@ -198,3 +198,7 @@ input:checked + .toggleSlider:before {
 .toggleSwitch:focus > input:checked + .toggleSlider {
     background-color: var(--highlight);
 }
+
+#themeSelection {
+    width: 60%;
+}

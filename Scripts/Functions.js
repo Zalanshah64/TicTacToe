@@ -203,6 +203,59 @@ function updateVolume() {
     DrawAudio.volume = gameData.settingsData["volume"];
 }
 
+function updateTheme(themeIndex) {
+
+    if(themeIndex > themeSelections.length - 1) {
+        themeIndex = 0;
+    } else if(themeIndex < 0) {
+        themeIndex = themeSelections.length - 1;
+    }
+
+    for(let i = 0; i < themeSelections.length; ++i) {
+        themeSelections[i].style.display = "none";
+    }
+
+    gameData["theme"] = themeIndex;
+    themeSelections[themeIndex].style.display = "flex";
+
+    switch(themeIndex) {
+        case MONO:
+            root.style.setProperty("--main", "var(--monoMain)");
+            root.style.setProperty("--secondary", "var(--monoSecondary)");
+            root.style.setProperty("--highlight", "var(--monoHighlight)");
+            break;
+        case GAMEBOY:
+            root.style.setProperty("--main", "var(--gameboyMain)");
+            root.style.setProperty("--secondary", "var(--gameboySecondary)");
+            root.style.setProperty("--highlight", "var(--gameboyHighlight)");
+            break;
+        case VAMPIRE:
+            root.style.setProperty("--main", "var(--vampireMain)");
+            root.style.setProperty("--secondary", "var(--vampireSecondary)");
+            root.style.setProperty("--highlight", "var(--vampireHighlight)");
+            break;
+        case SNES:
+            root.style.setProperty("--main", "var(--snesMain)");
+            root.style.setProperty("--secondary", "var(--snesSecondary)");
+            root.style.setProperty("--highlight", "var(--snesHighlight)");
+            break;
+        case HALLOWEEN:
+            root.style.setProperty("--main", "var(--halloweenMain)");
+            root.style.setProperty("--secondary", "var(--halloweenSecondary)");
+            root.style.setProperty("--highlight", "var(--halloweenHighlight)");
+            break;
+        case UMICH:
+            root.style.setProperty("--main", "var(--umichMain)");
+            root.style.setProperty("--secondary", "var(--umichSecondary)");
+            root.style.setProperty("--highlight", "var(--umichHighlight)");
+            break;
+    }
+
+    document.cookie = "theme=" + themeIndex + ";";
+
+
+}
+
   //Turn off the hover audio if it's currently playing, and play it from the start
 function playHoverAudio() {
     if(!hoverOverAudio.paused) {

@@ -1,5 +1,6 @@
 //Document Elements related to entire webpage
 let wrapper = document.getElementById("wrapper");
+let root = document.querySelector(":root");
 let hoverOverButtons = document.getElementsByClassName("hoverOverSound");
 let clickSoundButtons = document.getElementsByClassName("clickSound");
 let focusable = document.getElementsByClassName("focusable");
@@ -53,7 +54,10 @@ let playerOneIconSelectionnext = document.getElementById("playerOneIconSelection
 let playerOneIconSelectionprev = document.getElementById("playerOneIconSelectionprev");
 let playerTwoIconSelectionnext = document.getElementById("playerTwoIconSelectionnext");
 let playerTwoIconSelectionprev = document.getElementById("playerTwoIconSelectionprev");
-
+let themeSelectionNext = document.getElementById("themeSelectionnext");
+let themeSelectionPrev = document.getElementById("themeSelectionprev");
+let themeSelections = document.getElementsByClassName("themeselection")
+let themeSelection = document.getElementById("themeSelection");
 
 //Document Elements related to instructions menu
 let instructionsMenu = document.getElementById("instructionsMenu");

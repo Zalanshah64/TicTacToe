@@ -1,4 +1,8 @@
 /* Stylesheet for HTML tags and the overarching wrapper for the page, as well as any custom font families or other CSS items*/
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: var(--main);
     color: var(--secondary);
