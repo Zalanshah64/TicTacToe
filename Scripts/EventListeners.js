@@ -848,9 +848,9 @@ instructionsBackButton.addEventListener("click", function() {
 });
 
 themeSelectionNext.addEventListener("click", function() {
-    updateTheme(gameData["theme"] + 1);
+    updateTheme(gameData.settingsData["theme"] + 1);
 });
 
 themeSelectionPrev.addEventListener("click", function() {
-    updateTheme(gameData["theme"] - 1);
+    updateTheme(gameData.settingsData["theme"] - 1);
 });
