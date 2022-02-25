@@ -215,7 +215,7 @@ function updateTheme(themeIndex) {
         themeSelections[i].style.display = "none";
     }
 
-    gameData["theme"] = themeIndex;
+    gameData.settingsData["theme"] = themeIndex;
     themeSelections[themeIndex].style.display = "flex";
 
     switch(themeIndex) {
