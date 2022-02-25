@@ -70,6 +70,7 @@ if(gameData.settingsData["theme"] != null) {
     gameData.settingsData["theme"] = parseInt(gameData.settingsData["theme"]);
 } else {
     document.cookie = "theme=0;";
+    gameData["theme"] = MONO
 }
 
 //Update all visual information to reflect the settings
