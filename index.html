@@ -3,6 +3,16 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <meta property="og:title" content="Tic-Tac-Toe" />
+        <meta property="og:image" content="resources/Thumbnail.png" />
+        <meta property="og:image:width" content="1440" />
+        <meta property="og:image:height" content="731" />
+        <meta property="og:description" content="A webpage-based version of Tic-Tac-Toe" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="zalanshah64.github.io/TicTacToe" />
+        <meta property="og:locale" content="en_US" />
+
         <link rel="icon" href="resources/Icon.png">
         <!-- All stylesheets -->
         <link rel="stylesheet" href="Styles/Colors.css" type="text/css">
@@ -53,7 +63,7 @@
             <a id="downloadImageLink" src=""></a>
         </div>
 
-        <!-- Main wrapper for webpage -->
+        <!-- Main wrapper for Start Menu -->
         <div id="startMenuWrapper">
             <h1 id="startMenuTitle"></h1>
             <h3 id="startMenuCredits"></h3>
@@ -228,6 +238,9 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <p class="instructionTitle">THEMES</p>
+                    <p class="instruction">By default, the color scheme of this game is monochrome. You can change the theme of the game to several premade options in the settings menu.</p>
 
                     <p class="instructionTitle">DOWNLOADING A GAME</p>
                     <p class="instruction">Once a round has ended, you are able to download a png image of the round you just played.
@@ -429,6 +442,26 @@
 
                 <!-- Wrapper that contains the changelog with each update -->
                 <div id="changelogWrapper">
+
+                    <div class="update">
+                        <p class="version">V1.17.2: Updated Instructions and og Implementation</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Updated instruction manual to add information about themes</li>
+                            <li class="updateli">Added OpenGraph tags to allow for smarter sharing</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Update images in instructions</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Consider also adding more images</li>
+                            </ul>
+                            <li class="updateli">Add easter eggs</li>
+                            <li class="updateli">Add online multiplayer support</li>
+                            <li class="updateli">Figure out bug of switching between mouse and keyboard controls</li>
+                        </ol>
+                    </div>
 
                     <div class="update">
                         <p class="version">V1.17.1: World of Color</p>
