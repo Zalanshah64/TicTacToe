@@ -143,6 +143,7 @@ input:checked + .toggleSlider:before {
     display: flex;
     justify-content: center;
     align-self: center;
+    text-align: center;
   }
 
   .iconSelectionButton {
@@ -172,9 +173,9 @@ input:checked + .toggleSlider:before {
 
 .grayedOut {
     cursor: default;
-    color: gray;
-    border-color: gray;
-    opacity: 0.9;
+    color: var(--secondary);
+    border-color: var(--secondary);
+    opacity: 0.7;
 }
 
 .carousel.focusable:focus {
@@ -201,4 +202,28 @@ input:checked + .toggleSlider:before {
 
 #themeSelection {
     width: 60%;
+}
+
+@media screen and (max-width: 500px) {
+    #settingsMenu {
+        width: 75%;
+        margin: auto;
+    }
+
+    .iconSelection, #AIDifficultySelection, #themeSelection {
+        width: 100%;
+    }
+
+    .selection {
+        font-size: 1.5rem;
+    }
+
+    .AIDifficultyselection.selection.canGray,
+    .themeselection {
+        font-size: 0.6rem;
+    }
+    .settingsCaption {
+        font-size: 0.7rem;
+        line-height: 0.75rem;
+    }
 }

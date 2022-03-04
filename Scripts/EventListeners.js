@@ -1,7 +1,25 @@
 //When the page first loads up, start writing the start menu
 window.addEventListener("load", function() {
+    startMenuData.subtitle = maxWidth.matches ? "Tap anywhere to start" : "Press Enter to start";
     setTimeout(writeStartMenu, 500);
 });
+
+document.querySelector("body").addEventListener("click", function() {
+    if(gameData.currentMenu === GAMEMENU && maxWidth.matches) {
+        gameData.gameResult = MAINMENU;
+        startMenuWrapper.style.display = "none";
+        wrapper.style.display = "grid";
+        gameStartAudio.play();
+
+        if(gameData.settingsData["fullscreen"]) {
+            gameData.fullscreenRequest = true;
+            document.documentElement.requestFullscreen();
+        }
+        gameData.currentMenu = MAINMENU;
+        focusOn(startButton);
+        return;
+    }
+})
 
 //If a user presses ctrl + S, don't save the webpage
 document.addEventListener("keydown", function(event) {
@@ -21,8 +39,6 @@ document.addEventListener("keyup", function(event) {
 
     switch(event.key) {
         case "Enter":
-            document.querySelector(":root").style.setProperty("--mainBackground", "red");
-            document.querySelector(":root").style.setProperty("--mainSecondary", "blue");
             gameData.keyPress = true;
             //If the key pressed was enter and we are in the start menu, open the main menu
             if(gameData.currentMenu === GAMEMENU) {
@@ -505,15 +521,20 @@ startButton.addEventListener("click", function() {
     playerTwoScoreHTML.innerHTML = gameData.playerTwoScore;
     currentTurnHTML.style.display = "block";
     game.style.display = "grid";
-    scoreTitle[PLAYERONE].style.display = "block";
-    scoreTitle[PLAYERTWO].style.display = "block";
+
+    if(getComputedStyle(scoreTitle[PLAYERONE]).visibility != "hidden") {
+        scoreTitle[PLAYERONE].style.display = "block";
+        scoreTitle[PLAYERTWO].style.display = "block";
+    }
     playerOneName.innerHTML = gameData.settingsData["playerOneIcon"];
     playerTwoName.innerHTML = gameData.settingsData["playerTwoIcon"];
     currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
-    setTimeout(function() {
-        gameData.currentFocus = CENTER;
-        gameboard[CENTER].idElement.focus()
-    }, 100);
+    if(gameData.settingsData["suggestions"] && !maxWidth.matches) {
+        setTimeout(function() {
+            gameData.currentFocus = CENTER;
+            gameboard[CENTER].idElement.focus()
+        }, 100);
+    }
 });
 
 
@@ -700,8 +721,10 @@ settingsBackButton.addEventListener("click", function() {
         }
     } else if(gameData.settingsBackFromLocation == NOTFINISHED) {
         game.style.display = "grid";
-        scoreTitle[PLAYERONE].style.display = "block";
-        scoreTitle[PLAYERTWO].style.display = "block";
+        if(getComputedStyle(scoreTitle[PLAYERONE]).visibility != "hidden") {
+            scoreTitle[PLAYERONE].style.display = "block";
+            scoreTitle[PLAYERTWO].style.display = "block";
+        }
         mainMenuButton.style.display = "block";
         settingsPostGameButton.style.display = "block";
         playAgainButton.style.display = "block";

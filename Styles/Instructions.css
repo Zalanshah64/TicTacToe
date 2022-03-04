@@ -11,6 +11,7 @@
     margin-top: 1.5rem;
     display: flex;
     justify-content: center;
+    text-align: center;
 }
 
 .instruction {
@@ -19,9 +20,6 @@
     font-size: 1.25rem;
 }
 
-#winImages {
-    display: flex;
-}
 
 #instructionsKeyPressTable {
     display: flex;
@@ -45,8 +43,19 @@
     margin: 1.5rem auto 1.5rem auto;
     height: 70%;
     width: auto;
-    align-items: center;
+}
+
+.instructionImgDiv {
+    box-sizing: border-box;
+    display: flex;
     justify-content: center;
+}
+
+.instructionImageWin {
+    float: left;
+    width: 30%;
+    height: auto;
+    padding: 1.5%;
 }
 
 #changelogButton {
@@ -59,4 +68,33 @@
 
 .license {
     font-size: 1rem;
+}
+
+@media screen and (max-width: 500px) {
+    .instructionTitle {
+        font-size: 1rem;
+        line-height: 1.1rem;
+    }
+
+    .instruction {
+        font-size: 0.6rem;
+        line-height: 0.7rem;
+    }
+
+    .instructionImgDiv {
+        display: grid;
+        align-items: center;
+    }
+
+    .instructionImage {
+        height: 40%;
+        width: auto;
+    }
+
+    .instructionImageWin {
+        width: 50%;
+        height: auto;
+        margin: 1.5rem auto 1.5rem auto;
+        float: none;
+    }
 }

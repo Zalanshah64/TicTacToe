@@ -33,7 +33,6 @@
     display: none;
 }
 
-
 #board {
     display: grid;
     width: 60%;
@@ -157,4 +156,17 @@
 
 .clicked {
     cursor: default;
+}
+
+
+@media screen and (max-width: 500px) {
+    #board {
+        width: 80%;
+        height: 70%;
+    }
+
+    .postGameButton {
+        font-size: 0.65rem;
+        line-height: 1rem;
+    }
 }

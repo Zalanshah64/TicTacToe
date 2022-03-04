@@ -15,7 +15,7 @@
 
         <link rel="icon" href="resources/Icon.png">
         <!-- All stylesheets -->
-        <link rel="stylesheet" href="Styles/Colors.css" type="text/css">
+        <link rel="stylesheet" href="Styles/Variables.css" type="text/css">
         <link rel="stylesheet" href="Styles/Webpage.css" type="text/css">
         <link rel="stylesheet" href="Styles/StartMenu.css" type="text/css">
         <link rel="stylesheet" href="Styles/Header.css" type="text/css">
@@ -65,8 +65,8 @@
 
         <!-- Main wrapper for Start Menu -->
         <div id="startMenuWrapper">
-            <h1 id="startMenuTitle"></h1>
-            <h3 id="startMenuCredits"></h3>
+                <h1 id="startMenuTitle"></h1>
+                <h3 id="startMenuCredits"></h3>
             <h4 id="startMenuSubtitle"></h4>
         </div>
 
@@ -132,29 +132,36 @@
                     <p class="instruction">Tic-Tac-Toe, also known as Noughts and Crosses, is a game played by many children around the world. The game is very old, 
                         and early versions of it can be found in ancient Egypt and the Roman Empire.
                         <br>The game starts with a three by three grid of squares, or a pound symbol.</p>
-                    <img src="resources/Instructions/InstructionsFirstImage.png" title="An empty Tic-Tac-Toe board" class="instructionImage">
+                    <div class="instructionImgDiv">
+                        <img src="resources/Instructions/InstructionsFirstImage.png" title="An empty Tic-Tac-Toe board" class="instructionImage">
+                    </div>
                     <p class="instruction">Two players take turns filling in the grid with their respective symbol (X or O). X always starts, and O goes second.</p>
-                    <img src="resources/Instructions/InstructionsSecondImage.png" title="An example of the first move in a Tic-Tac-Toe board" class="instructionImage">
+                    <div class="instructionImgDiv">
+                        <img src="resources/Instructions/InstructionsSecondImage.png" title="An example of the first move in a Tic-Tac-Toe board" class="instructionImage">
+                    </div>
                     <p class="instruction">If one player takes a certain square, their oponent will not be able to take that square for the rest of the game.</p>
-                    <img src="resources/Instructions/InstructionsThirdImage.png" title="An example of the second move in a Tic-Tac-Toe board" class="instructionImage">
-                    <p class="instruction">In order to win, you must line up three consecutive spaces of your symbol either vertically, horizontally, or diagonally.</p>
-                    <div id="winImages">
-                        <img src="resources/Instructions/InstructionsFourthImage.png" title="A game where X has won vertically" class="instructionImage">
-                        <img src="resources/Instructions/InstructionsFifthImage.png" title="A game where X has won horizontally" class="instructionImage">
-                        <img src="resources/Instructions/InstructionsSixthImage.png" title="A game where X has won diagonally" class="instructionImage">
+                    <div class="instructionImgDiv">
+                        <img src="resources/Instructions/InstructionsThirdImage.png" title="An example of the second move in a Tic-Tac-Toe board" class="instructionImage">
+                    </div>
+                        <p class="instruction">In order to win, you must line up three consecutive spaces of your symbol either vertically, horizontally, or diagonally.</p>
+                    <div class="instructionImgDiv">
+                        <img src="resources/Instructions/InstructionsFourthImage.png" title="A game where X has won vertically" class="instructionImage instructionImageWin">
+                        <img src="resources/Instructions/InstructionsFifthImage.png" title="A game where X has won horizontally" class="instructionImage instructionImageWin">
+                        <img src="resources/Instructions/InstructionsSixthImage.png" title="A game where X has won diagonally" class="instructionImage instructionImageWin">
                     </div>
                     <p class="instruction">If every space has been filled in and there has not been a three-in-a-row yet, the game is considered a tie and is over.</p>
-                    <img src="resources/Instructions/InstructionsSeventhImage.png" class="instructionImage">
-
+                    <div class="instructionImgDiv">
+                        <img src="resources/Instructions/InstructionsSeventhImage.png" class="instructionImage">
+                    </div>
                     <p class="instructionTitle">VOLUME</p>
                     <p class="instruction">This game features sound effects for every possible interaction you can have with the game.</p>
                     <p class="instruction">You can change the volume in the settings menu.</p>
                     <p class="instruction">Additionally, you can toggle mute with the "M" key.</p>
 
-                    <p class="instructionTitle">SUGGESTIONS</p>
-                    <p class="instruction">Suggestions show you a ghost of your icon on the board on the square you hover over. If you use the keyboard for input, the suggestion
+                    <p class="instructionTitle notInMobileMode">SUGGESTIONS</p>
+                    <p class="instruction notInMobileMode">Suggestions show you a ghost of your icon on the board on the square you hover over. If you use the keyboard for input, the suggestion
                         will move according to the keys you press.</p>
-                    <p class="instruction">To turn suggestions off, go to the settings menu.</p>
+                    <p class="instruction notInMobileMode">To turn suggestions off, go to the settings menu.</p>
 
                     <p class="instructionTitle">SWITCHING TURNS</p>
                     <p class="instruction">By default, player one will always go first and player two will always go second.</p>
@@ -166,20 +173,20 @@
                     <p class="instruction">The AI will recognize when you are about to win and block it, as well as when it is can win and play the necessary move, too.</p>
                     <p class="instruction">By default, the AI will be enabled. To turn it off, go to the settings.</p>
 
-                    <p class="instructionTitle">FULLSCREEN</p>
-                    <p class="instruction">You can enable fullscreen by going to the settings menu. This will make the game take up the entirety of your screen.</p>
-                    <p class="instruction">You can exit fullscreen mode by going to the settings menu, pressing F, or pressing escape.</p>
+                    <p class="instructionTitle notInMobileMode">FULLSCREEN</p>
+                    <p class="instruction notInMobileMode">You can enable fullscreen by going to the settings menu. This will make the game take up the entirety of your screen.</p>
+                    <p class="instruction notInMobileMode">You can exit fullscreen mode by going to the settings menu, pressing F, or pressing escape.</p>
 
                     <p class="instructionTitle">ICONS</p>
                     <p class="instruction">In addition to the traditional X and O, you have an array of other icons you can choose for either player.</p>
                     <p class="instruction">Player One and Player Two can each individually have their icons changed to anything different.</p>
                     <p class="instruction">In order to change the icon for each player, go to the settings menu.</p>
 
-                    <p class="instructionTitle">CONTROLS</p>
-                    <p class="instruction">You can play this game through the use of a mouse, but the ability to move and play with a keyboard is available.</p>
-                    <p class="instruction">Note that in order to fully utilize keyboard controls, suggestions must be turned on.</p>
+                    <p class="instructionTitle notInMobileMode">CONTROLS</p>
+                    <p class="instruction notInMobileMode">You can play this game through the use of a mouse, but the ability to move and play with a keyboard is available.</p>
+                    <p class="instruction notInMobileMode">Note that in order to fully utilize keyboard controls, suggestions must be turned on.</p>
 
-                    <table id="instructionsKeyPressTable">
+                    <table id="instructionsKeyPressTable" class="notInMobileMode">
                         <tbody id="instructionsKeyPressBody">
                             <tr class="instructionsRow">
                                 <th scope="col" class="instructionsKeyPressTitles">Key</th>
@@ -312,8 +319,8 @@
                         </div>
 
                         <!-- Toggle that turns on or off suggestions -->
-                        <p id="suggestionsToggleCaption" class="settingsCaption">Suggestions:</p>
-                        <div id="suggestionsToggleInfo" class="settingsInfo toggleInfo">
+                        <p id="suggestionsToggleCaption" class="settingsCaption notInMobileMode">Suggestions:</p>
+                        <div id="suggestionsToggleInfo" class="settingsInfo toggleInfo notInMobileMode">
                             <div id="suggestionsToggleDiv" class="toggleDiv">
                                 <label checked tabindex="-1" id="suggestionsSwitch" class="toggleSwitch clickSound focusable">
                                     <input tabindex="-1" type="checkbox" id="suggestionsCheckBox" class="focusable">
@@ -359,8 +366,8 @@
                         </div>
 
                         <!-- Toggle that turns on or off Fullscreen -->
-                        <p id="fullscreenToggleCaption" class="settingsCaption">Fullscreen:</p>
-                        <div id="fullscreenToggleInfo" class="settingsInfo toggleInfo">
+                        <p id="fullscreenToggleCaption" class="settingsCaption notInMobileMode">Fullscreen:</p>
+                        <div id="fullscreenToggleInfo" class="settingsInfo toggleInfo notInMobileMode">
                             <div id="fullscreenToggleDiv" class="toggleDiv">
                                 <label tabindex="-1" id="fullscreenSwitch" class="toggleSwitch clickSound focusable">
                                     <input type="checkbox" id="fullscreenCheckBox">
@@ -417,18 +424,19 @@
                             </div>
                         </div>
 
-                        <p id="themeSelectionCaption" class="settingsCaption canGray">Theme:</p>
-                        <div id="themeIconSelectionWrapper" class="iconSelectionWrapper canGray">
-                            <div id="themeIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption canGray">
-                                <div tabindex="-1" id="themeSelection" class="iconSelection canGray focusable carousel">
-                                    <div id="themeSelectionprev" class="iconSelectionprev iconSelectionButton clickSound canGray">&lt</div>
-                                    <div class="themeselection selection canGray">Mono</div>
-                                    <div class="themeselection selection canGray">Gameboy</div>
-                                    <div class="themeselection selection canGray">Vampire</div>
-                                    <div class="themeselection selection canGray">SNES</div>
-                                    <div class="themeselection selection canGray">Halloween</div>
-                                    <div class="themeselection selection canGray">Go Blue</div>
-                                    <div id="themeSelectionnext" class="iconSelectionnext iconSelectionButton clickSound canGray">&gt</div>
+                        <p id="themeSelectionCaption" class="settingsCaption ">Theme:</p>
+                        <div id="themeIconSelectionWrapper" class="iconSelectionWrapper ">
+                            <div id="themeIconSelectionWrapperNoCaption" class="iconSelectionWrapperNoCaption ">
+                                <div tabindex="-1" id="themeSelection" class="iconSelection  focusable carousel">
+                                    <div id="themeSelectionprev" class="iconSelectionprev iconSelectionButton clickSound ">&lt</div>
+                                    <div class="themeselection selection ">Mono</div>
+                                    <div class="themeselection selection ">Gameboy</div>
+                                    <div class="themeselection selection ">Vampire</div>
+                                    <div class="themeselection selection ">SNES</div>
+                                    <div class="themeselection selection ">Halloween</div>
+                                    <div class="themeselection selection ">Go Blue</div>
+                                    <div class="themeselection selection ">Bubblegum</div>
+                                    <div id="themeSelectionnext" class="iconSelectionnext iconSelectionButton clickSound ">&gt</div>
                                 </div>
                             </div>
                         </div>
@@ -442,6 +450,45 @@
 
                 <!-- Wrapper that contains the changelog with each update -->
                 <div id="changelogWrapper">
+
+                    <div class="update">
+                        <p class="version">V1.18.1: Mobile Compatibility</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added mobile support</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Mobile version will not show scores</li>
+                                <li class="updateExtraInfoli">Mobile version will not show suggestions in settings menu</li>
+                                <li class="updateExtraInfoli">Mobile version will not show fullscreen in settings menu</li>
+                                <li class="updateExtraInfoli">Mobile version will not show keyboard controls in instructions menu</li>
+                                <li class="updateExtraInfoli">Changed text of update log 1.10.3 to fix horizontal scrolling</li>
+                            </ul>
+                            <li class="updateli">Updated start menu text depending on device type</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">"Press Enter to start" on desktops</li>
+                                <li class="updateExtraInfoli">"Tap anywhere to start" on mobile devices</li>
+                                <li class="updateExtraInfoli">Start menu now accepts both Enter and click of screen/tap of screen</li>
+                            </ul>
+                            <li class="updateli">Turn off focusing of elements on mobile devices</li>
+                            <li class="updateli">Changed header to have space between top and title</li>
+                            <li class="updateli">Fixed bug where theme carousel grays depending on whether AI is active</li>
+                            <li class="updateli">Added new theme</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Bubblegum</li>
+                            </ul>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Update images in instructions</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Consider also adding more images</li>
+                            </ul>
+                            <li class="updateli">Add easter eggs</li>
+                            <li class="updateli">Add online multiplayer support</li>
+                            <li class="updateli">Figure out bug of switching between mouse and keyboard controls</li>
+                        </ol>
+                    </div>
 
                     <div class="update">
                         <p class="version">V1.17.2: Updated Instructions and og Implementation</p>
@@ -791,12 +838,12 @@
                         <p class="version">V1.10.3: Minor Tweaks to View</p>
                         <p class="CHANGELOG">CHANGELOG:</p>
                         <ol class="updateList">
-                            <li class="updateli">Added slight padding to sides of volume menu</li>
+                            <li class="updateli">Added slight padding to sides of volume in settings</li>
                             <li class="updateli">Reversed suggestions switch</li>
                             <li class="updateli">Made settings back button thicker</li>
-                            <li class="updateli">Spaced out settings menu to be more visually appealing</li>
+                            <li class="updateli">Changed spacing of settings menu</li>
                             <li class="updateli">Added more information to instruction manual</li>
-                            <li class="updateli">Made no text selectable/highlightable</li>
+                            <li class="updateli">Made no text highlightable</li>
                             <li class="updateli">Updated README</li>
                         </ol>
 

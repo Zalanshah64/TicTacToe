@@ -2,10 +2,11 @@
     display: none;
     font-size: 1.5 rem;
     line-height: 1.25rem;
+    max-width: 100%;
 }
 
 .update {
-    margin: 0.5rem 2rem 0rem 2rem;
+    margin: 0.5rem 0rem 0rem 1rem;
     border-bottom: 0.25rem solid var(--highlight);
 }
 
@@ -27,4 +28,24 @@
     padding: 1.5rem;
     font-size: 1.25rem;
     margin: 1rem;
+}
+
+@media screen and (max-width: 500px) {
+    #changelogWrapper {
+        font-size: 0.6 rem;
+        line-height: 1.2rem;
+    }
+
+    .update {
+        margin: 0.5rem auto 0rem auto;
+    }
+
+    .version {
+        font-size: 1.1rem;
+        line-height: 1.2rem;
+    }
+
+    .CHANGELOG, .TODO{
+        font-size: 1rem;
+    }
 }

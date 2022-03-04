@@ -187,8 +187,10 @@ function showPlayerTwoSelectionOption(n) {
 
   //Focus on the given element
 function focusOn(element) {
-    gameData.currentFocus = element;
-    element.focus();
+    if(!maxWidth.matches) {
+        gameData.currentFocus = element;
+        element.focus();
+    }
 }
 
 
@@ -248,6 +250,11 @@ function updateTheme(themeIndex) {
             root.style.setProperty("--main", "var(--umichMain)");
             root.style.setProperty("--secondary", "var(--umichSecondary)");
             root.style.setProperty("--highlight", "var(--umichHighlight)");
+            break;
+        case BUBBLEGUM:
+            root.style.setProperty("--main", "var(--bubblegumMain)");
+            root.style.setProperty("--secondary", "var(--bubblegumSecondary)");
+            root.style.setProperty("--highlight", "var(--bubblegumHighlight)");
             break;
     }
 

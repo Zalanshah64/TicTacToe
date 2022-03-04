@@ -39,3 +39,6 @@ const VAMPIRE = 2;
 const SNES = 3;
 const HALLOWEEN = 4;
 const UMICH = 5;
+const BUBBLEGUM = 6;
+
+const maxWidth = window.matchMedia("(max-width: 500px)");

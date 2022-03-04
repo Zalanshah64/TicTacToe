@@ -1,14 +1,20 @@
-
 /* Stylesheet for HTML tags and the overarching wrapper for the page, as well as any custom font families or other CSS items*/
 html {
     scroll-behavior: smooth;
+}
+
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 body {
     background-color: var(--main);
     color: var(--secondary);
     height: 100vh;
-    /* max-height: 100vh; */
     max-width: 100vw;
     margin: 0;
     font-family: eightBit;
@@ -87,4 +93,18 @@ button {
 @font-face {
     font-family: eightBit;
     src: url(../resources/Font.ttf);
+}
+
+@media screen and (max-width: 500px) {
+    h2 {
+        font-size: 1em;
+    }
+
+    #wrapper {
+        grid-template-rows: 10% 75% 15%;
+    }
+
+    .notInMobileMode, #instructionsKeyPressTable {
+        display: none;
+    }
 }

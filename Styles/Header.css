@@ -5,9 +5,8 @@
     display: grid;
     grid-template-columns: 20% 60% 20%;
     padding: 0.2rem 0.2rem 0rem 0.2rem;
-    margin: -2rem 1rem 1rem 1rem;
+    margin: 0rem 1rem 1rem 1rem;
     text-align: center;
-
 }
 
 .scoreTitleWrapper {
@@ -52,4 +51,14 @@
 
 #interactionWrapper {
     display: block;
+}
+
+@media screen and (max-width: 500px) {
+    #title {
+        font-size: 1.28rem;
+    }
+
+    .scoreTitle {
+        visibility: hidden;
+    }
 }

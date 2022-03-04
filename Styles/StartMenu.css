@@ -21,3 +21,18 @@
 #startMenuSubtitle {
     font-size: 1.5rem;
 }
+
+
+@media screen and (max-width: 500px) {
+    #startMenuTitle {
+        font-size: 2rem;
+    }
+
+    #startMenuCredits {
+        font-size: 1.25rem;
+    }
+
+    #startMenuSubtitle {
+        font-size: 0.75rem;
+    }
+}

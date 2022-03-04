@@ -28,7 +28,7 @@ let startMenuData = {
     titleCompleted: false,
     credits: "A game by Zalan Shah",
     creditsCompleted: false,
-    subtitle: "Press Enter to start",
+    subtitle: "[Press Enter]/[tap anywhere] to start",
     subtitleCompleted: false,
     speed: 150,
 }
