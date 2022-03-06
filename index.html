@@ -4,6 +4,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+        <meta name="application-name" content="Tic-Tac-Toe">
+        <meta name="handheldFriendly" content="true">
+        <meta name="google" content="notranslate">
+        <meta name="author" content="Zalan Shah">
+        <meta name="description" content="Web based Tic-Tac-Toe game">
+        <meta name="keywords" content="Tic-Tac-Toe, Tic Tac Toe, Tic-Tac-Toe AI, tic tac toe ai, HTML tic tac toe, javascript tic tac toe, Tic Tac Toe AI">
+
         <meta property="og:title" content="Tic-Tac-Toe" />
         <meta property="og:image" content="resources/Thumbnail.png" />
         <meta property="og:image:width" content="1440" />
@@ -12,6 +19,7 @@
         <meta property="og:type" content="website" />
         <meta property="og:url" content="zalanshah64.github.io/TicTacToe" />
         <meta property="og:locale" content="en_US" />
+
 
         <link rel="icon" href="resources/Icon.png">
         <!-- All stylesheets -->
@@ -25,6 +33,7 @@
         <link rel="stylesheet" href="Styles/Changelog.css" type="text/css">
         <link rel="stylesheet" href="Styles/Settings.css" type="text/css">
         <link rel="stylesheet" href="Styles/Footer.css" type="text/css">
+        <link rel="stylesheet" href="Styles/Popup.css" type="text/css">
         <title>Tic-Tac-Toe</title>
     </head>
 
@@ -61,6 +70,19 @@
             <img id="thumbnail"src="resources/Thumbnail.png">
 
             <a id="downloadImageLink" src=""></a>
+        </div>
+
+        <div id="popupWrapper">
+            <div id="popupBackground"></div>
+            <div id="popupContent">
+                <h2 id="shareGameTitle">Share Game</h2>
+                <div id="popupButtonWrapper">
+                    <button id="saveImageButton" class="popupButton hoverOverSound clickSound focusable">Save Image</button>
+                    <button id="copyToClipBoardButton" class="popupButton hoverOverSound clickSound focusable">Copy to Clipboard</button>
+                    <button id="exitPopupButton" class="popupButton hoverOverSound clickSound focusable">Back</button>
+                </div>
+                <h4 id="shareGameStatus">Test</h4>
+            </div>
         </div>
 
         <!-- Main wrapper for Start Menu -->
@@ -249,10 +271,12 @@
                     <p class="instructionTitle">THEMES</p>
                     <p class="instruction">By default, the color scheme of this game is monochrome. You can change the theme of the game to several premade options in the settings menu.</p>
 
-                    <p class="instructionTitle">DOWNLOADING A GAME</p>
-                    <p class="instruction">Once a round has ended, you are able to download a png image of the round you just played.
-                        This will save an image to your computer of the round, and will save the score as the title of the image.</p>
-                    <p class="instruction">Please note that on some computers and browsers, this feature may be broken.</p>
+                    <p class="instructionTitle">SHARING A GAME</p>
+                    <p class="instruction">Once a round has ended, you have a few ways to share the round you just played.
+                        Here, you can copy the round to your clipboard, which will convert your round into a text version of the board and
+                        instantly copy it to your clipboard. You can also download the game, which will save an image of the round to your device,
+                        and will save the score as the title of the image.</p>
+                    <p class="instruction">Please note that on some devices, downloading an image of the board may be unstable.</p>
 
                     <p class="instructionTitle">SAVING SETTINGS AND COOKIES</p>
                     <p class="instruction">This game uses cookies in your browser to save your settings. They will delete exactly two days after the last time you open this webpage.</p>
@@ -454,6 +478,39 @@
 
                 <!-- Wrapper that contains the changelog with each update -->
                 <div id="changelogWrapper">
+
+                    <div class="update">
+                        <p class="version">V1.18.3: More Sharing Options</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Changed save image button to a share round button that opens pop up</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Allows for downloading round like before</li>
+                                <li class="updateExtraInfoli">Allows for copying the round to the clipboard</li>
+                                <li class="updateExtraInfoli">Disappears when clicked off</li>
+                                <li class="updateExtraInfoli">Fully keyboard and mobile functional</li>
+                            </ul>
+                            <li class="updateli">Updated instruction manual to reflect change of button</li>
+                            <li class="updateli">Updated README to reflect change of button</li>
+                            <li class="updateli">Added new meta tags to aide in search engine results</li>
+                            <li class="updateli">Updated CSS of board to be shorter</li>
+                            <li class="updateli">Fixed bug where game difficulty doesn't initially load</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Update images in instructions</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Consider also adding more images</li>
+                            </ul>
+                            <li class="updateli">Add easter eggs</li>
+                            <li class="updateli">Add online multiplayer support</li>
+                            <li class="updateli">Add web sharing options on mobile</li>
+                            <li class="updateli">Figure out bug of switching between mouse and keyboard controls</li>
+                            <li class="updateli">Figure out bug where scores change location at beginning and end of game</li>
+                            <li class="updateli">Figure out bug where board creeps on the game status on some displays</li>
+                        </ol>
+                    </div>
 
                     <div class="update">
                         <p class="version">V1.18.2: Cleaning Code</p>
@@ -1363,7 +1420,7 @@
                 <!-- Wrapper containing the button that allows the user to start the game again -->
                 <div id="footerRightSide">
                     <button id="playAgainButton" class="postGameButton hoverOverSound clickSound focusable">Play Again</button>
-                    <button id="saveGameBoard" class="postGameButton hoverOverSound clickSound focusable">Download This Round</button>
+                    <button id="shareGameBoard" class="postGameButton hoverOverSound clickSound focusable">Share This Round</button>
                 </div>
             </div>
         </div>

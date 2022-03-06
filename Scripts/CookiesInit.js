@@ -41,9 +41,27 @@ if(gameData.settingsData["AI"] != null) {
 
 if(gameData.settingsData["AIDifficulty"] != null) {
     gameData.settingsData["AIDifficulty"] = parseInt(gameData.settingsData["AIDifficulty"]);
+    switch(gameData.settingsData["AIDifficulty"]) {
+        case EASY:
+            gameData.AIDifficultyChance = 0.6;
+        break;
+
+        case NORMAL:
+            gameData.AIDifficultyChance = 0.8;
+        break;
+
+        case HARD:
+            gameData.AIDifficultyChance = 0.9;
+        break;
+
+        case IMPOSSIBLE:
+            gameData.AIDifficultyChance = 1;
+        break;
+    }
 } else {
     document.cookie = "AIDifficulty=1;";
     gameData.settingsData["AIDifficulty"] = NORMAL;
+    gameData.AIDifficultyChance = 0.8;
 }
 
 if(gameData.settingsData["fullscreen"]) {

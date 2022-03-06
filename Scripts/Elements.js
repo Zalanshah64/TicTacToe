@@ -80,12 +80,20 @@ let playerTwoScoreHTML = document.getElementById("playerTwoScore");
 let mainMenuButton = document.getElementById("mainMenuButton");
 let settingsPostGameButton = document.getElementById("settingsPostGameButton")
 let playAgainButton = document.getElementById("playAgainButton");
-let saveGameBoard = document.getElementById("saveGameBoard");
+let shareGameBoard = document.getElementById("shareGameBoard");
 let downloadImageLink = document.getElementById("downloadImageLink");
 let downloadImageCanvas = document.getElementById("downloadImageCanvas");
 let playerOneName = document.getElementById("playerOneName");
 let playerTwoName = document.getElementById("playerTwoName");
 
+
+//Document Elements related to the popup menu
+let popupWrapper = document.getElementById("popupWrapper");
+let popupBackground = document.getElementById("popupBackground");
+let shareGameStatus = document.getElementById("shareGameStatus");
+let saveImageButton = document.getElementById("saveImageButton");
+let copyToClipBoardButton = document.getElementById("copyToClipBoardButton");
+let exitPopupButton = document.getElementById("exitPopupButton");
 
 //Audio Sounds
 let playerOneMoveAudio = document.getElementById("playerOneMoveAudio");

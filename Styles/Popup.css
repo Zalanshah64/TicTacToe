@@ -1,0 +1,64 @@
+#popupWrapper,
+#popupContent,
+#popupButtonWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#popupWrapper {
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    color: var(--secondary);
+    text-align: center;
+}
+
+#shareGameStatus {
+    visibility: hidden;
+    font-size: 0.8rem;
+}
+
+#popupBackground {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--secondary);
+    opacity: 0.7;
+    z-index: 3;
+}
+
+#popupContent {
+    opacity: 1;
+    background-color: var(--main);
+    width: 30%;
+    height: 40%;
+    z-index: 4;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#popupButtonWrapper {
+    flex-direction: column;
+}
+
+.popupButton {
+    margin: 0.6rem;
+    background-color: var(--secondary);
+}
+
+@media screen and (max-width: 500px) {
+    .popupButton {
+        font-size: 0.6rem;
+    }
+
+    #shareGameStatus {
+        font-size: 0.4rem;
+    }
+}

@@ -51,6 +51,8 @@
     font-weight: bold;
     min-height: 6rem;
     background-color: var(--main);
+    border-color: var(--secondary);
+    border-style: solid;
 }
 
 .boardpiece:focus {
@@ -68,57 +70,39 @@
 }
 
 #topLeft {
-    border-color: var(--secondary);
-    border-style: solid;
     border-width: 0rem 0.6rem 0.6rem 0rem;
 
 }
 
 #topMiddle {
-    border-color: var(--secondary);
-    border-style: solid;
     border-width: 0rem 0.6rem 0.6rem 0rem;
 }
 
 #topRight {
-    border-color: var(--secondary);
-    border-style: solid;
     border-width: 0rem 0rem 0.6rem 0rem;
 }
 
 #middleLeft {
-    border-color: var(--secondary);
-    border-style: solid;
     border-width: 0rem 0.6rem 0.6rem 0rem;
 }
 
 #center {
-    border-color: var(--secondary);
-    border-style: solid;
     border-width: 0rem 0.6rem 0.6rem 0rem;
 }
 
 #middleRight {
-    border-color: var(--secondary);
-    border-style: solid;
     border-width: 0rem 0rem 0.6rem 0rem;
 }
 
 #bottomLeft {
-    border-color: var(--secondary);
-    border-style: solid;
     border-width: 0rem 0.6rem 0rem 0rem;
 }
 
 #bottomMiddle {
-    border-color: var(--secondary);
-    border-style: solid;
     border-width: 0rem 0.6rem 0rem 0rem;
 }
 
 #bottomRight {
-    border-color: var(--secondary);
-    border-style: solid;
     border-width: 0rem;
 }
 

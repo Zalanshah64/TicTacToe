@@ -76,7 +76,7 @@ document.addEventListener("keyup", function(event) {
             gameData.keyPress = true;
             if(gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED)) {
                 if(event.ctrlKey) {
-                    saveGameBoard.click();
+                    shareGameBoard.click();
                 }
             }
             gameData.keyPress = false;
@@ -119,11 +119,28 @@ document.addEventListener("keyup", function(event) {
                         gameData.keyPress = false;
                         return;
                     case playAgainButton:
-                        focusOn(saveGameBoard);
+                        focusOn(shareGameBoard);
                         gameData.keyPress = false;
                         return;
-                    case saveGameBoard:
+                    case shareGameBoard:
                         focusOn(playAgainButton);
+                        gameData.keyPress = false;
+                        return;
+
+
+
+                    case saveImageButton:
+                        focusOn(copyToClipBoardButton);
+                        gameData.keyPress = false;
+                        return;
+
+                    case copyToClipBoardButton:
+                        focusOn(exitPopupButton);
+                        gameData.keyPress = false;
+                        return;
+
+                    case exitPopupButton:
+                        focusOn(saveImageButton);
                         gameData.keyPress = false;
                         return;
                 }
@@ -228,11 +245,25 @@ document.addEventListener("keyup", function(event) {
                         gameData.keyPress = false;
                         return;
                     case playAgainButton:
-                        focusOn(saveGameBoard);
+                        focusOn(shareGameBoard);
                         gameData.keyPress = false;
                         return;
-                    case saveGameBoard:
+                    case shareGameBoard:
                         focusOn(playAgainButton);
+                        gameData.keyPress = false;
+                        return;
+
+
+                    case saveImageButton:
+                        focusOn(exitPopupButton);
+                        gameData.keyPress = false;
+                        return;
+                    case copyToClipBoardButton:
+                        focusOn(saveImageButton);
+                        gameData.keyPress = false;
+                        return;
+                    case exitPopupButton:
+                        focusOn(copyToClipBoardButton);
                         gameData.keyPress = false;
                         return;
                 }
@@ -312,10 +343,10 @@ document.addEventListener("keyup", function(event) {
                         gameData.keyPress = false;
                         return;
                     case settingsPostGameButton:
-                        focusOn(saveGameBoard);
+                        focusOn(shareGameBoard);
                         gameData.keyPress = false;
                         return;
-                    case saveGameBoard:
+                    case shareGameBoard:
                         focusOn(settingsPostGameButton);
                         gameData.keyPress = false;
                         return;
@@ -356,10 +387,10 @@ document.addEventListener("keyup", function(event) {
                         gameData.keyPress = false;
                         return;
                     case settingsPostGameButton:
-                        focusOn(saveGameBoard);
+                        focusOn(shareGameBoard);
                         gameData.keyPress = false;
                         return;
-                    case saveGameBoard:
+                    case shareGameBoard:
                         focusOn(settingsPostGameButton);
                         gameData.keyPress = false;
                         return;
@@ -544,7 +575,7 @@ playAgainButton.addEventListener("click", function() {
     gameData.playerTwoSelectedIds = [];
     gameData.AIwaitTime = 400;
     mainMenuButton.style.display = settingsPostGameButton.style.display = "none";
-    playAgainButton.style.display = saveGameBoard.style.display = "none";
+    playAgainButton.style.display = shareGameBoard.style.display = "none";
     itsATieHTML.style.display = whoWonHTML.style.display = "none";
     currentTurnHTML.style.display = "block";
     playerOneName.innerHTML = gameData.settingsData["playerOneIcon"];
@@ -561,20 +592,77 @@ playAgainButton.addEventListener("click", function() {
     }
 });
 
-saveGameBoard.addEventListener("click", function() {
+shareGameBoard.addEventListener("click", function() {
+    popupWrapper.style.display = "flex";
+    focusOn(saveImageButton);
+});
+
+popupBackground.addEventListener("click", function() {
+    exitPopupButton.click();
+});
+
+saveImageButton.addEventListener("click", function() {
+    shareGameStatus.innerText = "Saving Image...";
+    shareGameStatus.style.visibility = "visible";
     html2canvas(board).then(function(canvas) {
         let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
         downloadImageLink.href = image;
         downloadImageLink.download = gameData.playerOneScore + "-" + gameData.playerTwoScore + ".png";
         downloadImageLink.click();
     });
-})
+    shareGameStatus.innerHTML = "Saved Image";
+
+    setTimeout(function() {
+        shareGameStatus.style.visibility = "hidden";
+    }, 1000);
+});
+
+copyToClipBoardButton.addEventListener("click", function() {
+
+    let result = "SCORE: " + gameData.playerOneScore + "-" + gameData.playerTwoScore + "\n\n" + " ";
+
+    for(let i = 0; i < 9; ++i) {
+        if(gameData.playerOneSelectedIds.includes(i)) {
+            result += "X";
+        } else if(gameData.playerTwoSelectedIds.includes(i)) {
+            result += "O";
+        } else {
+            result += " ";
+        }
+
+
+        if(onEdge(i, RIGHT)) {
+            result += " ";
+
+            if(!onEdge(i, DOWN)) {
+                result += "\n---+---+---\n ";
+            }
+        } else {
+            result += " | ";
+        }
+    }
+
+    navigator.clipboard.writeText(result);
+
+    shareGameStatus.innerText = "Copied to clipboard";
+    shareGameStatus.style.visibility = "visible";
+
+    setTimeout(function() {
+        shareGameStatus.style.visibility = "hidden";
+    }, 1000);
+});
+
+exitPopupButton.addEventListener("click", function() {
+    popupWrapper.style.display = "none";
+    focusOn(shareGameBoard);
+});
+
 
 settingsPostGameButton.addEventListener("click", function() {
     gameData.currentMenu = SETTINGSMENU;
     settingsMenu.style.display = wrapper.style.display = "block";
     game.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "none";
-    playAgainButton.style.display = saveGameBoard.style.display = "none";
+    playAgainButton.style.display = shareGameBoard.style.display = "none";
     scoreTitle[PLAYERONE].style.display = scoreTitle[PLAYERTWO].style.display = "none";
     itsATieHTML.style.display = whoWonHTML.style.display = "none";
     gameData.settingsBackFromLocation = NOTFINISHED;
@@ -598,7 +686,7 @@ mainMenuButton.addEventListener("click", function() {
     mainMenu.style.display = "grid";
     game.style.display = scoreTitle[PLAYERONE].style.display = scoreTitle[PLAYERTWO].style.display = "none";
     mainMenuButton.style.display = settingsPostGameButton.style.display = "none";
-    playAgainButton.style.display = saveGameBoard.style.display = "none";
+    playAgainButton.style.display = shareGameBoard.style.display = "none";
     focusOn(startButton);
 
     pauseHoverOverAudio();
@@ -716,7 +804,7 @@ settingsBackButton.addEventListener("click", function() {
         if(getComputedStyle(scoreTitle[PLAYERONE]).visibility != "hidden") {
             scoreTitle[PLAYERONE].style.display = scoreTitle[PLAYERTWO].style.display = "block";
         }
-        mainMenuButton.style.display = settingsPostGameButton.style.display = playAgainButton.style.display = saveGameBoard.style.display = "block";
+        mainMenuButton.style.display = settingsPostGameButton.style.display = playAgainButton.style.display = shareGameBoard.style.display = "block";
         gameData.currentMenu = NOTFINISHED;
         focusOn(settingsPostGameButton);
         pauseHoverOverAudio();

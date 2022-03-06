@@ -31,7 +31,7 @@ Once the game ends, the user will have four options:
 * "Main Menu", which will take the user back to the main menu. This will reset the scoreboard
 * "Settings", which will take the user to the settings menu
 * "Play Again", which will reset the board and allow the user to play another game
-* "Download This Round", which will convert the gameboard to a png file and save it to the computer
+* "Share this Round", which will open a popup that allows the user to either copy a text version of the game to their clipboard or download an image of the game
 
 ## Features
 

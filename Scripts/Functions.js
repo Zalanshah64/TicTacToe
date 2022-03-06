@@ -62,7 +62,7 @@ function checkWin() {
         gameData.playerOneScore++;
         playerOneScoreHTML.innerHTML = gameData.playerOneScore;
         whoWonHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "block";
-        playAgainButton.style.display = saveGameBoard.style.display = "block";
+        playAgainButton.style.display = shareGameBoard.style.display = "block";
         focusOn(mainMenuButton);
         if(!hoverOverAudio.paused) {
             hoverOverAudio.pause();
@@ -77,7 +77,7 @@ function checkWin() {
             gameData.playerTwoScore++;
             playerTwoScoreHTML.innerHTML = gameData.playerTwoScore;
             whoWonHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "block";
-            playAgainButton.style.display = saveGameBoard.style.display = "block";
+            playAgainButton.style.display = shareGameBoard.style.display = "block";
             focusOn(mainMenuButton);
             if(!hoverOverAudio.paused) {
         hoverOverAudio.pause();
@@ -89,7 +89,7 @@ function checkWin() {
                 gameData.gameResult = DRAW;
                 currentTurnHTML.style.display = "none";
                 itsATieHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "block";
-                playAgainButton.style.display = saveGameBoard.style.display = "block";
+                playAgainButton.style.display = shareGameBoard.style.display = "block";
                 focusOn(mainMenuButton);
                 if(!hoverOverAudio.paused) {
         hoverOverAudio.pause();
