@@ -13,7 +13,6 @@
 
 .settingsInfo {
     display: flex;
-    align-items: flex-start;
     justify-content: center;
     align-items: center;
     margin: 1em;

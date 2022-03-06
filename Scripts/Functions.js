@@ -61,11 +61,8 @@ function checkWin() {
         playerWinNameHTML.innerHTML = gameData.settingsData["playerOneIcon"];
         gameData.playerOneScore++;
         playerOneScoreHTML.innerHTML = gameData.playerOneScore;
-        whoWonHTML.style.display = "block";
-        mainMenuButton.style.display = "block";
-        settingsPostGameButton.style.display = "block";
-        playAgainButton.style.display = "block";
-        saveGameBoard.style.display = "block";
+        whoWonHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "block";
+        playAgainButton.style.display = saveGameBoard.style.display = "block";
         focusOn(mainMenuButton);
         if(!hoverOverAudio.paused) {
             hoverOverAudio.pause();
@@ -79,11 +76,8 @@ function checkWin() {
             playerWinNameHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
             gameData.playerTwoScore++;
             playerTwoScoreHTML.innerHTML = gameData.playerTwoScore;
-            whoWonHTML.style.display = "block";
-            mainMenuButton.style.display = "block";
-            settingsPostGameButton.style.display = "block";
-            playAgainButton.style.display = "block";
-            saveGameBoard.style.display = "block";
+            whoWonHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "block";
+            playAgainButton.style.display = saveGameBoard.style.display = "block";
             focusOn(mainMenuButton);
             if(!hoverOverAudio.paused) {
         hoverOverAudio.pause();
@@ -94,11 +88,8 @@ function checkWin() {
             if(gameData.playerOneSelectedIds.length + gameData.playerTwoSelectedIds.length == 9) {
                 gameData.gameResult = DRAW;
                 currentTurnHTML.style.display = "none";
-                itsATieHTML.style.display = "block";
-                mainMenuButton.style.display = "block";
-                settingsPostGameButton.style.display = "block";
-                playAgainButton.style.display = "block";
-                saveGameBoard.style.display = "block";
+                itsATieHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "block";
+                playAgainButton.style.display = saveGameBoard.style.display = "block";
                 focusOn(mainMenuButton);
                 if(!hoverOverAudio.paused) {
         hoverOverAudio.pause();
@@ -196,13 +187,9 @@ function focusOn(element) {
 
   //Update the volume and all it's relevant information
 function updateVolume() {
-    playerOneMoveAudio.volume = gameData.settingsData["volume"];
-    playerTwoMoveAudio.volume = gameData.settingsData["volume"];
-    hoverOverAudio.volume = gameData.settingsData["volume"];
-    clickAudio.volume = gameData.settingsData["volume"];
-    gameStartAudio.volume = gameData.settingsData["volume"];
-    WinnerAudio.volume = gameData.settingsData["volume"];
-    DrawAudio.volume = gameData.settingsData["volume"];
+    playerOneMoveAudio.volume = playerTwoMoveAudio.volume = gameData.settingsData["volume"];
+    hoverOverAudio.volume = clickAudio.volume = gameData.settingsData["volume"];
+    gameStartAudio.volume = WinnerAudio.volume = DrawAudio.volume = gameData.settingsData["volume"];
 }
 
 function updateTheme(themeIndex) {
@@ -220,43 +207,9 @@ function updateTheme(themeIndex) {
     gameData.settingsData["theme"] = themeIndex;
     themeSelections[themeIndex].style.display = "flex";
 
-    switch(themeIndex) {
-        case MONO:
-            root.style.setProperty("--main", "var(--monoMain)");
-            root.style.setProperty("--secondary", "var(--monoSecondary)");
-            root.style.setProperty("--highlight", "var(--monoHighlight)");
-            break;
-        case GAMEBOY:
-            root.style.setProperty("--main", "var(--gameboyMain)");
-            root.style.setProperty("--secondary", "var(--gameboySecondary)");
-            root.style.setProperty("--highlight", "var(--gameboyHighlight)");
-            break;
-        case VAMPIRE:
-            root.style.setProperty("--main", "var(--vampireMain)");
-            root.style.setProperty("--secondary", "var(--vampireSecondary)");
-            root.style.setProperty("--highlight", "var(--vampireHighlight)");
-            break;
-        case SNES:
-            root.style.setProperty("--main", "var(--snesMain)");
-            root.style.setProperty("--secondary", "var(--snesSecondary)");
-            root.style.setProperty("--highlight", "var(--snesHighlight)");
-            break;
-        case HALLOWEEN:
-            root.style.setProperty("--main", "var(--halloweenMain)");
-            root.style.setProperty("--secondary", "var(--halloweenSecondary)");
-            root.style.setProperty("--highlight", "var(--halloweenHighlight)");
-            break;
-        case UMICH:
-            root.style.setProperty("--main", "var(--umichMain)");
-            root.style.setProperty("--secondary", "var(--umichSecondary)");
-            root.style.setProperty("--highlight", "var(--umichHighlight)");
-            break;
-        case BUBBLEGUM:
-            root.style.setProperty("--main", "var(--bubblegumMain)");
-            root.style.setProperty("--secondary", "var(--bubblegumSecondary)");
-            root.style.setProperty("--highlight", "var(--bubblegumHighlight)");
-            break;
-    }
+    root.style.setProperty("--main", "var(--" + themes[themeIndex] + "Main)");
+    root.style.setProperty("--secondary", "var(--" + themes[themeIndex] + "Secondary)");
+    root.style.setProperty("--highlight", "var(--" + themes[themeIndex] + "Highlight)");
 
     document.cookie = "theme=" + themeIndex + ";";
 
@@ -267,7 +220,6 @@ function updateTheme(themeIndex) {
 function playHoverAudio() {
     if(!hoverOverAudio.paused) {
         hoverOverAudio.pause();
-        hoverOverAudio.currentTime = 0;
     }
 
     hoverOverAudio.play().catch(function() {
@@ -280,9 +232,7 @@ function playClickAudio() {
     if(!clickAudio.paused) {
         clickAudio.pause();
     }
-    let promise = clickAudio.play();
-
-    promise.catch(function() {
+    clickAudio.play().catch(function() {
         clickAudio.currentTime = 0;
     });
  }
@@ -410,9 +360,9 @@ function writeStartMenu() {
         startMenuTitle.innerHTML += startMenuData.title.charAt(startMenuData.i);
         startMenuData.i++;
         if(startMenuData.i == startMenuData.title.length) {
-        startMenuData.i = 0;
-        startMenuData.titleCompleted = true;
-    }
+            startMenuData.i = 0;
+            startMenuData.titleCompleted = true;
+        }
     setTimeout(writeStartMenu, startMenuData.speed);
     } else if(!startMenuData.creditsCompleted) {
         //Show "A game by Zalan Shah"
@@ -647,14 +597,18 @@ function moveSuggestion(direction) {
 
 //Figure out whether a square is on a certain edge
 function onEdge(square, edge) {
-    if(edge == UP) {
-        return square < 3;
-    } else if(edge == DOWN) {
-        return square > 5;
-    } else if(edge == LEFT) {
-        return square % 3 == 0;
-    } else if(edge == RIGHT) {
-        return (square - 2) % 3 == 0;
+    switch(edge) {
+        case UP:
+            return square < 3;
+
+        case DOWN:
+            return square > 5;
+
+        case LEFT:
+            return square % 3 == 0;
+
+        case RIGHT:
+            return (square - 2) % 3 == 0;
     }
 }
 
@@ -664,4 +618,11 @@ function clearSelections() {
     while(toBeDeleted.length != 0) {
         toBeDeleted[0].parentNode.removeChild(toBeDeleted[0]);
     }
+}
+
+
+function pauseHoverOverAudio() {
+    if(!hoverOverAudio.paused) {
+        hoverOverAudio.pause();
+    };
 }

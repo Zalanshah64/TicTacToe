@@ -37,11 +37,12 @@ Once the game ends, the user will have four options:
 
 * Two player Tic-Tac-Toe
 * A computer opponent the user can play against
-* Ability to switch the turn order every game
+* Ability to switch the turn order every round
 * Suggestions that provide the player with what the board will look like if they choose a location
 * The ability to save and download each round
 * Instruction guide on how to play Tic-Tac-Toe
-* Up to eleven icons per player
+* Up to thirteen icons per player
+* Seven custom themes
 * Fullscreen capabilities
 * Audio sounds
 * Settings saving through use of cookies

@@ -45,3 +45,13 @@ let gameboard = [
     new gamePiece(bottomMiddleId, BOTTOMMIDDLE),
     new gamePiece(bottomRightId, BOTTOMRIGHT)
                 ];
+
+let themes = [
+    "mono",
+    "gameboy",
+    "vampire",
+    "snes",
+    "halloween",
+    "umich",
+    "bubblegum",
+]

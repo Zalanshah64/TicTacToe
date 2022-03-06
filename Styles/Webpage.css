@@ -3,11 +3,7 @@ html {
     scroll-behavior: smooth;
 }
 
-input,
-textarea,
-button,
-select,
-a {
+* {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
@@ -62,11 +58,7 @@ button {
     display: none;
 }
 
-.link:link {
-    color: var(--secondary);
-}
-
-.link:visited {
+.link:visited, .link:link {
     color: var(--secondary);
 }
 

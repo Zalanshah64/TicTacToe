@@ -43,10 +43,10 @@ if(gameData.settingsData["AIDifficulty"] != null) {
     gameData.settingsData["AIDifficulty"] = parseInt(gameData.settingsData["AIDifficulty"]);
 } else {
     document.cookie = "AIDifficulty=1;";
-    gameData.settingsData["AIDifficulty"] = 1;
+    gameData.settingsData["AIDifficulty"] = NORMAL;
 }
 
-if(gameData.settingsData["fullscreen"] != null) {
+if(gameData.settingsData["fullscreen"]) {
     gameData.settingsData["fullscreen"] = gameData.settingsData["fullscreen"] === "true";
 } else {
     document.cookie = "fullscreen=false;";
@@ -70,7 +70,7 @@ if(gameData.settingsData["theme"] != null) {
     gameData.settingsData["theme"] = parseInt(gameData.settingsData["theme"]);
 } else {
     document.cookie = "theme=0;";
-    gameData.settingsData["theme"] = MONO
+    gameData.settingsData["theme"] = MONO;
 }
 
 //Update all visual information to reflect the settings
