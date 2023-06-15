@@ -5,9 +5,13 @@ function squareClick(gamePiece, playerClicked) {
         gamePiece.idElement.innerHTML = '<p class="clicked">'+ gameData.settingsData["playerOneIcon"] + '</p>';
         gameData.playerOneSelected.push(gamePiece);
         gameData.playerOneSelectedIds.push(gamePiece.pieceNumber);
+
+        drawFaviconX(Math.floor(gamePiece.pieceNumber / 3), (gamePiece.pieceNumber % 3));
+
         if(!hoverOverAudio.paused) {
-        hoverOverAudio.pause();
-    };
+            hoverOverAudio.pause();
+        };
+
         currentPlayerHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
 
     //If the current player is player two, the game hasn't ended, and that gamePiece hasn't previously been clicked,
@@ -16,9 +20,13 @@ function squareClick(gamePiece, playerClicked) {
         gamePiece.idElement.innerHTML = '<p class="clicked">' + gameData.settingsData["playerTwoIcon"] + '</p>';
         gameData.playerTwoSelected.push(gamePiece);
         gameData.playerTwoSelectedIds.push(gamePiece.pieceNumber);
+
+        drawFaviconO(Math.floor(gamePiece.pieceNumber / 3), (gamePiece.pieceNumber % 3));
+
         if(!hoverOverAudio.paused) {
-        hoverOverAudio.pause();
-    };
+            hoverOverAudio.pause();
+        };
+
         currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
     } else {
         return;
@@ -29,7 +37,7 @@ function squareClick(gamePiece, playerClicked) {
     gamePiece.idElement.classList.remove("unclicked");
 
     //Check if the game has ended, and update information and play sounds accordingly
-    let result = checkWin();
+    const result = checkWin();
     if(result == NOTFINISHED) {
         if(gameData.currentPlayer == PLAYERONE) {
             playerOneMoveAudio.play();
@@ -210,10 +218,36 @@ function updateTheme(themeIndex) {
     root.style.setProperty("--main", "var(--" + themes[themeIndex] + "Main)");
     root.style.setProperty("--secondary", "var(--" + themes[themeIndex] + "Secondary)");
     root.style.setProperty("--highlight", "var(--" + themes[themeIndex] + "Highlight)");
+    root.style.setProperty("--font", "var(--" + themes[themeIndex] + "Font)");
 
     document.cookie = "theme=" + themeIndex + ";";
+}
+
+function generateTextCopy() {
+    let result = "SCORE: " + gameData.playerOneScore + "-" + gameData.playerTwoScore + "\n\n" + " ";
+
+    for(let i = 0; i < 9; ++i) {
+        if(gameData.playerOneSelectedIds.includes(i)) {
+            result += "X";
+        } else if(gameData.playerTwoSelectedIds.includes(i)) {
+            result += "O";
+        } else {
+            result += " ";
+        }
 
 
+        if(onEdge(i, RIGHT)) {
+            result += " ";
+
+            if(!onEdge(i, DOWN)) {
+                result += "\n---+---+---\n ";
+            }
+        } else {
+            result += " | ";
+        }
+    }
+
+    return result;
 }
 
   //Turn off the hover audio if it's currently playing, and play it from the start
@@ -262,7 +296,7 @@ function updateGrayedOut() {
       //    - See if a square would cause a win, and play it to win
       //    - See if a square would cause you to win, and play it to block
       //    - See if center square is played, and play it
-    let randomChance = Math.random();
+    const randomChance = Math.random();
     if(randomChance < gameData.AIDifficultyChance) {
       if(AIEdgeWinTest(TOPMIDDLE, TOPLEFT, TOPRIGHT, CENTER, BOTTOMMIDDLE)) {
           squareClick(gameboard[TOPMIDDLE], false);
@@ -625,4 +659,161 @@ function pauseHoverOverAudio() {
     if(!hoverOverAudio.paused) {
         hoverOverAudio.pause();
     };
+}
+
+function updateFavicon() {
+    favicon.href = faviconCanvas.toDataURL('image/png');
+}
+
+function initEmptyFavicon() {
+    faviconCtx.fillStyle = 'black';
+    faviconCtx.fillRect(0, 0, FAVICONCANVASSIZE, FAVICONCANVASSIZE);
+
+    faviconCtx.strokeStyle = 'white';
+    faviconCtx.lineWidth = FAVICONLINEWIDTH;
+
+    for (let i = 1; i < 3; i++) {
+      // Vertical
+      faviconCtx.beginPath();
+      faviconCtx.moveTo(i * (FAVICONCANVASSIZE / 3), 0);
+      faviconCtx.lineTo(i * (FAVICONCANVASSIZE / 3), FAVICONCANVASSIZE);
+      faviconCtx.stroke();
+
+      // Horizontal
+      faviconCtx.beginPath();
+      faviconCtx.moveTo(0, i * (FAVICONCANVASSIZE / 3));
+      faviconCtx.lineTo(FAVICONCANVASSIZE, i * (FAVICONCANVASSIZE / 3));
+      faviconCtx.stroke();
+    }
+
+    updateFavicon();
+}
+
+function drawFaviconX(row, column) {
+    const xOffset = column * FAVICONSQUARESIZE;
+    const yOffset = row * FAVICONSQUARESIZE;
+
+    faviconCtx.strokeStyle = FAVICONP1COLOR;
+    faviconCtx.lineWidth = FAVICONLETTERWIDTH;
+
+    faviconCtx.beginPath();
+    faviconCtx.moveTo(xOffset + 2, yOffset + 2);
+    faviconCtx.lineTo(xOffset + FAVICONSQUARESIZE - 2, yOffset + FAVICONSQUARESIZE - 2);
+    faviconCtx.moveTo(xOffset + FAVICONSQUARESIZE - 2, yOffset + 2);
+    faviconCtx.lineTo(xOffset + 2, yOffset + FAVICONSQUARESIZE - 2);
+    faviconCtx.stroke();
+
+    updateFavicon();
+}
+
+function drawFaviconO(row, column) {
+    const xOffset = column * FAVICONSQUARESIZE + FAVICONSQUARESIZE / 2;
+    const yOffset = row * FAVICONSQUARESIZE + FAVICONSQUARESIZE / 2;
+    const radius = (FAVICONSQUARESIZE - 4) / 2;
+
+    faviconCtx.strokeStyle = FAVICONP2COLOR;
+    faviconCtx.lineWidth = FAVICONLETTERWIDTH;
+
+    faviconCtx.beginPath();
+    faviconCtx.arc(xOffset, yOffset, radius, 0, 2 * Math.PI);
+    faviconCtx.stroke();
+
+    updateFavicon();
+}
+
+function redrawInstructions(theme) {
+    instructionFirstCanvas.height = 255;
+    instructionFirstCanvas.width = 360;
+
+    const ctxFirst = instructionFirstCanvas.getContext("2d");
+    ctxFirst.clearRect(0, 0, instructionFirstCanvas.width, instructionFirstCanvas.height);
+
+    ctxFirst.strokeStyle = themeSecondaryColors[theme];
+    ctxFirst.lineWidth = 10;
+
+    for(let i = 1; i < 3; i++) {
+        const x = i * 120;
+        const y = i * 85;
+
+        // Draw Horizontal Line
+        ctxFirst.beginPath();
+        ctxFirst.moveTo(x, 0);
+        ctxFirst.lineTo(x, 255);
+        ctxFirst.stroke();
+
+        // Draw Vertical Line
+        ctxFirst.beginPath();
+        ctxFirst.moveTo(0, y);
+        ctxFirst.lineTo(360, y);
+        ctxFirst.stroke();
+    }
+
+    instructionSecondCanvas.height = 255;
+    instructionSecondCanvas.width = 360;
+    const ctxSecond = instructionSecondCanvas.getContext("2d");
+    ctxSecond.drawImage(instructionFirstCanvas, 0, 0);
+    ctxSecond.fillStyle = themeSecondaryColors[theme];
+    ctxSecond.lineWidth = 7;
+    ctxSecond.font = `43px ${theme}`;
+    ctxSecond.fillText(gameData.settingsData.playerOneIcon, 37, 60);
+
+    instructionThirdCanvas.height = 255;
+    instructionThirdCanvas.width = 360;
+    const ctxThird = instructionThirdCanvas.getContext("2d");
+    ctxThird.drawImage(instructionSecondCanvas, 0, 0);
+    ctxThird.fillStyle = themeSecondaryColors[theme];
+    ctxThird.lineWidth = 7;
+    ctxThird.font = `43px ${theme}`;
+    ctxThird.fillText(gameData.settingsData.playerTwoIcon, 160, 145);
+
+    instructionFourthCanvas.height = 255;
+    instructionFourthCanvas.width = 360;
+    const ctxFourth = instructionFourthCanvas.getContext("2d");
+    ctxFourth.drawImage(instructionThirdCanvas, 0, 0);
+    ctxFourth.fillStyle = themeSecondaryColors[theme];
+    ctxFourth.lineWidth = 7;
+    ctxFourth.font = `43px ${theme}`;
+    ctxFourth.fillText(gameData.settingsData.playerOneIcon, 37, 145);
+    ctxFourth.fillText(gameData.settingsData.playerOneIcon, 37, 235);
+    ctxFourth.fillText(gameData.settingsData.playerTwoIcon, 280, 60);
+
+
+    instructionFifthCanvas.height = 255;
+    instructionFifthCanvas.width = 360;
+    const ctxFifth = instructionFifthCanvas.getContext("2d");
+    ctxFifth.drawImage(instructionThirdCanvas, 0, 0);
+    ctxFifth.fillStyle = themeSecondaryColors[theme];
+    ctxFifth.lineWidth = 7;
+    ctxFifth.font = `43px ${theme}`;
+    ctxFifth.fillText(gameData.settingsData.playerOneIcon, 280, 60);
+    ctxFifth.fillText(gameData.settingsData.playerOneIcon, 160, 60);
+    ctxFifth.fillText(gameData.settingsData.playerTwoIcon, 37, 235);
+
+
+    instructionSixthCanvas.height = 255;
+    instructionSixthCanvas.width = 360;
+    const ctxSixth = instructionSixthCanvas.getContext("2d");
+    ctxSixth.drawImage(instructionSecondCanvas, 0, 0);
+    ctxSixth.fillStyle = themeSecondaryColors[theme];
+    ctxSixth.lineWidth = 7;
+    ctxSixth.font = `43px ${theme}`;
+    ctxSixth.fillText(gameData.settingsData.playerOneIcon, 160, 145);
+    ctxSixth.fillText(gameData.settingsData.playerOneIcon, 280, 235);
+    ctxSixth.fillText(gameData.settingsData.playerTwoIcon, 160, 60);
+    ctxSixth.fillText(gameData.settingsData.playerTwoIcon, 37, 145);
+
+    instructionSeventhCanvas.height = 255;
+    instructionSeventhCanvas.width = 360;
+    const ctxSeventh = instructionSeventhCanvas.getContext("2d");
+    ctxSeventh.drawImage(instructionThirdCanvas, 0, 0);
+    ctxSeventh.fillStyle = themeSecondaryColors[theme];
+    ctxSeventh.lineWidth = 7;
+    ctxSeventh.font = `43px ${theme}`;
+    ctxSeventh.fillText(gameData.settingsData.playerOneIcon, 280, 60);
+    ctxSeventh.fillText(gameData.settingsData.playerOneIcon, 160, 60);
+    ctxSeventh.fillText(gameData.settingsData.playerOneIcon, 37, 235);
+    ctxSeventh.fillText(gameData.settingsData.playerOneIcon, 280, 145);
+    ctxSeventh.fillText(gameData.settingsData.playerTwoIcon, 37, 145);
+    ctxSeventh.fillText(gameData.settingsData.playerTwoIcon, 280, 235);
+    ctxSeventh.fillText(gameData.settingsData.playerTwoIcon, 160, 235);
 }

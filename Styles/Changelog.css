@@ -8,6 +8,7 @@
 .update {
     margin: 0.5rem 0rem 0rem 1rem;
     border-bottom: 0.25rem solid var(--highlight);
+    font-size: 1.1rem;
 }
 
 .version {
@@ -38,6 +39,7 @@
 
     .update {
         margin: 0.5rem auto 0rem auto;
+        font-size: 0.9rem;
     }
 
     .version {

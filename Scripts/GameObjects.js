@@ -19,7 +19,7 @@ let gameData = {
     fullscreenRequest: false,
     settingsData: {},
     keyPress: false
-}
+};
 
 //Stores all settings for loading the start menu
 let startMenuData = {
@@ -31,7 +31,7 @@ let startMenuData = {
     subtitle: "[Press Enter]/[tap anywhere] to start",
     subtitleCompleted: false,
     speed: 150,
-}
+};
 
 //The gameboard the entire game runs on
 let gameboard = [
@@ -44,7 +44,7 @@ let gameboard = [
     new gamePiece(bottomLeftId, BOTTOMLEFT),
     new gamePiece(bottomMiddleId, BOTTOMMIDDLE),
     new gamePiece(bottomRightId, BOTTOMRIGHT)
-                ];
+];
 
 let themes = [
     "mono",
@@ -54,4 +54,14 @@ let themes = [
     "halloween",
     "umich",
     "bubblegum",
-]
+];
+
+let themeSecondaryColors = {
+    "mono": "#ffffff",
+    "gameboy": "#8bac0f",
+    "vampire": "#ff380d",
+    "snes": "#4f43ae",
+    "halloween": "#f4831b",
+    "umich": "#FFFFFF",
+    "bubblegum": "#c00000"
+};

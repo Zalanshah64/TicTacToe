@@ -1,10 +1,16 @@
 //When the page first loads up, start writing the start menu
-window.addEventListener("load", function() {
+window.addEventListener("load", () => {
+    faviconCanvas.width = FAVICONCANVASSIZE;
+    faviconCanvas.height = FAVICONCANVASSIZE;
+
+    initEmptyFavicon();
+
     startMenuData.subtitle = maxWidth.matches ? "Tap anywhere to start" : "Press Enter to start";
     setTimeout(writeStartMenu, 500);
+
 });
 
-document.querySelector("body").addEventListener("click", function() {
+document.querySelector("body").addEventListener("click", () => {
     if(gameData.currentMenu === GAMEMENU && maxWidth.matches) {
         gameData.gameResult = MAINMENU;
         startMenuWrapper.style.display = "none";
@@ -22,7 +28,7 @@ document.querySelector("body").addEventListener("click", function() {
 })
 
 //If a user presses ctrl + S, don't save the webpage
-document.addEventListener("keydown", function(event) {
+document.addEventListener("keydown", (event) => {
     if(((event.key === "s" || event.key === "S") && event.ctrlKey)
     || (event.key === "Down" || event.key === "ArrowDown")
     || (event.key === "Up" || event.key === "ArrowUp")) {
@@ -30,7 +36,7 @@ document.addEventListener("keydown", function(event) {
     }
 });
 
-document.addEventListener("keyup", function(event) {
+document.addEventListener("keyup", (event) => {
     //If the user has already played a move and that move is currently taking place,
     //don't play another move
     if(gameData.keyPress) {
@@ -135,6 +141,11 @@ document.addEventListener("keyup", function(event) {
                         return;
 
                     case copyToClipBoardButton:
+                        focusOn(mobileShareButton);
+                        gameData.keyPress = false;
+                        return;
+
+                    case mobileShareButton:
                         focusOn(exitPopupButton);
                         gameData.keyPress = false;
                         return;
@@ -262,8 +273,14 @@ document.addEventListener("keyup", function(event) {
                         focusOn(saveImageButton);
                         gameData.keyPress = false;
                         return;
-                    case exitPopupButton:
+
+                    case mobileShareButton:
                         focusOn(copyToClipBoardButton);
+                        gameData.keyPress = false;
+                        return;
+
+                    case exitPopupButton:
+                        focusOn(mobileShareButton);
                         gameData.keyPress = false;
                         return;
                 }
@@ -464,7 +481,7 @@ document.addEventListener("keyup", function(event) {
     }
 });
 
-document.addEventListener("fullscreenchange", function() {
+document.addEventListener("fullscreenchange", () => {
     if(gameData.fullscreenRequest) {
         gameData.fullscreenRequest = false;
         return;
@@ -478,15 +495,15 @@ document.addEventListener("fullscreenchange", function() {
 });
 
 for(let i = 0; i < focusable.length; ++i) {
-    focusable[i].addEventListener("focus", function() {
+    focusable[i].addEventListener("focus", () => {
         playHoverAudio();
     });
 }
 
 for(let i = 0; i < 9; ++i) {
-    gameboard[i].idElement.addEventListener("click", function() {squareClick(gameboard[i], true)});
+    gameboard[i].idElement.addEventListener("click", () => {squareClick(gameboard[i], true)});
 
-    gameboard[i].idElement.addEventListener("mouseenter", function() {
+    gameboard[i].idElement.addEventListener("mouseenter", () =>  {
         if(gameData.gameResult === NOTFINISHED) {
             clearSelections();
             gameData.currentFocus = gameboard[i].pieceNumber;
@@ -494,7 +511,7 @@ for(let i = 0; i < 9; ++i) {
         }
     });
 
-    gameboard[i].idElement.addEventListener("focus", function(e) {
+    gameboard[i].idElement.addEventListener("focus", (e) => {
         if(gameboard[i].isSelected || gameData.gameResult != NOTFINISHED || !gameData.settingsData["suggestions"]) {
             return;
         }
@@ -509,13 +526,13 @@ for(let i = 0; i < 9; ++i) {
         playHoverAudio();
     });
 
-    gameboard[i].idElement.addEventListener("mouseleave", function() {
+    gameboard[i].idElement.addEventListener("mouseleave", () => {
         if(gameData.gameResult === NOTFINISHED) {
             gameboard[i].idElement.blur();
         }
     });
 
-    gameboard[i].idElement.addEventListener("blur", function(e) {
+    gameboard[i].idElement.addEventListener("blur", () => {
         if(gameboard[i].isSelected || gameData.gameResult != NOTFINISHED || !gameData.settingsData["suggestions"]) {
             return;
         }
@@ -525,7 +542,7 @@ for(let i = 0; i < 9; ++i) {
 }
 
 for(let i = 0; i < hoverOverButtons.length; ++i) {
-    hoverOverButtons[i].addEventListener("mouseenter", function() {
+    hoverOverButtons[i].addEventListener("mouseenter", () => {
         focusOn(hoverOverButtons[i]);
     });
 }
@@ -535,7 +552,7 @@ for(let i = 0; i < clickSoundButtons.length; ++i) {
 }
 updateGrayedOut();
 
-startButton.addEventListener("click", function() {
+startButton.addEventListener("click", () => {
     gameData.gameResult = gameData.currentMenu = NOTFINISHED;
     gameData.whoStarts = PLAYERONE;
     mainMenu.style.display = "none";
@@ -544,6 +561,8 @@ startButton.addEventListener("click", function() {
     currentTurnHTML.style.display = "block";
     game.style.display = "grid";
 
+    initEmptyFavicon();
+
     if(getComputedStyle(scoreTitle[PLAYERONE]).visibility != "hidden") {
         scoreTitle[PLAYERONE].style.display = scoreTitle[PLAYERTWO].style.display = "block";
     }
@@ -551,7 +570,7 @@ startButton.addEventListener("click", function() {
     playerTwoName.innerHTML = gameData.settingsData["playerTwoIcon"];
     currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
     if(gameData.settingsData["suggestions"] && !maxWidth.matches) {
-        setTimeout(function() {
+        setTimeout(() => {
             gameData.currentFocus = CENTER;
             gameboard[CENTER].idElement.focus();
         }, 100);
@@ -559,7 +578,9 @@ startButton.addEventListener("click", function() {
 });
 
 
-playAgainButton.addEventListener("click", function() {
+playAgainButton.addEventListener("click", () => {
+    initEmptyFavicon();
+
     if(gameData.whoStarts == PLAYERONE && gameData.settingsData["switchTurns"]) {
         gameData.whoStarts = PLAYERTWO;
         gameData.currentPlayer = PLAYERTWO;
@@ -592,73 +613,70 @@ playAgainButton.addEventListener("click", function() {
     }
 });
 
-shareGameBoard.addEventListener("click", function() {
+shareGameBoard.addEventListener("click", () => {
     popupWrapper.style.display = "flex";
     focusOn(saveImageButton);
 });
 
-popupBackground.addEventListener("click", function() {
+popupBackground.addEventListener("click", () => {
     exitPopupButton.click();
 });
 
-saveImageButton.addEventListener("click", function() {
+saveImageButton.addEventListener("click", () =>  {
     shareGameStatus.innerText = "Saving Image...";
     shareGameStatus.style.visibility = "visible";
-    html2canvas(board).then(function(canvas) {
-        let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    html2canvas(board).then((canvas) => {
+        const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
         downloadImageLink.href = image;
         downloadImageLink.download = gameData.playerOneScore + "-" + gameData.playerTwoScore + ".png";
         downloadImageLink.click();
     });
     shareGameStatus.innerHTML = "Saved Image";
 
-    setTimeout(function() {
+    setTimeout(() =>  {
         shareGameStatus.style.visibility = "hidden";
     }, 1000);
 });
 
-copyToClipBoardButton.addEventListener("click", function() {
-
-    let result = "SCORE: " + gameData.playerOneScore + "-" + gameData.playerTwoScore + "\n\n" + " ";
-
-    for(let i = 0; i < 9; ++i) {
-        if(gameData.playerOneSelectedIds.includes(i)) {
-            result += "X";
-        } else if(gameData.playerTwoSelectedIds.includes(i)) {
-            result += "O";
-        } else {
-            result += " ";
-        }
-
-
-        if(onEdge(i, RIGHT)) {
-            result += " ";
-
-            if(!onEdge(i, DOWN)) {
-                result += "\n---+---+---\n ";
-            }
-        } else {
-            result += " | ";
-        }
-    }
+copyToClipBoardButton.addEventListener("click", () =>  {
+    const result = generateTextCopy();
 
     navigator.clipboard.writeText(result);
 
     shareGameStatus.innerText = "Copied to clipboard";
     shareGameStatus.style.visibility = "visible";
 
-    setTimeout(function() {
+    setTimeout(() =>  {
         shareGameStatus.style.visibility = "hidden";
     }, 1000);
 });
 
-exitPopupButton.addEventListener("click", function() {
+mobileShareButton.addEventListener("click", () =>  {
+    const data = {
+        title: 'Tic-Tac-Toe',
+        text: 'Come play Tic-Tac-Toe!',
+        url: '${url}'
+    }
+
+    if(navigator.canShare && navigator.canShare(data)) {
+        navigator.share(data);
+    }else {
+        shareGameStatus.innerText = "Unable to share";
+        shareGameStatus.style.visibility = "visible";
+        setTimeout(() =>  {
+            shareGameStatus.style.visibility = "hidden";
+        }, 1000);
+    }
+
+})
+
+exitPopupButton.addEventListener("click", () =>  {
     popupWrapper.style.display = "none";
     focusOn(shareGameBoard);
 });
 
 
-settingsPostGameButton.addEventListener("click", function() {
+settingsPostGameButton.addEventListener("click", () =>  {
     gameData.currentMenu = SETTINGSMENU;
     settingsMenu.style.display = wrapper.style.display = "block";
     game.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "none";
@@ -666,9 +684,13 @@ settingsPostGameButton.addEventListener("click", function() {
     scoreTitle[PLAYERONE].style.display = scoreTitle[PLAYERTWO].style.display = "none";
     itsATieHTML.style.display = whoWonHTML.style.display = "none";
     gameData.settingsBackFromLocation = NOTFINISHED;
+    setTimeout(() =>  {
+        focusOn(volumeSlider);
+        pauseHoverOverAudio();
+    }, 100);
 });
 
-mainMenuButton.addEventListener("click", function() {
+mainMenuButton.addEventListener("click", () =>  {
     gameData.playerOneSelected = [];
     gameData.playerOneSelectedIds = [];
     gameData.playerTwoSelected = [];
@@ -684,6 +706,7 @@ mainMenuButton.addEventListener("click", function() {
     }
 
     mainMenu.style.display = "grid";
+    initEmptyFavicon();
     game.style.display = scoreTitle[PLAYERONE].style.display = scoreTitle[PLAYERTWO].style.display = "none";
     mainMenuButton.style.display = settingsPostGameButton.style.display = "none";
     playAgainButton.style.display = shareGameBoard.style.display = "none";
@@ -692,18 +715,18 @@ mainMenuButton.addEventListener("click", function() {
     pauseHoverOverAudio();
 });
 
-settingsButton.addEventListener("click", function() {
+settingsButton.addEventListener("click", () =>  {
     gameData.settingsBackFromLocation = MAINMENU;
     mainMenu.style.display = "none";
     settingsTitle.style.display = settingsMenu.style.display = wrapper.style.display = "block";
     gameData.currentMenu = SETTINGSMENU;
-    setTimeout(function() {
+    setTimeout(() =>  {
         focusOn(volumeSlider);
         pauseHoverOverAudio();
     }, 100);
 });
 
-AIDifficultySelectionprev.addEventListener("click", function() {
+AIDifficultySelectionprev.addEventListener("click", () =>  {
     if(gameData.settingsData["AI"]) {
         (gameData.settingsData["AIDifficulty"])--;
         showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
@@ -729,7 +752,7 @@ AIDifficultySelectionprev.addEventListener("click", function() {
     }
 });
 
-AIDifficultySelectionnext.addEventListener("click", function() {
+AIDifficultySelectionnext.addEventListener("click", () =>  {
     if(gameData.settingsData["AI"]) {
         (gameData.settingsData["AIDifficulty"])++;
         showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
@@ -754,7 +777,7 @@ AIDifficultySelectionnext.addEventListener("click", function() {
     }
 });
 
-playerOneIconSelectionprev.addEventListener("click", function() {
+playerOneIconSelectionprev.addEventListener("click", () =>  {
     (gameData.settingsData["playerOneIconSlideIndex"])--;
     showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
     if(gameData.settingsData["playerOneIconSlideIndex"] == gameData.settingsData["playerTwoIconSlideIndex"]) {
@@ -763,7 +786,7 @@ playerOneIconSelectionprev.addEventListener("click", function() {
     }
 });
 
-playerOneIconSelectionnext.addEventListener("click", function() {
+playerOneIconSelectionnext.addEventListener("click", () =>  {
     (gameData.settingsData["playerOneIconSlideIndex"])++;
     showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
     if(gameData.settingsData["playerOneIconSlideIndex"] == gameData.settingsData["playerTwoIconSlideIndex"]) {
@@ -772,7 +795,7 @@ playerOneIconSelectionnext.addEventListener("click", function() {
     }
 });
 
-playerTwoIconSelectionprev.addEventListener("click", function() {
+playerTwoIconSelectionprev.addEventListener("click", () =>  {
     (gameData.settingsData["playerTwoIconSlideIndex"])--;
     showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
     if(gameData.settingsData["playerTwoIconSlideIndex"] == gameData.settingsData["playerOneIconSlideIndex"]) {
@@ -781,7 +804,7 @@ playerTwoIconSelectionprev.addEventListener("click", function() {
     }
 });
 
-playerTwoIconSelectionnext.addEventListener("click", function() {
+playerTwoIconSelectionnext.addEventListener("click", () =>  {
     (gameData.settingsData["playerTwoIconSlideIndex"])++;
     showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
     if(gameData.settingsData["playerTwoIconSlideIndex"] == gameData.settingsData["playerOneIconSlideIndex"]) {
@@ -791,12 +814,13 @@ playerTwoIconSelectionnext.addEventListener("click", function() {
 });
 
 
-settingsBackButton.addEventListener("click", function() {
+settingsBackButton.addEventListener("click", () =>  {
     settingsMenu.style.display = settingsTitle.style.display = "none";
     wrapper.style.display = "grid";
     if(gameData.settingsBackFromLocation == MAINMENU) {
         gameData.currentMenu = MAINMENU;
         mainMenu.style.display = "grid";
+        initEmptyFavicon();
         focusOn(settingsButton);
         pauseHoverOverAudio();
     } else if(gameData.settingsBackFromLocation == NOTFINISHED) {
@@ -829,25 +853,25 @@ settingsBackButton.addEventListener("click", function() {
     }
 });
 
-volumeSlider.addEventListener("input", function() {
-    let newVolume = this.value / 100;
+volumeSlider.addEventListener("input", () =>  {
+    const newVolume = this.value / 100;
     gameData.settingsData["volume"] = newVolume;
     document.cookie = "volume=" + newVolume + ";";
     updateVolume();
 });
 
-volumeSlider.addEventListener("mouseup", function() {
+volumeSlider.addEventListener("mouseup", () =>  {
     clickAudio.play();
 });
 
-suggestionsToggle.addEventListener("change", function() {
+suggestionsToggle.addEventListener("change", () =>  {
     gameData.settingsData["suggestions"] = !gameData.settingsData["suggestions"];
     document.cookie = "suggestions=" + gameData.settingsData["suggestions"] + ";";
     focusOn(suggestionsSwitch);
     pauseHoverOverAudio();
 });
 
-switchTurnsCheckBox.addEventListener("change", function() {
+switchTurnsCheckBox.addEventListener("change", () =>  {
     gameData.settingsData["switchTurns"] = !gameData.settingsData["switchTurns"];
     gameData.whoStarts = PLAYERONE;
     document.cookie = "switchTurns=" + gameData.settingsData["switchTurns"] + ";";
@@ -855,7 +879,7 @@ switchTurnsCheckBox.addEventListener("change", function() {
     pauseHoverOverAudio();
 });
 
-AIToggle.addEventListener("change", function() {
+AIToggle.addEventListener("change", () =>  {
     gameData.settingsData["AI"] = !gameData.settingsData["AI"];
     document.cookie = "AI=" + gameData.settingsData["AI"] + ";";
 
@@ -864,7 +888,7 @@ AIToggle.addEventListener("change", function() {
     updateGrayedOut();
 });
 
-fullscreenToggle.addEventListener("change", function() {
+fullscreenToggle.addEventListener("change", () =>  {
     gameData.settingsData["fullscreen"] = !gameData.settingsData["fullscreen"];
     document.cookie = "fullscreen=" + gameData.settingsData["fullscreen"] + ";";
     gameData.fullscreenRequest = true;
@@ -878,7 +902,8 @@ fullscreenToggle.addEventListener("change", function() {
     }
 })
 
-instructionsButton.addEventListener("click", function() {
+instructionsButton.addEventListener("click", () =>  {
+    redrawInstructions(themes[gameData.settingsData.theme]);
     mainMenu.style.display = "none";
     instructionsMenu.style.display = "grid";
     instructionsTitle.style.display = wrapper.style.display = "block";
@@ -888,7 +913,7 @@ instructionsButton.addEventListener("click", function() {
     window.scrollTo(0, 0);
 });
 
-changelogButton.addEventListener("click", function() {
+changelogButton.addEventListener("click", () =>  {
     document.getElementsByTagName("html")[0].style.scrollBehavior = "auto";
     gameData.currentMenu = CHANGELOG;
     gameData.ChangelogButtonOffset = window.pageYOffset;
@@ -901,7 +926,7 @@ changelogButton.addEventListener("click", function() {
     document.getElementsByTagName("html")[0].style.scrollBehavior = "smooth";
 });
 
-changelogBackButton.addEventListener("click", function() {
+changelogBackButton.addEventListener("click", () =>  {
     document.getElementsByTagName("html")[0].style.scrollBehavior = "auto";
     gameData.currentMenu = INSTRUCTIONSMENU;
     instructionsMenu.style.display = "grid";
@@ -913,18 +938,19 @@ changelogBackButton.addEventListener("click", function() {
     document.getElementsByTagName("html")[0].style.scrollBehavior = "smooth";
 })
 
-instructionsBackButton.addEventListener("click", function() {
+instructionsBackButton.addEventListener("click", () =>  {
     instructionsMenu.style.display = instructionsTitle.style.display = "none";
     mainMenu.style.display = wrapper.style.display = "grid";
+    initEmptyFavicon();
     gameData.currentMenu = MAINMENU;
     focusOn(startButton);
     pauseHoverOverAudio();
 });
 
-themeSelectionNext.addEventListener("click", function() {
+themeSelectionNext.addEventListener("click", () =>  {
     updateTheme(gameData.settingsData["theme"] + 1);
 });
 
-themeSelectionPrev.addEventListener("click", function() {
+themeSelectionPrev.addEventListener("click", () =>  {
     updateTheme(gameData.settingsData["theme"] - 1);
 });

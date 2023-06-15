@@ -1,10 +1,12 @@
 # Tic-Tac-Toe
 
 ## Table of Contents
-* [Description](#Description)
-* [Features](#Features)
-* [Author](#Author)
-* [Acknowledgments](#Acknowledgments)
+- [Tic-Tac-Toe](#tic-tac-toe)
+  - [Table of Contents](#table-of-contents)
+  - [Description](#description)
+  - [Features](#features)
+  - [Author](#author)
+  - [Acknowledgments](#acknowledgments)
 
 ## Description
 
@@ -56,8 +58,10 @@ Once the game ends, the user will have four options:
 Information on different types of HTML elements and their CSS:
 * [W3 Schools](https://www.w3schools.com/)
 
-Font used:
+Fonts used:
 * [CodeMan38 on Google Fonts](https://fonts.google.com/specimen/Press+Start+2P)
+* [Peax Webdesign](https://www.1001fonts.com/simplerounded-font.html)
+* [Darren Rigby on 1001 fonts](https://www.1001fonts.com/beltane-font.html)
 
 Use of LinkedIn and Github logos at footer of page:
 * [Ionic](https://ionic.io/ionicons)

@@ -122,6 +122,10 @@
         height: 70%;
     }
 
+    .boardpiece {
+        font-size: 2.5rem;
+    }
+
     .postGameButton {
         font-size: 0.65rem;
         line-height: 1rem;

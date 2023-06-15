@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +21,7 @@
         <meta property="og:locale" content="en_US" />
 
 
-        <link rel="icon" href="resources/Icon.png">
+        <link rel="icon" id="favicon">
         <!-- All stylesheets -->
         <link rel="stylesheet" href="Styles/Variables.css" type="text/css">
         <link rel="stylesheet" href="Styles/Webpage.css" type="text/css">
@@ -39,6 +39,8 @@
 
     <body>
         <div id="hidden">
+            <canvas id="faviconCanvas"></canvas>
+
             <audio id="playerOneMoveAudio">
                 <source src="resources/Sounds/PlayerOneMove.wav" type="audio/wav">
             </audio>
@@ -79,6 +81,7 @@
                 <div id="popupButtonWrapper">
                     <button id="saveImageButton" class="popupButton hoverOverSound clickSound focusable">Save Image</button>
                     <button id="copyToClipBoardButton" class="popupButton hoverOverSound clickSound focusable">Copy to Clipboard</button>
+                    <button id="mobileShareButton" class="popupButton hoverOverSound clickSound focusable">Share Webpage</button>
                     <button id="exitPopupButton" class="popupButton hoverOverSound clickSound focusable">Back</button>
                 </div>
                 <h4 id="shareGameStatus">Test</h4>
@@ -155,25 +158,25 @@
                         and early versions of it can be found in ancient Egypt and the Roman Empire.
                         <br>The game starts with a three by three grid of squares, or a pound symbol.</p>
                     <div class="instructionImgDiv">
-                        <img src="resources/Instructions/InstructionsFirstImage.png" title="An empty Tic-Tac-Toe board" class="instructionImage">
+                        <canvas id="instructionFirstCanvas"></canvas>
                     </div>
                     <p class="instruction">Two players take turns filling in the grid with their respective symbol (X or O). X always starts, and O goes second.</p>
                     <div class="instructionImgDiv">
-                        <img src="resources/Instructions/InstructionsSecondImage.png" title="An example of the first move in a Tic-Tac-Toe board" class="instructionImage">
+                        <canvas id="instructionSecondCanvas"></canvas>
                     </div>
                     <p class="instruction">If one player takes a certain square, their oponent will not be able to take that square for the rest of the game.</p>
                     <div class="instructionImgDiv">
-                        <img src="resources/Instructions/InstructionsThirdImage.png" title="An example of the second move in a Tic-Tac-Toe board" class="instructionImage">
+                        <canvas id="instructionThirdCanvas"></canvas>
                     </div>
                         <p class="instruction">In order to win, you must line up three consecutive spaces of your symbol either vertically, horizontally, or diagonally.</p>
                     <div class="instructionImgDiv">
-                        <img src="resources/Instructions/InstructionsFourthImage.png" title="A game where X has won vertically" class="instructionImage instructionImageWin">
-                        <img src="resources/Instructions/InstructionsFifthImage.png" title="A game where X has won horizontally" class="instructionImage instructionImageWin">
-                        <img src="resources/Instructions/InstructionsSixthImage.png" title="A game where X has won diagonally" class="instructionImage instructionImageWin">
+                        <canvas id="instructionFourthCanvas" class="instructionImageWin"></canvas>
+                        <canvas id="instructionFifthCanvas" class="instructionImageWin"></canvas>
+                        <canvas id="instructionSixthCanvas" class="instructionImageWin"></canvas>
                     </div>
                     <p class="instruction">If every space has been filled in and there has not been a three-in-a-row yet, the game is considered a tie and is over.</p>
                     <div class="instructionImgDiv">
-                        <img src="resources/Instructions/InstructionsSeventhImage.png" class="instructionImage">
+                        <canvas id="instructionSeventhCanvas"></canvas>
                     </div>
                     <p class="instructionTitle">VOLUME</p>
                     <p class="instruction">This game features sound effects for every possible interaction you can have with the game.</p>
@@ -291,7 +294,9 @@
                             The algorithm for the AI, the layout of the game, and all game logic was made from scratch.
                             His LinkedIn and Github are available at the bottom of the page.</li>
                         <li><a class="link" href="https://www.w3schools.com/">W3 Schools</a> provided information on many different types of HTML elements and their use cases.</li>
-                        <li><a class="link" href="https://fonts.google.com/specimen/Press+Start+2P">CodeMan38 on Google Fonts</a> provided the font used for this website.</li>
+                        <li><a class="link" href="https://fonts.google.com/specimen/Press+Start+2P">CodeMan38 on Google Fonts</a> provided the 8-bit font used for this website.</li>
+                        <li><a class="link" href="https://www.1001fonts.com/beltane-font.html">Darren Rigby</a> provided the halloween font used for this website.</li>
+                        <li><a class="link" href="https://www.1001fonts.com/simplerounded-font.html">Peax Webdesign</a> provided the bubblegum font used for this website.</li>
                         <li><a class="link" href="https://ionic.io/ionicons">Ionic</a> provided the LinkedIn and Github icons at the footer of the page.</li>
                         <li><a class="link" href="https://www.bfxr.net/">Bfxr</a> provided the software used to create the custom sounds.</li>
                         <li><a class="link" href="https://hertzen.com/">Niklas Hertzen</a> provided the library html2canvas that allows for each round to be saved and downloaded.</li>
@@ -478,6 +483,35 @@
 
                 <!-- Wrapper that contains the changelog with each update -->
                 <div id="changelogWrapper">
+
+                    <div class="update">
+                        <p class="version">V1.19.1: Visual bugs, thematic upgrades</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Reduced changelog font to stop overlapping</li>
+                            <li class="updateli">Reduced board font in phone mode to stop 2-character icons from changing board size</li>
+                            <li class="updateli">Added web sharing API</li>
+                            <li class="updateli">Added support for font changing with themes</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Each theme has a unique font</li>
+                            </ul>
+                            <li class="updateli">Added Dynamic Favicon</li>
+                            <li class="updateli">Changed instruction images to dynamically change with theme and icons</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Use canvases to generate on the fly</li>
+                            </ul>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Add easter eggs</li>
+                            <li class="updateli">Add online multiplayer support</li>
+                            <li class="updateli">Update favicon to update with theme</li>
+                            <li class="updateli">Figure out bug of switching between mouse and keyboard controls</li>
+                            <li class="updateli">Figure out bug where scores change location at beginning and end of game</li>
+                            <li class="updateli">Figure out bug where board creeps on the game status on some displays</li>
+                        </ol>
+                    </div>
 
                     <div class="update">
                         <p class="version">V1.18.3: More Sharing Options</p>

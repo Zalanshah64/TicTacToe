@@ -64,7 +64,13 @@ let instructionsMenu = document.getElementById("instructionsMenu");
 let instructionsTitle = document.getElementById("instructionsTitle");
 let instructionsBackButton = document.getElementById("instructionsBackButton");
 let changelogButton = document.getElementById("changelogButton");
-
+let instructionFirstCanvas = document.getElementById("instructionFirstCanvas");
+let instructionSecondCanvas = document.getElementById("instructionSecondCanvas");
+let instructionThirdCanvas = document.getElementById("instructionThirdCanvas");
+let instructionFourthCanvas = document.getElementById("instructionFourthCanvas");
+let instructionFifthCanvas = document.getElementById("instructionFifthCanvas");
+let instructionSixthCanvas = document.getElementById("instructionSixthCanvas");
+let instructionSeventhCanvas = document.getElementById("instructionSeventhCanvas");
 
 //Document Elements related to changelog
 let changelog = document.getElementById("changelogWrapper");
@@ -92,6 +98,7 @@ let popupWrapper = document.getElementById("popupWrapper");
 let popupBackground = document.getElementById("popupBackground");
 let shareGameStatus = document.getElementById("shareGameStatus");
 let saveImageButton = document.getElementById("saveImageButton");
+let mobileShareButton = document.getElementById("mobileShareButton");
 let copyToClipBoardButton = document.getElementById("copyToClipBoardButton");
 let exitPopupButton = document.getElementById("exitPopupButton");
 
@@ -116,3 +123,10 @@ let middleRightId = document.getElementById("middleRight");
 let bottomLeftId = document.getElementById("bottomLeft");
 let bottomMiddleId = document.getElementById("bottomMiddle");
 let bottomRightId = document.getElementById("bottomRight");
+
+// Dynamic Favicon
+let favicon = document.getElementById('favicon')
+let faviconCanvas = document.getElementById("faviconCanvas");
+let faviconCtx = faviconCanvas.getContext('2d');
+
+

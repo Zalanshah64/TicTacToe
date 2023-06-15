@@ -1,33 +1,71 @@
+@font-face {
+    font-family: mono;
+    src: url(../resources/Fonts/Mono.ttf);
+}
+
+@font-face {
+    font-family: vampire;
+    src: url(../resources/Fonts/Vampire.ttf);
+}
+
+@font-face {
+    font-family: snes;
+    src: url(../resources/Fonts/Snes.ttf);
+}
+
+@font-face {
+    font-family: halloween;
+    src: url(../resources/Fonts/Halloween.ttf);
+}
+
+@font-face {
+    font-family: umich;
+    src: url(../resources/Fonts/Umich.ttf);
+}
+
+@font-face {
+    font-family: bubblegum;
+    src: url(../resources/Fonts/Bubblegum.ttf);
+}
+
 :root {
     --main: var(--monoMain);
     --secondary: var(--monoSecondary);
     --highlight: var(--monoHighlight);
+    --font: var(--monoFont);
 
     --monoMain: #000000;
     --monoSecondary: #ffffff;
     --monoHighlight: #d3d3d3;
+    --monoFont: mono;
 
     --gameboyMain: #0f380f;
     --gameboySecondary: #8bac0f;
     --gameboyHighlight: #9bbc0f;
+    --gameboyFont: mono;
 
     --vampireMain: #180704;
     --vampireSecondary: #ff380d;
     --vampireHighlight: #ffffff;
+    --vampireFont: vampire;
 
     --snesMain: #cec9cc;
     --snesSecondary: #4f43ae;
     --snesHighlight: #211a21;
+    --snesFont: snes;
 
     --halloweenMain: #1c1c1c;
     --halloweenSecondary: #f4831b;
     --halloweenHighlight: #902ebb;
+    --halloweenFont: halloween;
 
     --umichMain: #00274C;
     --umichSecondary: #FFFFFF;
     --umichHighlight: #FFCB05;
+    --umichFont: umich;
 
     --bubblegumMain: #ff6f77;
     --bubblegumSecondary: #c00000;
     --bubblegumHighlight: #ffdee3;
+    --bubblegumFont: bubblegum;
 }
