@@ -56,12 +56,40 @@ let themes = [
     "bubblegum",
 ];
 
-let themeSecondaryColors = {
-    "mono": "#ffffff",
-    "gameboy": "#8bac0f",
-    "vampire": "#ff380d",
-    "snes": "#4f43ae",
-    "halloween": "#f4831b",
-    "umich": "#FFFFFF",
-    "bubblegum": "#c00000"
+let themeColors = {
+    "mono": {
+        main: "#000000",
+        secondary: "#ffffff",
+        highlight: "#d3d3d3"
+    },
+    "gameboy": {
+        main: "#0f380f",
+        secondary: "#8bac0f",
+        highlight: "#9bbc0f"
+    },
+    "vampire": {
+        main: "#180704",
+        secondary: "#ff380d",
+        highlight: "#ffffff"
+    },
+    "snes": {
+        main: "#cec9cc",
+        secondary: "#4f43ae",
+        highlight: "#211a21"
+    },
+    "halloween": {
+        main: "#1c1c1c",
+        secondary: "#f4831b",
+        highlight: "#902ebb"
+    },
+    "umich": {
+        main: "#00274C",
+        secondary: "#FFFFFF",
+        highlight: "#FFCB05"
+    },
+    "bubblegum": {
+        main: "#ff6f77",
+        secondary: "#c00000",
+        highlight: "#ffdee3"
+    }
 };

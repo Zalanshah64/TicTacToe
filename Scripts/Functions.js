@@ -36,6 +36,8 @@ function squareClick(gamePiece, playerClicked) {
     gamePiece.isSelected = true;
     gamePiece.idElement.classList.remove("unclicked");
 
+    window.navigator.vibrate(100)
+
     //Check if the game has ended, and update information and play sounds accordingly
     const result = checkWin();
     if(result == NOTFINISHED) {
@@ -220,6 +222,7 @@ function updateTheme(themeIndex) {
     root.style.setProperty("--highlight", "var(--" + themes[themeIndex] + "Highlight)");
     root.style.setProperty("--font", "var(--" + themes[themeIndex] + "Font)");
 
+    redrawFavicon();
     document.cookie = "theme=" + themeIndex + ";";
 }
 
@@ -665,11 +668,12 @@ function updateFavicon() {
     favicon.href = faviconCanvas.toDataURL('image/png');
 }
 
-function initEmptyFavicon() {
-    faviconCtx.fillStyle = 'black';
+function redrawFavicon() {
+    faviconCtx.fillStyle = themeColors[themes[gameData.settingsData.theme]].main;
+    // faviconCtx.fillStyle = "#00274C";
     faviconCtx.fillRect(0, 0, FAVICONCANVASSIZE, FAVICONCANVASSIZE);
 
-    faviconCtx.strokeStyle = 'white';
+    faviconCtx.strokeStyle = themeColors[themes[gameData.settingsData.theme]].secondary;
     faviconCtx.lineWidth = FAVICONLINEWIDTH;
 
     for (let i = 1; i < 3; i++) {
@@ -686,6 +690,20 @@ function initEmptyFavicon() {
       faviconCtx.stroke();
     }
 
+    faviconCtx.strokeStyle = themeColors[themes[gameData.settingsData.theme]].highlight;
+
+    for(let i = 0; i < 3; i++) {
+        for(let j = 0; j < 3; j++) {
+            if(gameboard[(i * 3) + j].isSelected &&
+               gameboard[(i * 3) + j].idElement.textContent === 'X') {
+                drawFaviconX(i, j);
+            } else if(gameboard[(i * 3) + j].isSelected &&
+                      gameboard[(i * 3) + j].idElement.textContent === 'O') {
+                drawFaviconO(i, j);
+            }
+        }
+    }
+
     updateFavicon();
 }
 
@@ -693,14 +711,13 @@ function drawFaviconX(row, column) {
     const xOffset = column * FAVICONSQUARESIZE;
     const yOffset = row * FAVICONSQUARESIZE;
 
-    faviconCtx.strokeStyle = FAVICONP1COLOR;
     faviconCtx.lineWidth = FAVICONLETTERWIDTH;
 
     faviconCtx.beginPath();
-    faviconCtx.moveTo(xOffset + 2, yOffset + 2);
-    faviconCtx.lineTo(xOffset + FAVICONSQUARESIZE - 2, yOffset + FAVICONSQUARESIZE - 2);
-    faviconCtx.moveTo(xOffset + FAVICONSQUARESIZE - 2, yOffset + 2);
-    faviconCtx.lineTo(xOffset + 2, yOffset + FAVICONSQUARESIZE - 2);
+    faviconCtx.moveTo(xOffset + 1, yOffset + 1);
+    faviconCtx.lineTo(xOffset + FAVICONSQUARESIZE - 1, yOffset + FAVICONSQUARESIZE - 1);
+    faviconCtx.moveTo(xOffset + FAVICONSQUARESIZE - 1, yOffset + 1);
+    faviconCtx.lineTo(xOffset + 1, yOffset + FAVICONSQUARESIZE - 1);
     faviconCtx.stroke();
 
     updateFavicon();
@@ -709,9 +726,8 @@ function drawFaviconX(row, column) {
 function drawFaviconO(row, column) {
     const xOffset = column * FAVICONSQUARESIZE + FAVICONSQUARESIZE / 2;
     const yOffset = row * FAVICONSQUARESIZE + FAVICONSQUARESIZE / 2;
-    const radius = (FAVICONSQUARESIZE - 4) / 2;
+    const radius = (FAVICONSQUARESIZE - 3) / 2;
 
-    faviconCtx.strokeStyle = FAVICONP2COLOR;
     faviconCtx.lineWidth = FAVICONLETTERWIDTH;
 
     faviconCtx.beginPath();
@@ -728,7 +744,7 @@ function redrawInstructions(theme) {
     const ctxFirst = instructionFirstCanvas.getContext("2d");
     ctxFirst.clearRect(0, 0, instructionFirstCanvas.width, instructionFirstCanvas.height);
 
-    ctxFirst.strokeStyle = themeSecondaryColors[theme];
+    ctxFirst.strokeStyle = themeColors[theme]["secondary"];
     ctxFirst.lineWidth = 10;
 
     for(let i = 1; i < 3; i++) {
@@ -752,7 +768,7 @@ function redrawInstructions(theme) {
     instructionSecondCanvas.width = 360;
     const ctxSecond = instructionSecondCanvas.getContext("2d");
     ctxSecond.drawImage(instructionFirstCanvas, 0, 0);
-    ctxSecond.fillStyle = themeSecondaryColors[theme];
+    ctxSecond.fillStyle = themeColors[theme]["secondary"];
     ctxSecond.lineWidth = 7;
     ctxSecond.font = `43px ${theme}`;
     ctxSecond.fillText(gameData.settingsData.playerOneIcon, 37, 60);
@@ -761,7 +777,7 @@ function redrawInstructions(theme) {
     instructionThirdCanvas.width = 360;
     const ctxThird = instructionThirdCanvas.getContext("2d");
     ctxThird.drawImage(instructionSecondCanvas, 0, 0);
-    ctxThird.fillStyle = themeSecondaryColors[theme];
+    ctxThird.fillStyle = themeColors[theme]["secondary"];
     ctxThird.lineWidth = 7;
     ctxThird.font = `43px ${theme}`;
     ctxThird.fillText(gameData.settingsData.playerTwoIcon, 160, 145);
@@ -770,7 +786,7 @@ function redrawInstructions(theme) {
     instructionFourthCanvas.width = 360;
     const ctxFourth = instructionFourthCanvas.getContext("2d");
     ctxFourth.drawImage(instructionThirdCanvas, 0, 0);
-    ctxFourth.fillStyle = themeSecondaryColors[theme];
+    ctxFourth.fillStyle = themeColors[theme]["secondary"];
     ctxFourth.lineWidth = 7;
     ctxFourth.font = `43px ${theme}`;
     ctxFourth.fillText(gameData.settingsData.playerOneIcon, 37, 145);
@@ -782,7 +798,7 @@ function redrawInstructions(theme) {
     instructionFifthCanvas.width = 360;
     const ctxFifth = instructionFifthCanvas.getContext("2d");
     ctxFifth.drawImage(instructionThirdCanvas, 0, 0);
-    ctxFifth.fillStyle = themeSecondaryColors[theme];
+    ctxFifth.fillStyle = themeColors[theme]["secondary"];
     ctxFifth.lineWidth = 7;
     ctxFifth.font = `43px ${theme}`;
     ctxFifth.fillText(gameData.settingsData.playerOneIcon, 280, 60);
@@ -794,7 +810,7 @@ function redrawInstructions(theme) {
     instructionSixthCanvas.width = 360;
     const ctxSixth = instructionSixthCanvas.getContext("2d");
     ctxSixth.drawImage(instructionSecondCanvas, 0, 0);
-    ctxSixth.fillStyle = themeSecondaryColors[theme];
+    ctxSixth.fillStyle = themeColors[theme]["secondary"];
     ctxSixth.lineWidth = 7;
     ctxSixth.font = `43px ${theme}`;
     ctxSixth.fillText(gameData.settingsData.playerOneIcon, 160, 145);
@@ -806,7 +822,7 @@ function redrawInstructions(theme) {
     instructionSeventhCanvas.width = 360;
     const ctxSeventh = instructionSeventhCanvas.getContext("2d");
     ctxSeventh.drawImage(instructionThirdCanvas, 0, 0);
-    ctxSeventh.fillStyle = themeSecondaryColors[theme];
+    ctxSeventh.fillStyle = themeColors[theme]["secondary"];
     ctxSeventh.lineWidth = 7;
     ctxSeventh.font = `43px ${theme}`;
     ctxSeventh.fillText(gameData.settingsData.playerOneIcon, 280, 60);

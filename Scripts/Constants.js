@@ -46,6 +46,4 @@ const maxWidth = window.matchMedia("(max-width: 500px)");
 const FAVICONCANVASSIZE = 16;
 const FAVICONSQUARESIZE = FAVICONCANVASSIZE / 3;
 const FAVICONLINEWIDTH = 1;
-const FAVICONLETTERWIDTH = 3;
-const FAVICONP1COLOR = "red";
-const FAVICONP2COLOR = "blue";
+const FAVICONLETTERWIDTH = 1;

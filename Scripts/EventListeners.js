@@ -3,7 +3,7 @@ window.addEventListener("load", () => {
     faviconCanvas.width = FAVICONCANVASSIZE;
     faviconCanvas.height = FAVICONCANVASSIZE;
 
-    initEmptyFavicon();
+    redrawFavicon();
 
     startMenuData.subtitle = maxWidth.matches ? "Tap anywhere to start" : "Press Enter to start";
     setTimeout(writeStartMenu, 500);
@@ -561,7 +561,7 @@ startButton.addEventListener("click", () => {
     currentTurnHTML.style.display = "block";
     game.style.display = "grid";
 
-    initEmptyFavicon();
+    redrawFavicon();
 
     if(getComputedStyle(scoreTitle[PLAYERONE]).visibility != "hidden") {
         scoreTitle[PLAYERONE].style.display = scoreTitle[PLAYERTWO].style.display = "block";
@@ -579,7 +579,7 @@ startButton.addEventListener("click", () => {
 
 
 playAgainButton.addEventListener("click", () => {
-    initEmptyFavicon();
+    redrawFavicon();
 
     if(gameData.whoStarts == PLAYERONE && gameData.settingsData["switchTurns"]) {
         gameData.whoStarts = PLAYERTWO;
@@ -706,7 +706,7 @@ mainMenuButton.addEventListener("click", () =>  {
     }
 
     mainMenu.style.display = "grid";
-    initEmptyFavicon();
+    redrawFavicon();
     game.style.display = scoreTitle[PLAYERONE].style.display = scoreTitle[PLAYERTWO].style.display = "none";
     mainMenuButton.style.display = settingsPostGameButton.style.display = "none";
     playAgainButton.style.display = shareGameBoard.style.display = "none";
@@ -820,7 +820,7 @@ settingsBackButton.addEventListener("click", () =>  {
     if(gameData.settingsBackFromLocation == MAINMENU) {
         gameData.currentMenu = MAINMENU;
         mainMenu.style.display = "grid";
-        initEmptyFavicon();
+        redrawFavicon();
         focusOn(settingsButton);
         pauseHoverOverAudio();
     } else if(gameData.settingsBackFromLocation == NOTFINISHED) {
@@ -941,7 +941,7 @@ changelogBackButton.addEventListener("click", () =>  {
 instructionsBackButton.addEventListener("click", () =>  {
     instructionsMenu.style.display = instructionsTitle.style.display = "none";
     mainMenu.style.display = wrapper.style.display = "grid";
-    initEmptyFavicon();
+    redrawFavicon();
     gameData.currentMenu = MAINMENU;
     focusOn(startButton);
     pauseHoverOverAudio();
