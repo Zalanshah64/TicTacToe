@@ -60,13 +60,13 @@
 }
 
 .unclicked {
-    cursor: pointer;
+    cursor: var(--cursorURL);
 }
 
 .unclicked:active:hover {
     color: var(--highlight);
     font-size: 3.5rem;
-    cursor: pointer;
+    cursor: var(--cursorURL);
 }
 
 #topLeft {
@@ -108,7 +108,7 @@
 
 .selected {
     opacity: 0.25;
-    cursor: pointer;
+    cursor: var(--cursorURL);
 }
 
 .clicked {

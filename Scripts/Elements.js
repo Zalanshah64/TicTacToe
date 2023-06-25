@@ -4,6 +4,8 @@ let root = document.querySelector(":root");
 let hoverOverButtons = document.getElementsByClassName("hoverOverSound");
 let clickSoundButtons = document.getElementsByClassName("clickSound");
 let focusable = document.getElementsByClassName("focusable");
+let cursorCanvas = document.getElementById("cursorCanvas");
+let cursorCtx = cursorCanvas.getContext('2d');
 
 
 //Document elements related to the header

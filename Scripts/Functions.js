@@ -36,7 +36,7 @@ function squareClick(gamePiece, playerClicked) {
     gamePiece.isSelected = true;
     gamePiece.idElement.classList.remove("unclicked");
 
-    window.navigator.vibrate(100)
+    window.navigator.vibrate(100);
 
     //Check if the game has ended, and update information and play sounds accordingly
     const result = checkWin();
@@ -223,6 +223,7 @@ function updateTheme(themeIndex) {
     root.style.setProperty("--font", "var(--" + themes[themeIndex] + "Font)");
 
     redrawFavicon();
+    redrawCursor();
     document.cookie = "theme=" + themeIndex + ";";
 }
 
@@ -736,6 +737,24 @@ function drawFaviconO(row, column) {
 
     updateFavicon();
 }
+
+function redrawCursor() {
+    cursorCanvas.height = 15;
+    cursorCanvas.width = 15;
+
+    cursorCtx.imageSmoothingEnabled = false;
+
+    cursorCtx.arc(7.5, 7.5, 5, 0, Math.PI * 2);
+    cursorCtx.fillStyle  = themeColors[themes[gameData.settingsData.theme]]["secondary"];
+    cursorCtx.fill();
+
+    cursorCtx.lineWidth = 2;
+    cursorCtx.strokeStyle = themeColors[themes[gameData.settingsData.theme]]["main"];
+    cursorCtx.stroke();
+
+    root.style.setProperty("--cursorURL", "url(" + cursorCanvas.toDataURL() + ") 10 10, auto");
+}
+
 
 function redrawInstructions(theme) {
     instructionFirstCanvas.height = 255;

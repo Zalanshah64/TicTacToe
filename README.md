@@ -62,6 +62,7 @@ Fonts used:
 * [CodeMan38 on Google Fonts](https://fonts.google.com/specimen/Press+Start+2P)
 * [Peax Webdesign](https://www.1001fonts.com/simplerounded-font.html)
 * [Darren Rigby on 1001 fonts](https://www.1001fonts.com/beltane-font.html)
+* [Chris Hansen on 1001 fonts](https://www.1001fonts.com/pure-evil-2-font.html)
 
 Use of LinkedIn and Github logos at footer of page:
 * [Ionic](https://ionic.io/ionicons)

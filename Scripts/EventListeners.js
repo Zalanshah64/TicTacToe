@@ -4,6 +4,7 @@ window.addEventListener("load", () => {
     faviconCanvas.height = FAVICONCANVASSIZE;
 
     redrawFavicon();
+    redrawCursor();
 
     startMenuData.subtitle = maxWidth.matches ? "Tap anywhere to start" : "Press Enter to start";
     setTimeout(writeStartMenu, 500);
