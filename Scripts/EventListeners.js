@@ -44,9 +44,10 @@ document.addEventListener("keyup", (event) => {
         return;
     }
 
+    gameData.keyPress = true;
+
     switch(event.key) {
         case "Enter":
-            gameData.keyPress = true;
             //If the key pressed was enter and we are in the start menu, open the main menu
             if(gameData.currentMenu === GAMEMENU) {
                 gameData.gameResult = MAINMENU;
@@ -60,368 +61,280 @@ document.addEventListener("keyup", (event) => {
                 }
                 gameData.currentMenu = MAINMENU;
                 focusOn(startButton);
-                gameData.keyPress = false;
-                return;
             }
+
+        break;
         case " ":
-            gameData.keyPress = true;
             //If the game is currently being played, click that button
             if(gameData.currentMenu === NOTFINISHED && gameData.gameResult === NOTFINISHED && typeof gameData.currentFocus == "number") {
                 gameboard[gameData.currentFocus].idElement.click();
-            } else if(gameData.currentMenu === SETTINGSMENU) {
-                if(gameData.currentFocus != volumeSlider) {
-                    gameData.currentFocus.click()
-                }
-                gameData.keyPress = false;
-                return;
+            } else if(gameData.currentMenu === SETTINGSMENU && gameData.currentFocus != volumeSlider) {
+                gameData.currentFocus.click();
             }
-            gameData.keyPress = false;
-            return;
+        break;
 
         case "s":
         case "S":
-            gameData.keyPress = true;
-            if(gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED)) {
-                if(event.ctrlKey) {
-                    shareGameBoard.click();
-                }
+            if(event.ctrlKey && gameData.currentMenu == NOTFINISHED && gameData.gameResult != NOTFINISHED) {
+                shareGameBoard.click();
             }
-            gameData.keyPress = false;
-            return;
+        break;
         case "Down":
         case "ArrowDown":
-            gameData.keyPress = true;
             if(gameData.currentMenu == MAINMENU) {
                 if(gameData.currentFocus === startButton) {
                     focusOn(instructionsButton);
-                    gameData.keyPress = false;
-                    return;
                 } else if(gameData.currentFocus === instructionsButton) {
                     focusOn(settingsButton);
-                    gameData.keyPress = false;
-                    return;
                 } else if(gameData.currentFocus === settingsButton) {
                     focusOn(startButton);
-                    gameData.keyPress = false;
-                    return;
                 }
             } else if(gameData.currentMenu == INSTRUCTIONSMENU) {
                 if(gameData.currentFocus === changelogButton) {
                     focusOn(instructionsBackButton);
-                    gameData.keyPress = false;
-                    return;
                 } else {
                     focusOn(changelogButton);
-                    gameData.keyPress = false;
-                    return;
                 }
             } else if(gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED)) {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(settingsPostGameButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case settingsPostGameButton:
                         focusOn(mainMenuButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case playAgainButton:
                         focusOn(shareGameBoard);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case shareGameBoard:
                         focusOn(playAgainButton);
-                        gameData.keyPress = false;
-                        return;
-
-
+                    break;
 
                     case saveImageButton:
                         focusOn(copyToClipBoardButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
 
                     case copyToClipBoardButton:
                         focusOn(mobileShareButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
 
                     case mobileShareButton:
                         focusOn(exitPopupButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
 
                     case exitPopupButton:
                         focusOn(saveImageButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                 }
             } else if(gameData.currentMenu == SETTINGSMENU) {
                 switch(gameData.currentFocus) {
                     case volumeSlider:
                         event.preventDefault();
                         focusOn(suggestionsSwitch);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                     case suggestionsSwitch:
                         focusOn(switchTurnsSwitch);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                     case switchTurnsSwitch:
                         focusOn(AISwitch);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                     case AISwitch:
                         if(gameData.settingsData["AI"]) {
                             focusOn(AIDifficultySelection);
-                            gameData.keyPress = false;
-                            return;
                         } else {
                             focusOn(fullscreenSwitch);
-                            gameData.keyPress = false;
-                            return;
                         }
+                    break;
                     case AIDifficultySelection:
                         focusOn(fullscreenSwitch);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                     case fullscreenSwitch:
                         focusOn(playerOneIconSelection);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                     case playerOneIconSelection:
                         focusOn(playerTwoIconSelection);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                     case playerTwoIconSelection:
                         focusOn(themeSelection);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                     case themeSelection:
                         focusOn(settingsBackButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                     case settingsBackButton:
                         focusOn(volumeSlider);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                 }
-            }else if(gameData.currentMenu == NOTFINISHED && gameData.gameResult == NOTFINISHED) {
-                if(!gameData.settingsData["suggestions"]) {
-                    gameData.keyPress = false;
-                    return;
-                }
-
+            } else if(gameData.currentMenu == NOTFINISHED && gameData.gameResult == NOTFINISHED && gameData.settingsData["suggestions"]) {
                 moveSuggestion(DOWN);
             }
-            gameData.keyPress = false;
-            return;
+        break;
 
         case "w":
         case "W":
         case "Up":
         case "ArrowUp":
-            gameData.keyPress = true;
             if(gameData.currentMenu == MAINMENU) {
                 if(gameData.currentFocus === startButton) {
                     focusOn(settingsButton);
-                    gameData.keyPress = false;
-                    return;
                 } else if(gameData.currentFocus === instructionsButton) {
                     focusOn(startButton);
-                    gameData.keyPress = false;
-                    return;
                 } else if(gameData.currentFocus === settingsButton) {
                     focusOn(instructionsButton);
-                    gameData.keyPress = false;
-                    return;
                 }
             } else if(gameData.currentMenu == INSTRUCTIONSMENU) {
                 if(gameData.currentFocus === changelogButton) {
                     focusOn(instructionsBackButton);
-                    gameData.keyPress = false;
-                    return;
                 } else {
                     focusOn(changelogButton);
-                    gameData.keyPress = false;
-                    return;
                 }
             } else if(gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED)) {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(settingsPostGameButton);
-                        gameData.keyPress = false;
-                        return;
+                        break;
+
                     case settingsPostGameButton:
                         focusOn(mainMenuButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case playAgainButton:
                         focusOn(shareGameBoard);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case shareGameBoard:
                         focusOn(playAgainButton);
-                        gameData.keyPress = false;
-                        return;
-
+                    break;
 
                     case saveImageButton:
                         focusOn(exitPopupButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case copyToClipBoardButton:
                         focusOn(saveImageButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
 
                     case mobileShareButton:
                         focusOn(copyToClipBoardButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
 
                     case exitPopupButton:
                         focusOn(mobileShareButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                 }
             } else if(gameData.currentMenu == SETTINGSMENU) {
                 switch(gameData.currentFocus) {
                     case volumeSlider:
                         event.preventDefault();
                         focusOn(settingsBackButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case suggestionsSwitch:
                         focusOn(volumeSlider);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case switchTurnsSwitch:
                         focusOn(suggestionsSwitch);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case AISwitch:
                         focusOn(switchTurnsSwitch);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case AIDifficultySelection:
                         focusOn(AISwitch);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case fullscreenSwitch:
                         if(gameData.settingsData["AI"]) {
                             focusOn(AIDifficultySelection);
-                            gameData.keyPress = false;
-                            return;
                         } else {
                             focusOn(AISwitch);
-                            gameData.keyPress = false;
-                            return;
                         }
+                    break;
+
                     case playerOneIconSelection:
                         focusOn(fullscreenSwitch);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case playerTwoIconSelection:
                         focusOn(playerOneIconSelection);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case themeSelection:
                         focusOn(playerTwoIconSelection);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case settingsBackButton:
                         focusOn(themeSelection);
-                        gameData.keyPress = false;
+                    break;
                 }
-            } else if(gameData.currentMenu == NOTFINISHED) {
-                if(!gameData.settingsData["suggestions"]) {
-                    gameData.keyPress = false;
-                    return;
-                }
-
+            } else if(gameData.currentMenu == NOTFINISHED && gameData.settingsData["suggestions"]) {
                 moveSuggestion(UP);
             }
-            gameData.keyPress = false;
-            return;
+            break;
 
         case "a":
         case "A":
         case "Left":
         case "ArrowLeft":
-            gameData.keyPress = true;
             if((gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED))) {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(playAgainButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case playAgainButton:
                         focusOn(mainMenuButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case settingsPostGameButton:
                         focusOn(shareGameBoard);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case shareGameBoard:
                         focusOn(settingsPostGameButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                 }
-            } else if(gameData.currentMenu == NOTFINISHED) {
-                if(!gameData.settingsData["suggestions"]) {
-                    gameData.keyPress = false;
-                    return;
-                }
-
+            } else if(gameData.currentMenu == NOTFINISHED && gameData.settingsData["suggestions"]) {
                 moveSuggestion(LEFT);
-
             } else if(gameData.currentFocus == AIDifficultySelection) {
                 AIDifficultySelectionprev.click();
             } else if(gameData.currentFocus == playerOneIconSelection) {
                 playerOneIconSelectionprev.click();
-            }else if(gameData.currentFocus == playerTwoIconSelection) {
+            } else if(gameData.currentFocus == playerTwoIconSelection) {
                 playerTwoIconSelectionprev.click();
             } else if(gameData.currentFocus == themeSelection) {
                 themeSelectionPrev.click();
             }
-            gameData.keyPress = false;
-            return;
+        break;
 
         case "d":
         case "D":
         case "Right":
         case "ArrowRight":
-            gameData.keyPress = true;
             if((gameData.currentMenu == NOTFINISHED && (gameData.gameResult != NOTFINISHED))) {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(playAgainButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case playAgainButton:
                         focusOn(mainMenuButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case settingsPostGameButton:
                         focusOn(shareGameBoard);
-                        gameData.keyPress = false;
-                        return;
+                    break;
+
                     case shareGameBoard:
                         focusOn(settingsPostGameButton);
-                        gameData.keyPress = false;
-                        return;
+                    break;
                 }
-            } else if(gameData.currentMenu == NOTFINISHED) {
-                if(!gameData.settingsData["suggestions"]) {
-                    gameData.keyPress = false;
-                    return;
-                }
-
-                gameData.keyPress = false;
+            } else if(gameData.currentMenu == NOTFINISHED && gameData.settingsData["suggestions"]) {
                 moveSuggestion(RIGHT);
-
             } else if(gameData.currentFocus == AIDifficultySelection) {
                 AIDifficultySelectionnext.click();
             } else if(gameData.currentFocus == playerOneIconSelection) {
@@ -431,55 +344,35 @@ document.addEventListener("keyup", (event) => {
             } else if(gameData.currentFocus == themeSelection) {
                 themeSelectionNext.click();
             }
-            gameData.keyPress = false;
-            return;
+        break;
 
         case "Escape":
-            gameData.keyPress = true;
-            if(gameData.currentMenu == NOTFINISHED) {
-                mainMenuButton.click();
-                gameData.keyPress = false;
-                return;
-            }
         case "Backspace":
-            gameData.keyPress = true;
-            if(gameData.currentMenu == INSTRUCTIONSMENU) {
-                instructionsBackButton.click();
-                gameData.keyPress = false;
-            } else if(gameData.currentMenu == SETTINGSMENU) {
-                settingsBackButton.click();
-                gameData.keyPress = false;
-            } else if(gameData.currentMenu == CHANGELOG) {
-                changelogBackButton.click();
-                gameData.keyPress = false;
-            }
-            gameData.keyPress = false;
-            return;
+            handleReturn();
+
+        break;
 
         case "m":
         case "M":
-            gameData.keyPress = true;
-            if(gameData.settingsData["volume"] == 0) {
-                gameData.settingsData["volume"] = gameData.rememberedVolume;
-            } else {
-                gameData.rememberedVolume = gameData.settingsData["volume"];
-                gameData.settingsData["volume"] = 0;
-            }
-
-            volumeSlider.value = gameData.settingsData["volume"] * 100;
-            document.cookie = "volume=" + gameData.settingsData["volume"] + ";";
-            updateVolume();
-            playClickAudio();
-            gameData.keyPress = false;
-            return;
+            toggleMute();
+        break;
 
         case "F":
         case "f":
-            gameData.keyPress = true;
             fullscreenSwitch.click()
-            gameData.keyPress = false;
-            return;
+        break;
+
+        case "Z":
+        case "z":
+            if(event.shiftKey && event.ctrlKey && gameData.currentMenu == NOTFINISHED) {
+                redoMove();
+            } else if(event.ctrlKey && gameData.currentMenu == NOTFINISHED) {
+                undoMove();
+            }
+        break;
     }
+
+    gameData.keyPress = false;
 });
 
 document.addEventListener("fullscreenchange", () => {
@@ -490,16 +383,25 @@ document.addEventListener("fullscreenchange", () => {
         gameData.settingsData["fullscreen"] = false;
         document.cookie = "fullscreen=false;"
         fullscreenToggle.checked = !fullscreenToggle.checked;
+        updateFullscreenButtons();
         document.isOpenFullScreen = false;
         playClickAudio();
     }
 });
 
-for(let i = 0; i < focusable.length; ++i) {
+for(let i = 0; i < focusable.length; i++) {
     focusable[i].addEventListener("focus", () => {
         playHoverAudio();
     });
 }
+
+for(let i = 0; i < focusable.length; i++) {
+    focusable[i].addEventListener("click", () => {
+        contextReturnButton.style.display = "block";
+    });
+}
+
+contextReturnButton.addEventListener("click", handleReturn);
 
 for(let i = 0; i < 9; ++i) {
     gameboard[i].idElement.addEventListener("click", () => {squareClick(gameboard[i], true)});
@@ -578,10 +480,7 @@ startButton.addEventListener("click", () => {
     }
 });
 
-
 playAgainButton.addEventListener("click", () => {
-    redrawFavicon();
-
     if(gameData.whoStarts == PLAYERONE && gameData.settingsData["switchTurns"]) {
         gameData.whoStarts = PLAYERTWO;
         gameData.currentPlayer = PLAYERTWO;
@@ -591,13 +490,11 @@ playAgainButton.addEventListener("click", () => {
         gameData.currentPlayer = PLAYERONE;
         currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
     }
-    gameData.playerOneSelected = [];
-    gameData.playerOneSelectedIds = [];
-    gameData.playerTwoSelected = [];
-    gameData.playerTwoSelectedIds = [];
+
+    clearGameInformation();
     gameData.AIwaitTime = 400;
-    mainMenuButton.style.display = settingsPostGameButton.style.display = "none";
-    playAgainButton.style.display = shareGameBoard.style.display = "none";
+    mainMenuButton.style.display = settingsPostGameButton.style.display =
+    playAgainButton.style.display = shareGameBoard.style.display =
     itsATieHTML.style.display = whoWonHTML.style.display = "none";
     currentTurnHTML.style.display = "block";
     playerOneName.innerHTML = gameData.settingsData["playerOneIcon"];
@@ -609,6 +506,8 @@ playAgainButton.addEventListener("click", () => {
     }
     gameData.gameResult = NOTFINISHED;
 
+    redrawFavicon();
+
     if(gameData.whoStarts == PLAYERTWO) {
         AIPlayMove();
     }
@@ -616,6 +515,8 @@ playAgainButton.addEventListener("click", () => {
 
 shareGameBoard.addEventListener("click", () => {
     popupWrapper.style.display = "flex";
+    undoMoveButton.style.display = "none";
+    redoMoveButton.style.display = "none";
     focusOn(saveImageButton);
 });
 
@@ -661,21 +562,23 @@ mobileShareButton.addEventListener("click", () =>  {
 
     if(navigator.canShare && navigator.canShare(data)) {
         navigator.share(data);
-    }else {
+    } else {
         shareGameStatus.innerText = "Unable to share";
         shareGameStatus.style.visibility = "visible";
         setTimeout(() =>  {
             shareGameStatus.style.visibility = "hidden";
         }, 1000);
     }
-
-})
+});
 
 exitPopupButton.addEventListener("click", () =>  {
     popupWrapper.style.display = "none";
+    undoMoveButton.style.display = "block";
+    if(gameData.undoMoves.length != 0) {
+        redoMoveButton.style.display = "none";
+    }
     focusOn(shareGameBoard);
 });
-
 
 settingsPostGameButton.addEventListener("click", () =>  {
     gameData.currentMenu = SETTINGSMENU;
@@ -692,10 +595,7 @@ settingsPostGameButton.addEventListener("click", () =>  {
 });
 
 mainMenuButton.addEventListener("click", () =>  {
-    gameData.playerOneSelected = [];
-    gameData.playerOneSelectedIds = [];
-    gameData.playerTwoSelected = [];
-    gameData.playerTwoSelectedIds = [];
+clearGameInformation();
     gameData.playerOneScore = gameData.playerTwoScore = 0;
     gameData.currentPlayer = PLAYERONE;
     gameData.gameResult = gameData.currentMenu = MAINMENU;
@@ -732,24 +632,7 @@ AIDifficultySelectionprev.addEventListener("click", () =>  {
         (gameData.settingsData["AIDifficulty"])--;
         showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
 
-        switch(gameData.settingsData["AIDifficulty"]) {
-            case EASY:
-                gameData.AIDifficultyChance = 0.6;
-            return;
-
-            case NORMAL:
-                gameData.AIDifficultyChance = 0.8;
-            return;
-
-            case HARD:
-                gameData.AIDifficultyChance = 0.9;
-            return;
-
-            case IMPOSSIBLE:
-                gameData.AIDifficultyChance = 1;
-            return;
-        }
-
+        updateAIDifficulty();
     }
 });
 
@@ -759,23 +642,7 @@ AIDifficultySelectionnext.addEventListener("click", () =>  {
         showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
     }
 
-    switch(gameData.settingsData["AIDifficulty"]) {
-        case EASY:
-            gameData.AIDifficultyChance = 0.6;
-        return;
-
-        case NORMAL:
-            gameData.AIDifficultyChance = 0.8;
-        return;
-
-        case HARD:
-            gameData.AIDifficultyChance = 0.9;
-        return;
-
-        case IMPOSSIBLE:
-            gameData.AIDifficultyChance = 1;
-        return;
-    }
+    updateAIDifficulty();
 });
 
 playerOneIconSelectionprev.addEventListener("click", () =>  {
@@ -814,15 +681,11 @@ playerTwoIconSelectionnext.addEventListener("click", () =>  {
     }
 });
 
-
 settingsBackButton.addEventListener("click", () =>  {
     settingsMenu.style.display = settingsTitle.style.display = "none";
     wrapper.style.display = "grid";
     if(gameData.settingsBackFromLocation == MAINMENU) {
-        gameData.currentMenu = MAINMENU;
-        mainMenu.style.display = "grid";
-        redrawFavicon();
-        focusOn(settingsButton);
+        openMainMenu();
         pauseHoverOverAudio();
     } else if(gameData.settingsBackFromLocation == NOTFINISHED) {
         game.style.display = "grid";
@@ -833,7 +696,7 @@ settingsBackButton.addEventListener("click", () =>  {
         gameData.currentMenu = NOTFINISHED;
         focusOn(settingsPostGameButton);
         pauseHoverOverAudio();
-        if(gameData.gameResult == PLAYERONE || gameData.gameResult == PLAYERTWO) {
+        if(gameData.gameResult != DRAW) {
             whoWonHTML.style.display = "block";
         } else {
             itsATieHTML.style.display = "block";
@@ -854,8 +717,8 @@ settingsBackButton.addEventListener("click", () =>  {
     }
 });
 
-volumeSlider.addEventListener("input", () =>  {
-    const newVolume = this.value / 100;
+volumeSlider.addEventListener("input", (e) =>  {
+    const newVolume = e.target.value / 100;
     gameData.settingsData["volume"] = newVolume;
     document.cookie = "volume=" + newVolume + ";";
     updateVolume();
@@ -901,7 +764,8 @@ fullscreenToggle.addEventListener("change", () =>  {
     } else {
         document.documentElement.requestFullscreen();
     }
-})
+    updateFullscreenButtons();
+});
 
 instructionsButton.addEventListener("click", () =>  {
     redrawInstructions(themes[gameData.settingsData.theme]);
@@ -937,14 +801,10 @@ changelogBackButton.addEventListener("click", () =>  {
     pauseHoverOverAudio();
     window.scrollTo(0, gameData.ChangelogButtonOffset);
     document.getElementsByTagName("html")[0].style.scrollBehavior = "smooth";
-})
+});
 
 instructionsBackButton.addEventListener("click", () =>  {
-    instructionsMenu.style.display = instructionsTitle.style.display = "none";
-    mainMenu.style.display = wrapper.style.display = "grid";
-    redrawFavicon();
-    gameData.currentMenu = MAINMENU;
-    focusOn(startButton);
+    openMainMenu();
     pauseHoverOverAudio();
 });
 
@@ -955,3 +815,38 @@ themeSelectionNext.addEventListener("click", () =>  {
 themeSelectionPrev.addEventListener("click", () =>  {
     updateTheme(gameData.settingsData["theme"] - 1);
 });
+
+document.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    contextMenu.style.display = "flex";
+    if(event.pageX + contextMenu.offsetWidth > getWidth()) {
+        contextMenu.style.left = (event.pageX - contextMenu.offsetWidth) + "px";
+    } else {
+        contextMenu.style.left = event.pageX + "px";
+    }
+    if(event.pageY + contextMenu.offsetHeight > getHeight()) {
+        contextMenu.style.top = (event.pageY - contextMenu.offsetHeight) + "px";
+    } else {
+        contextMenu.style.top = event.pageY + "px";
+    }
+});
+
+document.addEventListener("click", () => {
+    contextMenu.style.display = "none";
+});
+
+contextFullscreenButton.addEventListener("click", () => {
+    fullscreenToggle.click();
+});
+
+contextWindowedButton.addEventListener("click", () => {
+    fullscreenToggle.click();
+});
+
+contextMuteButton.addEventListener("click", toggleMute);
+
+contextUnmuteButton.addEventListener("click", toggleMute);
+
+contextUndoButton.addEventListener("click", undoMove);
+
+contextRedoButton.addEventListener("click", redoMove);

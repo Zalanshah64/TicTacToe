@@ -1,5 +1,4 @@
 #changelogWrapper {
-    display: none;
     font-size: 1.5rem;
     line-height: 1.25rem;
     max-width: 100%;
@@ -9,6 +8,10 @@
     margin: 0.5rem 0rem 0rem 1rem;
     border-bottom: 0.25rem solid var(--highlight);
     font-size: 1.1rem;
+}
+
+.updateli {
+    margin: 3px;
 }
 
 .version {
@@ -21,7 +24,6 @@
 .CHANGELOG, .TODO{
     font-size: 1.8rem;
 }
-
 
 #changelogBackButton {
     width: 70%;

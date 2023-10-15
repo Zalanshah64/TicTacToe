@@ -1,10 +1,6 @@
 /* Stylesheet for the settings menu */
 @import url("Webpage.css");
 
-#settingsMenu {
-    display: none;
-}
-
 #settingsWrapper {
     display: grid;
     grid-template-columns: 20% 80%;
@@ -48,7 +44,6 @@
 
 #volumeSlider:hover {
     background: var(--highlight);
-    cursor: var(--cursorURL);
 }
 
 #volumeSlider::-webkit-slider-thumb {
@@ -57,7 +52,6 @@
     width: 5%;
     height: 1.8rem;
     background: var(--main);
-    cursor: var(--cursorURL);
 }
 
 .toggleInfo {
@@ -81,7 +75,6 @@
 
 .toggleSlider {
     position: absolute;
-    cursor: var(--cursorURL);
     top: 0;
     left: 0;
     right: 0;
@@ -152,7 +145,6 @@ input:checked + .toggleSlider:before {
     display: grid;
     justify-content: center;
     align-items: center;
-    cursor: var(--cursorURL);
     align-self: center;
     justify-self: center;
     padding: 1rem;

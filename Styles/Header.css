@@ -24,16 +24,6 @@
 
 }
 
-.scoreTitle,
-#currentTurn,
-#whoWon,
-#itsATie,
-#settingsTitle,
-#instructionsTitle,
-#changelogTitle {
-    display: none;
-}
-
 #interactionWrapper {
     display: block;
 }

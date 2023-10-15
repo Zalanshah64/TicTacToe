@@ -1,10 +1,6 @@
 /* Stylesheet for the instructions section of the webpage */
 @import url("Webpage.css");
 
-#instructionsMenu {
-    display: none;
-}
-
 .instructionTitle {
     line-height: 150%;
     font-size: 2rem;
@@ -19,7 +15,6 @@
     margin: 0rem 1.5rem 0rem 1.5rem;
     font-size: 1.25rem;
 }
-
 
 #instructionsKeyPressTable {
     display: flex;

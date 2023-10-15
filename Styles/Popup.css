@@ -7,7 +7,6 @@
 }
 
 #popupWrapper {
-    display: none;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -51,6 +50,20 @@
 .popupButton {
     margin: 0.6rem;
     background-color: var(--secondary);
+}
+
+#contextMenu {
+    position: absolute;
+    background-color: var(--main);
+    border: 5px solid var(--secondary);
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999999;
+}
+
+.contextButton {
+    width: 95%;
+    margin: 5px;
 }
 
 @media screen and (max-width: 500px) {

@@ -41,7 +41,8 @@
         <div id="hidden">
             <canvas id="faviconCanvas"></canvas>
 
-            <canvas id="cursorCanvas"></canvas>
+            <canvas id="cursorDefaultCanvas"></canvas>
+            <canvas id="cursorClickDownCanvas"></canvas>
 
             <audio id="playerOneMoveAudio">
                 <source src="resources/Sounds/PlayerOneMove.wav" type="audio/wav">
@@ -76,6 +77,17 @@
             <a id="downloadImageLink" src=""></a>
         </div>
 
+        <div id="contextMenu">
+            <button id="contextReturnButton" class="contextButton hoverOverSound focusable">Return</button>
+            <button id="contextUndoButton" class="contextButton hoverOverSound focusable">Undo</button>
+            <button id="contextRedoButton" class="contextButton hoverOverSound focusable">Redo</button>
+            <button id="contextBackButton" class="contextButton hoverOverSound focusable">Back</button>
+            <button id="contextFullscreenButton" class="contextButton hoverOverSound focusable">FullScreen</button>
+            <button id="contextWindowedButton" class="contextButton hoverOverSound focusable">Windowed</button>
+            <button id="contextMuteButton" class="contextButton hoverOverSound focusable">Mute</button>
+            <button id="contextUnmuteButton" class="contextButton hoverOverSound focusable">Unmute</button>
+        </div>
+
         <div id="popupWrapper">
             <div id="popupBackground"></div>
             <div id="popupContent">
@@ -86,7 +98,7 @@
                     <button id="mobileShareButton" class="popupButton hoverOverSound clickSound focusable">Share Webpage</button>
                     <button id="exitPopupButton" class="popupButton hoverOverSound clickSound focusable">Back</button>
                 </div>
-                <h4 id="shareGameStatus">Test</h4>
+                <h4 id="shareGameStatus"></h4>
             </div>
         </div>
 
@@ -129,13 +141,13 @@
                 <!-- Wrapper containing the start menu -->
                 <div id="mainMenu">
                     <!-- Starts the game -->
-                    <button id="startButton" class="mainMenuButton hoverOverSound clickSound focusable">Play</button>
+                    <button id="startButton" class="mainMenuButton hoverOverSound clickSound focusable contextOpenReturn">Play</button>
 
                     <!-- Opens up the instructions -->
-                    <button id="instructionsButton" class="mainMenuButton hoverOverSound clickSound focusable">Instructions</button>
+                    <button id="instructionsButton" class="mainMenuButton hoverOverSound clickSound focusable contextOpenReturn">Instructions</button>
 
                     <!-- Opens up the settings menu -->
-                    <button id="settingsButton" class="mainMenuButton hoverOverSound clickSound focusable">Settings</button>
+                    <button id="settingsButton" class="mainMenuButton hoverOverSound clickSound focusable contextOpenReturn">Settings</button>
                 </div>
 
                 <!-- Wrapper containing the actual game board -->
@@ -256,14 +268,23 @@
                             </tr>
 
                             <tr class="instructionsRow">
-                                <td class="instructionstd">Control + Save</td>
+                                <td class="instructionstd">Ctrl + S</td>
                                 <td class="instructionstd">Save a round</td>
                             </tr>
 
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">Ctrl + Z</td>
+                                <td class="instructionstd">Undo move</td>
+                            </tr>
+
+                            <tr class="instructionsRow">
+                                <td class="instructionstd">Ctrl + Shift + Z</td>
+                                <td class="instructionstd">Redo move</td>
+                            </tr>
 
                             <tr class="instructionsRow">
                                 <td class="instructionstd">Escape</td>
-                                <td class="instructionstd">Return to main menu mid-game, exit fullscreen mode</td>
+                                <td class="instructionstd">Return to main menu/exit fullscreen mode</td>
                             </tr>
 
                             <tr class="instructionsRow">
@@ -486,6 +507,52 @@
 
                 <!-- Wrapper that contains the changelog with each update -->
                 <div id="changelogWrapper">
+
+                    <div class="update">
+                        <p class="version">V1.21.1: Context Menu + Undo/Redo</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added Custom Context Menu</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Automatically update options based on menu</li>
+                                <li class="updateExtraInfoli">Option to return to previous menu</li>
+                                <li class="updateExtraInfoli">Options for fullscreen/windowed</li>
+                                <li class="updateExtraInfoli">Options for mute/unmute</li>
+                                <li class="updateExtraInfoli">Options for undo/redo move</li>
+                            </ul>
+                            <li class="updateli">Added undo and redo features</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Able to undo with ctrl + z</li>
+                                <li class="updateExtraInfoli">Able to redo with ctrl + shift + z</li>
+                                <li class="updateExtraInfoli">Updated instructions to reflect this</li>
+                            </ul>
+                            <li class="updateli">Update cursor to react to clicks</li>
+                            <li class="updateli">Disabled dragging of links</li>
+                            <li class="updateli">Fixed bug where "Play Again" doesn't reset favicon</li>
+                            <li class="updateli">Fixed bug where instruction canvases show &amplt; on canvases in place of &lt;</li>
+                            <li class="updateli">Fixed bug where font wouldn't load for instructions when using gameboy theme</li>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Update Bubblegum font</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Doesn't work correctly for certain game pieces</li>
+                            </ul>
+
+                            <li class="updateli">Change favicon design to be more appealing</li>
+                            <li class="updateli">Find way of modifying cursor for external social links</li>
+                            <li class="updateli">Add easter eggs</li>
+                            <li class="updateli">Add online multiplayer support</li>
+                            <li class="updateli">Add option to turn off vibration</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Only provide option for machines that actually support vibration</li>
+                            </ul>
+                            <li class="updateli">Figure out bug of switching between mouse and keyboard controls</li>
+                            <li class="updateli">Figure out bug where scores change location at beginning and end of game</li>
+                            <li class="updateli">Figure out bug where board creeps on the game status on some displays</li>
+                        </ol>
+                    </div>
 
                     <div class="update">
                         <p class="version">V1.20.1: Dynamic cursor</p>

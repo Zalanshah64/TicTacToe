@@ -7,6 +7,8 @@ let gameData = {
     playerOneSelectedIds: [],
     playerTwoSelected: [],
     playerTwoSelectedIds: [],
+    moves: [],
+    undoneMoves: [],
     gameResult: GAMEMENU,
     currentMenu: GAMEMENU,
     currentFocus: startButton,

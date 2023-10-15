@@ -8,7 +8,6 @@ for(let i = 0; i < cookies.length; ++i) {
     gameData.settingsData[cookies[i].split("=")[0]] = cookies[i].split("=")[1];
 }
 
-
 //For each type of cookie, check if it exists.
 //If it doesn't, generate it. If it does, get its value from the cookie
 if(gameData.settingsData["volume"]) {
@@ -97,6 +96,7 @@ switchTurnsToggle.checked = gameData.settingsData["switchTurns"];
 AIToggle.checked = gameData.settingsData["AI"];
 fullscreenToggle.checked = gameData.settingsData["fullscreen"];
 updateVolume();
+updateFullscreenButtons();
 showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
 showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
 showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);

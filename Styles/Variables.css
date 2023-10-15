@@ -4,6 +4,11 @@
 }
 
 @font-face {
+    font-family: gameboy;
+    src: url(../resources/Fonts/Mono.ttf);
+}
+
+@font-face {
     font-family: vampire;
     src: url(../resources/Fonts/Vampire.ttf);
 }
@@ -42,7 +47,7 @@
     --gameboyMain: #0f380f;
     --gameboySecondary: #8bac0f;
     --gameboyHighlight: #9bbc0f;
-    --gameboyFont: mono;
+    --gameboyFont: gameboy;
 
     --vampireMain: #180704;
     --vampireSecondary: #ff380d;
@@ -70,4 +75,5 @@
     --bubblegumFont: bubblegum;
 
     --cursorURL: default;
+    --cursorClickDownURL: default;
 }

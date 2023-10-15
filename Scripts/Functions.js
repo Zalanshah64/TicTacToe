@@ -1,4 +1,4 @@
-function squareClick(gamePiece, playerClicked) {
+function squareClick(gamePiece, playerClicked, redoMove = false) {
     //If the current player is player one, the game hasn't ended, and that gamePiece hasn't previously been clicked,
     //do everything needed to represent it being clicked
     if(gameData.currentPlayer == PLAYERONE && !gamePiece.isSelected && gameData.gameResult == NOTFINISHED) {
@@ -32,6 +32,14 @@ function squareClick(gamePiece, playerClicked) {
         return;
     }
 
+    gameData.moves.push(new Move(gameData.currentPlayer, gamePiece.pieceNumber));
+    contextUndoButton.style.display = "block";
+
+    if(!redoMove) {
+        gameData.undoneMoves = [];
+        contextRedoButton.style.display = "none";
+    }
+
     //Remove that gamePiece from the possible list of clickable items
     gamePiece.isSelected = true;
     gamePiece.idElement.classList.remove("unclicked");
@@ -55,7 +63,7 @@ function squareClick(gamePiece, playerClicked) {
     }
 
     //If the game hasn't ended and it's the AI's turn to play, have them move and slow down their rate of movement
-    if(gameData.settingsData["AI"] && gameData.currentPlayer == PLAYERTWO && gameData.gameResult == NOTFINISHED) {
+    if(gameData.settingsData["AI"] && gameData.currentPlayer == PLAYERTWO && gameData.gameResult == NOTFINISHED && !redoMove) {
         setTimeout(function(){
             AIPlayMove();
         }, gameData.AIwaitTime);
@@ -71,7 +79,7 @@ function checkWin() {
         playerWinNameHTML.innerHTML = gameData.settingsData["playerOneIcon"];
         gameData.playerOneScore++;
         playerOneScoreHTML.innerHTML = gameData.playerOneScore;
-        whoWonHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "block";
+        whoWonHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display =
         playAgainButton.style.display = shareGameBoard.style.display = "block";
         focusOn(mainMenuButton);
         if(!hoverOverAudio.paused) {
@@ -98,7 +106,7 @@ function checkWin() {
             if(gameData.playerOneSelectedIds.length + gameData.playerTwoSelectedIds.length == 9) {
                 gameData.gameResult = DRAW;
                 currentTurnHTML.style.display = "none";
-                itsATieHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "block";
+                itsATieHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display =
                 playAgainButton.style.display = shareGameBoard.style.display = "block";
                 focusOn(mainMenuButton);
                 if(!hoverOverAudio.paused) {
@@ -194,12 +202,13 @@ function focusOn(element) {
     }
 }
 
-
   //Update the volume and all it's relevant information
 function updateVolume() {
     playerOneMoveAudio.volume = playerTwoMoveAudio.volume = gameData.settingsData["volume"];
     hoverOverAudio.volume = clickAudio.volume = gameData.settingsData["volume"];
     gameStartAudio.volume = WinnerAudio.volume = DrawAudio.volume = gameData.settingsData["volume"];
+
+    updateContextVolumeButtons();
 }
 
 function updateTheme(themeIndex) {
@@ -238,7 +247,6 @@ function generateTextCopy() {
         } else {
             result += " ";
         }
-
 
         if(onEdge(i, RIGHT)) {
             result += " ";
@@ -291,7 +299,6 @@ function updateGrayedOut() {
         canGray[9].removeEventListener("click", playClickAudio);
     }
 }
-
 
 //Have the AI play a move
   function AIPlayMove() {
@@ -658,7 +665,6 @@ function clearSelections() {
     }
 }
 
-
 function pauseHoverOverAudio() {
     if(!hoverOverAudio.paused) {
         hoverOverAudio.pause();
@@ -739,22 +745,34 @@ function drawFaviconO(row, column) {
 }
 
 function redrawCursor() {
-    cursorCanvas.height = 15;
-    cursorCanvas.width = 15;
+    cursorDefaultCanvas.height = 15;
+    cursorDefaultCanvas.width = 15;
 
-    cursorCtx.imageSmoothingEnabled = false;
+    cursorClickDownCanvas.height = 15;
+    cursorClickDownCanvas.width = 15;
 
-    cursorCtx.arc(7.5, 7.5, 5, 0, Math.PI * 2);
-    cursorCtx.fillStyle  = themeColors[themes[gameData.settingsData.theme]]["secondary"];
-    cursorCtx.fill();
+    cursorDefaultCtx.imageSmoothingEnabled = false;
+    cursorClickDownCtx.imageSmoothingEnabled = false;
 
-    cursorCtx.lineWidth = 2;
-    cursorCtx.strokeStyle = themeColors[themes[gameData.settingsData.theme]]["main"];
-    cursorCtx.stroke();
+    cursorDefaultCtx.arc(7.5, 7.5, 5, 0, Math.PI * 2);
+    cursorDefaultCtx.fillStyle  = themeColors[themes[gameData.settingsData.theme]]["secondary"];
+    cursorDefaultCtx.fill();
 
-    root.style.setProperty("--cursorURL", "url(" + cursorCanvas.toDataURL() + ") 10 10, auto");
+    cursorClickDownCtx.arc(7.5, 7.5, 4.5, 0, Math.PI * 2);
+    cursorClickDownCtx.fillStyle  = themeColors[themes[gameData.settingsData.theme]]["highlight"];
+    cursorClickDownCtx.fill();
+
+    cursorDefaultCtx.lineWidth = 2;
+    cursorDefaultCtx.strokeStyle = themeColors[themes[gameData.settingsData.theme]]["main"];
+    cursorDefaultCtx.stroke();
+
+    cursorClickDownCtx.lineWidth = 2.5;
+    cursorClickDownCtx.strokeStyle = themeColors[themes[gameData.settingsData.theme]]["main"];
+    cursorClickDownCtx.stroke();
+
+    root.style.setProperty("--cursorURL", "url(" + cursorDefaultCanvas.toDataURL() + ") 10 10, auto");
+    root.style.setProperty("--cursorClickDownURL", "url(" + cursorClickDownCanvas.toDataURL() + ") 10 10, auto");
 }
-
 
 function redrawInstructions(theme) {
     instructionFirstCanvas.height = 255;
@@ -783,14 +801,46 @@ function redrawInstructions(theme) {
         ctxFirst.stroke();
     }
 
+    let playerOneIcon = gameData.settingsData.playerOneIcon;
+    let playerTwoIcon = gameData.settingsData.playerTwoIcon;
+
+    let playerOneTextSize = 43;
+    let playerTwoTextSize = 43;
+
+    switch(gameData.settingsData.playerOneIconSlideIndex) {
+        // <3 OR &lt;3
+        case 7:
+            playerOneIcon = "<3"
+            playerOneTextSize = 33;
+        break;
+            // </3 OR &lt;/3
+        case 8:
+            playerOneIcon = "</3"
+            playerOneTextSize = 28;
+            break;
+    }
+
+    switch(gameData.settingsData.playerTwoIconSlideIndex) {
+        // <3 OR &lt;3
+        case 7:
+            playerTwoIcon = "<3"
+            playerTwoTextSize = 33;
+            break;
+            // </3 OR &lt;/3
+        case 8:
+            playerTwoIcon = "</3"
+            playerTwoTextSize = 28;
+            break;
+    }
+
     instructionSecondCanvas.height = 255;
     instructionSecondCanvas.width = 360;
     const ctxSecond = instructionSecondCanvas.getContext("2d");
     ctxSecond.drawImage(instructionFirstCanvas, 0, 0);
     ctxSecond.fillStyle = themeColors[theme]["secondary"];
     ctxSecond.lineWidth = 7;
-    ctxSecond.font = `43px ${theme}`;
-    ctxSecond.fillText(gameData.settingsData.playerOneIcon, 37, 60);
+    ctxSecond.font = `${playerOneTextSize}px ${theme}`;
+    ctxSecond.fillText(playerOneIcon, 37, 60);
 
     instructionThirdCanvas.height = 255;
     instructionThirdCanvas.width = 360;
@@ -798,8 +848,8 @@ function redrawInstructions(theme) {
     ctxThird.drawImage(instructionSecondCanvas, 0, 0);
     ctxThird.fillStyle = themeColors[theme]["secondary"];
     ctxThird.lineWidth = 7;
-    ctxThird.font = `43px ${theme}`;
-    ctxThird.fillText(gameData.settingsData.playerTwoIcon, 160, 145);
+    ctxThird.font = `${playerTwoTextSize}px ${theme}`;
+    ctxThird.fillText(playerTwoIcon, 160, 145);
 
     instructionFourthCanvas.height = 255;
     instructionFourthCanvas.width = 360;
@@ -807,11 +857,11 @@ function redrawInstructions(theme) {
     ctxFourth.drawImage(instructionThirdCanvas, 0, 0);
     ctxFourth.fillStyle = themeColors[theme]["secondary"];
     ctxFourth.lineWidth = 7;
-    ctxFourth.font = `43px ${theme}`;
-    ctxFourth.fillText(gameData.settingsData.playerOneIcon, 37, 145);
-    ctxFourth.fillText(gameData.settingsData.playerOneIcon, 37, 235);
-    ctxFourth.fillText(gameData.settingsData.playerTwoIcon, 280, 60);
-
+    ctxFourth.font = `${playerOneTextSize}px ${theme}`;
+    ctxFourth.fillText(playerOneIcon, 37, 145);
+    ctxFourth.fillText(playerOneIcon, 37, 235);
+    ctxFourth.font = `${playerTwoTextSize}px ${theme}`;
+    ctxFourth.fillText(playerTwoIcon, 280, 60);
 
     instructionFifthCanvas.height = 255;
     instructionFifthCanvas.width = 360;
@@ -819,11 +869,13 @@ function redrawInstructions(theme) {
     ctxFifth.drawImage(instructionThirdCanvas, 0, 0);
     ctxFifth.fillStyle = themeColors[theme]["secondary"];
     ctxFifth.lineWidth = 7;
-    ctxFifth.font = `43px ${theme}`;
-    ctxFifth.fillText(gameData.settingsData.playerOneIcon, 280, 60);
-    ctxFifth.fillText(gameData.settingsData.playerOneIcon, 160, 60);
-    ctxFifth.fillText(gameData.settingsData.playerTwoIcon, 37, 235);
 
+    ctxFifth.font = `${playerOneTextSize}px ${theme}`;
+    ctxFifth.fillText(playerOneIcon, 280, 60);
+    ctxFifth.fillText(playerOneIcon, 160, 60);
+
+    ctxFifth.font = `${playerTwoTextSize}px ${theme}`;
+    ctxFifth.fillText(playerTwoIcon, 37, 235);
 
     instructionSixthCanvas.height = 255;
     instructionSixthCanvas.width = 360;
@@ -831,11 +883,12 @@ function redrawInstructions(theme) {
     ctxSixth.drawImage(instructionSecondCanvas, 0, 0);
     ctxSixth.fillStyle = themeColors[theme]["secondary"];
     ctxSixth.lineWidth = 7;
-    ctxSixth.font = `43px ${theme}`;
-    ctxSixth.fillText(gameData.settingsData.playerOneIcon, 160, 145);
-    ctxSixth.fillText(gameData.settingsData.playerOneIcon, 280, 235);
-    ctxSixth.fillText(gameData.settingsData.playerTwoIcon, 160, 60);
-    ctxSixth.fillText(gameData.settingsData.playerTwoIcon, 37, 145);
+    ctxSixth.font = `${playerOneTextSize}px ${theme}`;
+    ctxSixth.fillText(playerOneIcon, 160, 145);
+    ctxSixth.fillText(playerOneIcon, 280, 235);
+    ctxSixth.font = `${playerTwoTextSize}px ${theme}`;
+    ctxSixth.fillText(playerTwoIcon, 160, 60);
+    ctxSixth.fillText(playerTwoIcon, 37, 145);
 
     instructionSeventhCanvas.height = 255;
     instructionSeventhCanvas.width = 360;
@@ -843,12 +896,235 @@ function redrawInstructions(theme) {
     ctxSeventh.drawImage(instructionThirdCanvas, 0, 0);
     ctxSeventh.fillStyle = themeColors[theme]["secondary"];
     ctxSeventh.lineWidth = 7;
-    ctxSeventh.font = `43px ${theme}`;
-    ctxSeventh.fillText(gameData.settingsData.playerOneIcon, 280, 60);
-    ctxSeventh.fillText(gameData.settingsData.playerOneIcon, 160, 60);
-    ctxSeventh.fillText(gameData.settingsData.playerOneIcon, 37, 235);
-    ctxSeventh.fillText(gameData.settingsData.playerOneIcon, 280, 145);
-    ctxSeventh.fillText(gameData.settingsData.playerTwoIcon, 37, 145);
-    ctxSeventh.fillText(gameData.settingsData.playerTwoIcon, 280, 235);
-    ctxSeventh.fillText(gameData.settingsData.playerTwoIcon, 160, 235);
+    ctxSeventh.font = `${playerOneTextSize}px ${theme}`;
+    ctxSeventh.fillText(playerOneIcon, 280, 60);
+    ctxSeventh.fillText(playerOneIcon, 160, 60);
+    ctxSeventh.fillText(playerOneIcon, 37, 235);
+    ctxSeventh.fillText(playerOneIcon, 280, 145);
+    ctxSeventh.font = `${playerTwoTextSize}px ${theme}`;
+    ctxSeventh.fillText(playerTwoIcon, 37, 145);
+    ctxSeventh.fillText(playerTwoIcon, 280, 235);
+    ctxSeventh.fillText(playerTwoIcon, 160, 235);
+}
+
+function undoMove() {
+    if(gameData.moves.length == 0) {
+        mainMenuButton.click();
+        return;
+    }
+
+    if(gameData.settingsData["AI"] && currentPlayer == PLAYERTWO) {
+        return;
+    }
+
+    if(gameData.gameResult != NOTFINISHED) {
+        currentTurnHTML.style.display = "block";
+        if(gameData.gameResult == PLAYERONE) {
+            gameData.playerOneScore--;
+            playerOneScoreHTML.innerHTML = gameData.playerOneScore;
+        } else {
+            gameData.playerTwoScore--;
+            playerTwoScoreHTML.innerHTML = gameData.playerTwoScore;
+        }
+
+        whoWonHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display =
+        playAgainButton.style.display = shareGameBoard.style.display = itsATieHTML.style.display = "none";
+        gameData.gameResult = NOTFINISHED;
+    }
+
+    if(!gameData.settingsData["AI"] || gameData.gameResult != NOTFINISHED) {
+        let move = gameData.moves.pop();
+        gameData.undoneMoves.push(move);
+        redoMove.style.display = "block";
+
+        if(move.player == PLAYERONE) {
+            gameData.playerOneSelectedIds.pop();
+            gameData.playerOneSelected.pop();
+            currentPlayerHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
+            gameData.currentPlayer = PLAYERONE;
+        } else {
+            gameData.playerTwoSelectedIds.pop();
+            gameData.playerTwoSelected.pop();
+            currentPlayerHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
+            gameData.currentPlayer = PLAYERTWO;
+        }
+
+        gameboard[move.boardSquare].isSelected = false;
+        gameboard[move.boardSquare].idElement.innerHTML = "";
+        gameboard[move.boardSquare].idElement.classList.add("unclicked");
+        redrawFavicon();
+
+        if(gameData.moves.length == 0) {
+            contextUndoButton.style.display = "none";
+        }
+        return;
+    }
+
+    gameData.playerOneSelectedIds.pop();
+    gameData.playerOneSelected.pop();
+    gameData.playerTwoSelectedIds.pop();
+    gameData.playerTwoSelected.pop();
+
+    for(let i = 0; i < 2; i++) {
+        let move = gameData.moves.pop();
+        gameData.undoneMoves.push(move);
+        gameboard[move.boardSquare].isSelected = false;
+        gameboard[move.boardSquare].idElement.innerHTML = "";
+        gameboard[move.boardSquare].idElement.classList.add("unclicked");
+    }
+
+    contextRedoButton.style.display = "block";
+    currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
+    gameData.currentPlayer = PLAYERONE;
+    redrawFavicon();
+
+    if(gameData.moves.length == 0) {
+        contextUndoButton.style.display = "none";
+    }
+}
+
+function redoMove() {
+    if(gameData.undoneMoves.length == 0) {
+        return;
+    }
+    const move1 = gameData.undoneMoves.shift();
+
+    if(gameData.settingsData["AI"]) {
+        const move2 = gameData.undoneMoves.shift();
+
+        squareClick(gameboard[move2.boardSquare], false, true);
+    }
+
+    squareClick(gameboard[move1.boardSquare], false, true);
+
+    if(gameData.undoneMoves.length == 0) {
+        contextRedoButton.style.display = "none";
+    }
+
+    if(gameData.settingsData["AI"]) {
+        gameData.currentPlayer = PLAYERONE;
+
+    }
+}
+
+// Width of page
+function getWidth() {
+return Math.max(
+    document.body.scrollWidth,
+    document.documentElement.scrollWidth,
+    document.body.offsetWidth,
+    document.documentElement.offsetWidth,
+    document.documentElement.clientWidth
+);
+}
+
+// Height of page
+function getHeight() {
+    return Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.documentElement.clientHeight
+    );
+    }
+
+function openMainMenu() {
+    gameData.gameResult = MAINMENU;
+    gameData.currentMenu = MAINMENU;
+    instructionsMenu.style.display = instructionsTitle.style.display =
+    startMenuWrapper.style.display = "none";
+    mainMenu.style.display = wrapper.style.display = "grid";
+    gameData.currentMenu = MAINMENU;
+    redrawFavicon();
+    focusOn(startButton);
+}
+
+function clearGameInformation() {
+    gameData.moves = [];
+    gameData.undoneMoves = [];
+    gameData.playerOneSelectedIds = [];
+    gameData.playerOneSelected = [];
+    gameData.playerTwoSelected = [];
+    gameData.playerTwoSelectedIds = [];
+
+    contextUndoButton.style.display = "none";
+    contextRedoButton.style.display = "none";
+}
+
+function updateContextVolumeButtons() {
+    if(gameData.settingsData["volume"] == 0) {
+        contextUnmuteButton.style.display = "block";
+        contextMuteButton.style.display = "none";
+    } else {
+        contextMuteButton.style.display = "block";
+        contextUnmuteButton.style.display = "none";
+    }
+}
+
+function updateFullscreenButtons() {
+    if(gameData.settingsData["fullscreen"]) {
+        contextWindowedButton.style.display = "block";
+        contextFullscreenButton.style.display = "none";
+    } else {
+        contextFullscreenButton.style.display = "block";
+        contextWindowedButton.style.display = "none";
+
+    }
+}
+
+function toggleMute() {
+    if(gameData.settingsData["volume"] == 0) {
+        gameData.settingsData["volume"] = gameData.rememberedVolume;
+    } else {
+        gameData.rememberedVolume = gameData.settingsData["volume"];
+        gameData.settingsData["volume"] = 0;
+    }
+
+    volumeSlider.value = gameData.settingsData["volume"] * 100;
+    document.cookie = "volume=" + gameData.settingsData["volume"] + ";";
+    updateVolume();
+    playClickAudio();
+}
+
+function updateAIDifficulty() {
+    switch(gameData.settingsData["AIDifficulty"]) {
+        case EASY:
+            gameData.AIDifficultyChance = 0.6;
+        return;
+
+        case NORMAL:
+            gameData.AIDifficultyChance = 0.8;
+        return;
+
+        case HARD:
+            gameData.AIDifficultyChance = 0.9;
+        return;
+
+        case IMPOSSIBLE:
+            gameData.AIDifficultyChance = 1;
+        return;
+    }
+}
+
+function handleReturn() {
+    switch(gameData.currentMenu) {
+        case NOTFINISHED:
+                popupBackground.click();
+                mainMenuButton.click();
+            break;
+            case INSTRUCTIONSMENU:
+                instructionsBackButton.click();
+            break;
+            case SETTINGSMENU:
+                settingsBackButton.click();
+            break;
+            case CHANGELOG:
+                changelogBackButton.click();
+            break;
+    }
+
+    if(gameData.currentMenu == MAINMENU) {
+        contextReturnButton.style.display = "none";
+    }
 }

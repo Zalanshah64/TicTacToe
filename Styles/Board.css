@@ -2,7 +2,6 @@
 @import url("Webpage.css");
 
 #game {
-    display: none;
     width: 100%;
     height: 100%;
     align-items: center;
@@ -22,7 +21,6 @@
 }
 
 #postGameOptions {
-    display: none;
     grid-template-rows: 33.33% 33.33% 33.33%;
     width: 100%;
     height: 100%;
@@ -30,7 +28,6 @@
 
 .postGameButton {
     margin: 0.1rem;
-    display: none;
 }
 
 #board {
@@ -59,14 +56,9 @@
     outline: none;
 }
 
-.unclicked {
-    cursor: var(--cursorURL);
-}
-
 .unclicked:active:hover {
     color: var(--highlight);
     font-size: 3.5rem;
-    cursor: var(--cursorURL);
 }
 
 #topLeft {
@@ -108,13 +100,11 @@
 
 .selected {
     opacity: 0.25;
-    cursor: var(--cursorURL);
 }
 
 .clicked {
     cursor: default;
 }
-
 
 @media screen and (max-width: 500px) {
     #board {

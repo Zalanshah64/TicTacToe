@@ -4,9 +4,10 @@ let root = document.querySelector(":root");
 let hoverOverButtons = document.getElementsByClassName("hoverOverSound");
 let clickSoundButtons = document.getElementsByClassName("clickSound");
 let focusable = document.getElementsByClassName("focusable");
-let cursorCanvas = document.getElementById("cursorCanvas");
-let cursorCtx = cursorCanvas.getContext('2d');
-
+let cursorDefaultCanvas = document.getElementById("cursorDefaultCanvas");
+let cursorDefaultCtx = cursorDefaultCanvas.getContext('2d');
+let cursorClickDownCanvas = document.getElementById("cursorClickDownCanvas");
+let cursorClickDownCtx = cursorClickDownCanvas.getContext('2d');
 
 //Document elements related to the header
 let currentPlayerHTML = document.getElementById("currentPlayer");
@@ -15,20 +16,17 @@ let whoWonHTML = document.getElementById("whoWon");
 let playerWinNameHTML = document.getElementById("playerWinName");
 let itsATieHTML = document.getElementById("itsATie");
 
-
 //Document Elements related to start menu
 let startMenuWrapper = document.getElementById("startMenuWrapper");
 let startMenuTitle = document.getElementById("startMenuTitle");
 let startMenuCredits = document.getElementById("startMenuCredits");
 let startMenuSubtitle = document.getElementById("startMenuSubtitle");
 
-
 //Document Elements related to main menu
 let mainMenu = document.getElementById("mainMenu");
 let startButton = document.getElementById("startButton");
 let instructionsButton = document.getElementById("instructionsButton");
 let settingsButton = document.getElementById("settingsButton");
-
 
 //Document Elements related to settings menu
 let settingsMenu = document.getElementById("settingsMenu");
@@ -79,7 +77,6 @@ let changelog = document.getElementById("changelogWrapper");
 let changelogBackButton = document.getElementById("changelogBackButton");
 let changelogTitle = document.getElementById("changelogTitle");
 
-
 //Document Elements related to the game
 let game = document.getElementById("game");
 let scoreTitle = document.getElementsByClassName("scoreTitle");
@@ -93,7 +90,6 @@ let downloadImageLink = document.getElementById("downloadImageLink");
 let downloadImageCanvas = document.getElementById("downloadImageCanvas");
 let playerOneName = document.getElementById("playerOneName");
 let playerTwoName = document.getElementById("playerTwoName");
-
 
 //Document Elements related to the popup menu
 let popupWrapper = document.getElementById("popupWrapper");
@@ -113,7 +109,6 @@ let gameStartAudio = document.getElementById("gameStartAudio");
 let WinnerAudio =  document.getElementById("WinnerAudio");
 let DrawAudio = document.getElementById("DrawAudio");
 
-
 //Document Elements related to gameboard
 let board = document.getElementById("board");
 let topLeftId = document.getElementById("topLeft");
@@ -131,4 +126,15 @@ let favicon = document.getElementById('favicon')
 let faviconCanvas = document.getElementById("faviconCanvas");
 let faviconCtx = faviconCanvas.getContext('2d');
 
-
+// Custom contextMenu
+let contextMenu = document.getElementById("contextMenu");
+let contextUndoButton = document.getElementById("contextUndoButton");
+let contextRedoButton = document.getElementById("contextRedoButton");
+let contextReturnButton = document.getElementById("contextReturnButton");
+let contextSettingsButton = document.getElementById("contextSettingsButton");
+let contextSaveGameButton = document.getElementById("contextSaveGameButton");
+let contextFullscreenButton = document.getElementById("contextFullscreenButton");
+let contextWindowedButton = document.getElementById("contextWindowedButton");
+let contextMuteButton = document.getElementById("contextMuteButton");
+let contextUnmuteButton = document.getElementById("contextUnmuteButton");
+let contextOpenReturn = document.getElementsByClassName("contextOpenReturn");

@@ -4,13 +4,16 @@ html {
 }
 
 * {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+    cursor: var(--cursorURL);
+}
+
+*:active {
+    cursor: var(--cursorClickDownURL);
 }
 
 body {
     background-color: var(--main);
     color: var(--secondary);
-    cursor: var(--cursorURL);
     height: 100vh;
     max-width: 100vw;
     margin: 0;
@@ -21,6 +24,12 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    overflow-x: hidden;
+}
+
+a {
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 p {
@@ -33,16 +42,10 @@ button {
     color: var(--main);
     border: var(--main);
     background-color: var(--secondary);
-    cursor: var(--cursorURL);
 }
 
-#volumeSlider:focus {
-    background-color: var(--highlight);;
-    outline: none;
-}
-
-.focusable:focus {
-    background-color: var(--highlight);;
+#volumeSlider:focus, .focusable:focus {
+    background-color: var(--highlight);
     outline: none;
 }
 
@@ -50,12 +53,33 @@ button {
     width: 100%;
     height: 100%;
     max-height: 100%;
-    display: none;
     grid-template-columns: 100%;
     grid-template-rows: 20% 65% 15%;
 }
 
-#hidden {
+/*
+    All items that have to be initialized to no display
+    Repeated twice so that each item gets higher priority
+*/
+
+#hidden#hidden,
+#wrapper#wrapper,
+#game#game,
+#postGameOptions#postGameOptions,
+.postGameButton.postGameButton,
+#changelogWrapper#changelogWrapper,
+.scoreTitle.scoreTitle,
+#currentTurn#currentTurn,
+#whoWon#whoWon,
+#itsATie#itsATie,
+#settingsTitle#settingsTitle,
+#instructionsTitle#instructionsTitle,
+#changelogTitle#changelogTitle,
+#instructionsMenu#instructionsMenu,
+#popupWrapper#popupWrapper,
+.contextButton.contextButton,
+#contextMenu#contextMenu,
+#settingsMenu#settingsMenu{
     display: none;
 }
 
@@ -64,7 +88,7 @@ button {
 }
 
 .link:hover {
-    color: var(--highlight);;
+    color: var(--highlight);
 }
 
 ::-webkit-scrollbar {
@@ -80,7 +104,7 @@ button {
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--highlight);;
+    background: var(--highlight);
   }
 
 @media screen and (max-width: 500px) {

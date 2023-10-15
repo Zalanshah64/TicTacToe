@@ -6,3 +6,10 @@ class gamePiece {
         this.isSelected = false;
     }
 }
+
+class Move {
+    constructor(player, boardSquare) {
+        this.player = player;
+        this.boardSquare = boardSquare;
+    }
+}
