@@ -8,6 +8,7 @@ let cursorDefaultCanvas = document.getElementById("cursorDefaultCanvas");
 let cursorDefaultCtx = cursorDefaultCanvas.getContext('2d');
 let cursorClickDownCanvas = document.getElementById("cursorClickDownCanvas");
 let cursorClickDownCtx = cursorClickDownCanvas.getContext('2d');
+let interactionMenus = document.getElementById("interactionWrapper").children;
 
 //Document elements related to the header
 let currentPlayerHTML = document.getElementById("currentPlayer");
@@ -25,8 +26,18 @@ let startMenuSubtitle = document.getElementById("startMenuSubtitle");
 //Document Elements related to main menu
 let mainMenu = document.getElementById("mainMenu");
 let startButton = document.getElementById("startButton");
+let multiplayerButton = document.getElementById("multiplayerButton");
 let instructionsButton = document.getElementById("instructionsButton");
 let settingsButton = document.getElementById("settingsButton");
+
+// Document Elements related to multiplayer menu
+let multiplayerMenuWrapper = document.getElementById("multiplayerMenuWrapper");
+let multiplayerMenu = document.getElementById("multiplayerMenu");
+let connectingToServer = document.getElementById("connectingToServer");
+let multiplayerNewGameButton = document.getElementById("multiplayerNewGameButton");
+let multiplayerJoinGameButton = document.getElementById("multiplayerJoinGameButton");
+let multiplayerJoinGameInput = document.getElementById("multiplayerJoinGameInput");
+let MultiplayerBackButton = document.getElementById("MultiplayerBackButton");
 
 //Document Elements related to settings menu
 let settingsMenu = document.getElementById("settingsMenu");
@@ -93,6 +104,9 @@ let playerTwoName = document.getElementById("playerTwoName");
 
 //Document Elements related to the popup menu
 let popupWrapper = document.getElementById("popupWrapper");
+let popupShareWrapper = document.getElementById("popupShareWrapper");
+let popupMultiplayerWrapper = document.getElementById("popupMultiplayerWrapper");
+let gamePasswordText = document.getElementById("gamePasswordText");
 let popupBackground = document.getElementById("popupBackground");
 let shareGameStatus = document.getElementById("shareGameStatus");
 let saveImageButton = document.getElementById("saveImageButton");
@@ -106,7 +120,7 @@ let playerTwoMoveAudio = document.getElementById("playerTwoMoveAudio");
 let hoverOverAudio = document.getElementById("hoverOverAudio");
 let clickAudio = document.getElementById("clickAudio");
 let gameStartAudio = document.getElementById("gameStartAudio");
-let WinnerAudio =  document.getElementById("WinnerAudio");
+let WinnerAudio = document.getElementById("WinnerAudio");
 let DrawAudio = document.getElementById("DrawAudio");
 
 //Document Elements related to gameboard

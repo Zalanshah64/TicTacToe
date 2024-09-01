@@ -28,6 +28,7 @@
         <link rel="stylesheet" href="Styles/StartMenu.css" type="text/css">
         <link rel="stylesheet" href="Styles/Header.css" type="text/css">
         <link rel="stylesheet" href="Styles/MainMenu.css" type="text/css">
+        <link rel="stylesheet" href="Styles/MultiplayerMenu.css" type="text/css">
         <link rel="stylesheet" href="Styles/Board.css" type="text/css">
         <link rel="stylesheet" href="Styles/Instructions.css" type="text/css">
         <link rel="stylesheet" href="Styles/Changelog.css" type="text/css">
@@ -90,16 +91,29 @@
 
         <div id="popupWrapper">
             <div id="popupBackground"></div>
-            <div id="popupContent">
-                <h2 id="shareGameTitle">Share Game</h2>
-                <div id="popupButtonWrapper">
-                    <button id="saveImageButton" class="popupButton hoverOverSound clickSound focusable">Save Image</button>
-                    <button id="copyToClipBoardButton" class="popupButton hoverOverSound clickSound focusable">Copy to Clipboard</button>
-                    <button id="mobileShareButton" class="popupButton hoverOverSound clickSound focusable">Share Webpage</button>
-                    <button id="exitPopupButton" class="popupButton hoverOverSound clickSound focusable">Back</button>
+
+            <div id="popup">
+                <div id="popupShareWrapper" class="popupMessageWrapper">
+                    <h2>Share Game</h2>
+                    <div class="popupButtonWrapper">
+                        <button id="saveImageButton" class="popupButton hoverOverSound clickSound focusable">Save Image</button>
+                        <button id="copyToClipBoardButton" class="popupButton hoverOverSound clickSound focusable">Copy to Clipboard</button>
+                        <button id="mobileShareButton" class="popupButton hoverOverSound clickSound focusable">Share Webpage</button>
+                    </div>
+                    <h4 id="shareGameStatus"></h4>
                 </div>
-                <h4 id="shareGameStatus"></h4>
+
+                <div id="popupMultiplayerWrapper" class="popupMessageWrapper">
+                    <h2>Game Password:</h2>
+                    <p id="gamePasswordText"></p>
+                    <div class="popupButtonWrapper">
+                    </div>
+                </div>
+
+                <button id="exitPopupButton" class="popupButton hoverOverSound clickSound focusable">Back</button>
             </div>
+
+
         </div>
 
         <!-- Main wrapper for Start Menu -->
@@ -143,12 +157,29 @@
                     <!-- Starts the game -->
                     <button id="startButton" class="mainMenuButton hoverOverSound clickSound focusable contextOpenReturn">Play</button>
 
+                    <button id="multiplayerButton" class="mainMenuButton hoverOverSound clickSound focusable contextOpenReturn">Multiplayer</button>
+
                     <!-- Opens up the instructions -->
                     <button id="instructionsButton" class="mainMenuButton hoverOverSound clickSound focusable contextOpenReturn">Instructions</button>
 
                     <!-- Opens up the settings menu -->
                     <button id="settingsButton" class="mainMenuButton hoverOverSound clickSound focusable contextOpenReturn">Settings</button>
                 </div>
+
+                <!-- Wrapper containing Multiplayer stuff -->
+                 <div id="multiplayerMenuWrapper">
+                    <h1 id="connectingToServer">Connecting to server</h1>
+
+                    <div id="multiplayerMenu">
+                        <button id="multiplayerNewGameButton" class="hoverOverSound clickSound focusable">New Game</button>
+                        <div>
+                            <button id="multiplayerJoinGameButton" class="hoverOverSound clickSound focusable">Join Game</button>
+                            <input type="text" autocomplete="off" id="multiplayerJoinGameInput" placeholder="Room Code" />
+                        </div>
+                    </div>
+
+                    <button id="MultiplayerBackButton" class="hoverOverSound clickSound focusable">Back</button>
+                 </div>
 
                 <!-- Wrapper containing the actual game board -->
                 <div id="game">
@@ -168,7 +199,7 @@
                 <!-- Wrapper containing the instructions on how to play, with images put in for visuals -->
                 <div id="instructionsMenu">
                     <p class="instructionTitle">PLAYING THE GAME</p>
-                    <p class="instruction">Tic-Tac-Toe, also known as Noughts and Crosses, is a game played by many children around the world. The game is very old, 
+                    <p class="instruction">Tic-Tac-Toe, also known as Noughts and Crosses, is a game played by many children around the world. The game is very old,
                         and early versions of it can be found in ancient Egypt and the Roman Empire.
                         <br>The game starts with a three by three grid of squares, or a pound symbol.</p>
                     <div class="instructionImgDiv">
@@ -509,6 +540,50 @@
                 <div id="changelogWrapper">
 
                     <div class="update">
+                        <p class="version">V1.22.1: Multiplayer (Finally)</p>
+                        <p class="CHANGELOG">CHANGELOG:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Added first iteration of multiplayer</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">New button on main menu</li>
+                                <li class="updateExtraInfoli">Ability to create new room and get randomly generated password</li>
+                                <li class="updateExtraInfoli">Ability to join rooms with password</li>
+                                <li class="updateExtraInfoli">Real time multiplayer gameplay between players</li>
+                            </ul>
+                        </ol>
+
+                        <p class="TODO">TO DO:</p>
+                        <ol class="updateList">
+                            <li class="updateli">Fix up a whole bunch of things for multiplayer</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Highlighting doesn't work for joining player</li>
+                                <li class="updateExtraInfoli">Rather than using alerts, add custom popup</li>
+                                <li class="updateExtraInfoli">Add ability for users to play again</li>
+                                <li class="updateExtraInfoli">Update multiplayer screen to move and select with arrow keys</li>
+                                <li class="updateExtraInfoli">Update multiplayer screen so pressing enter when focused on input submits form</li>
+                                <li class="updateExtraInfoli">Update multiplayer popup so users can press a button to copy password</li>
+                                <li class="updateExtraInfoli">Provide error message when unable to connect to server</li>
+                            </ul>
+                            <li class="updateli">Add multiplayer information to instructions</li>
+                            <li class="updateli">Update Bubblegum font</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Doesn't work correctly for certain game pieces</li>
+                            </ul>
+                            <li class="updateli">Add gamepad support</li>
+                            <li class="updateli">Change favicon design to be more appealing</li>
+                            <li class="updateli">Find way of modifying cursor for external social links</li>
+                            <li class="updateli">Add easter eggs</li>
+                            <li class="updateli">Add option to turn off vibration</li>
+                            <ul class="updateExtraInfo">
+                                <li class="updateExtraInfoli">Only provide option for machines that actually support vibration</li>
+                            </ul>
+                            <li class="updateli">Figure out bug of switching between mouse and keyboard controls</li>
+                            <li class="updateli">Figure out bug where scores change location at beginning and end of game</li>
+                            <li class="updateli">Figure out bug where board creeps on the game status on some displays</li>
+                        </ol>
+                    </div>
+
+                    <div class="update">
                         <p class="version">V1.21.1: Context Menu + Undo/Redo</p>
                         <p class="CHANGELOG">CHANGELOG:</p>
                         <ol class="updateList">
@@ -539,7 +614,6 @@
                             <ul class="updateExtraInfo">
                                 <li class="updateExtraInfoli">Doesn't work correctly for certain game pieces</li>
                             </ul>
-
                             <li class="updateli">Change favicon design to be more appealing</li>
                             <li class="updateli">Find way of modifying cursor for external social links</li>
                             <li class="updateli">Add easter eggs</li>
@@ -1582,6 +1656,7 @@
         </div>
 
         <!-- Script that runs the game -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
         <script type="text/javascript" src="Scripts/Classes.js"></script>
         <script type="text/javascript" src="Scripts/Constants.js"></script>
         <script type="text/javascript" src="Scripts/Elements.js"></script>

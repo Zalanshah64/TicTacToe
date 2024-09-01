@@ -20,7 +20,12 @@ let gameData = {
     settingsBackFromLocation: MAINMENU,
     fullscreenRequest: false,
     settingsData: {},
-    keyPress: false
+    keyPress: false,
+    playerOneGamepadIndex: null,
+    playerTwoGamepadIndex: null,
+    playingMultiplayer: false,
+    multiplayerPassword: "",
+    multiplayerPlayerNum: null
 };
 
 //Stores all settings for loading the start menu
@@ -95,3 +100,5 @@ let themeColors = {
         highlight: "#ffdee3"
     }
 };
+
+let socket = null;

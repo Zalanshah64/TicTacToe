@@ -57,6 +57,17 @@ button {
     grid-template-rows: 20% 65% 15%;
 }
 
+input[type=text] {
+    font-family: var(--font);
+    font-size: 1.5rem;
+    color: var(--secondary);
+    background-color: var(--main);
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 0.5rem;
+}
+
 /*
     All items that have to be initialized to no display
     Repeated twice so that each item gets higher priority
@@ -79,7 +90,10 @@ button {
 #popupWrapper#popupWrapper,
 .contextButton.contextButton,
 #contextMenu#contextMenu,
-#settingsMenu#settingsMenu{
+#settingsMenu#settingsMenu,
+#multiplayerMenuWrapper#multiplayerMenuWrapper,
+#multiplayerMenu#multiplayerMenu,
+#popupShareWrapper#popupShareWrapper {
     display: none;
 }
 

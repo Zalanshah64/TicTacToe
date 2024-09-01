@@ -10,6 +10,7 @@ const BOTTOMMIDDLE = 7;
 const BOTTOMRIGHT = 8;
 
 //Refer to the current menu as well as the current status of the game
+const MULTIPLAYERMENU = -7;
 const CHANGELOG = -6;
 const SETTINGSMENU = -5;
 const INSTRUCTIONSMENU = -4;

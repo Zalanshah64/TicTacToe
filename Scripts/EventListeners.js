@@ -31,8 +31,8 @@ document.querySelector("body").addEventListener("click", () => {
 //If a user presses ctrl + S, don't save the webpage
 document.addEventListener("keydown", (event) => {
     if(((event.key === "s" || event.key === "S") && event.ctrlKey)
-    || (event.key === "Down" || event.key === "ArrowDown")
-    || (event.key === "Up" || event.key === "ArrowUp")) {
+        || (event.key === "Down" || event.key === "ArrowDown")
+        || (event.key === "Up" || event.key === "ArrowUp")) {
         event.preventDefault();
     }
 });
@@ -63,7 +63,7 @@ document.addEventListener("keyup", (event) => {
                 focusOn(startButton);
             }
 
-        break;
+            break;
         case " ":
             //If the game is currently being played, click that button
             if(gameData.currentMenu === NOTFINISHED && gameData.gameResult === NOTFINISHED && typeof gameData.currentFocus == "number") {
@@ -71,14 +71,14 @@ document.addEventListener("keyup", (event) => {
             } else if(gameData.currentMenu === SETTINGSMENU && gameData.currentFocus != volumeSlider) {
                 gameData.currentFocus.click();
             }
-        break;
+            break;
 
         case "s":
         case "S":
             if(event.ctrlKey && gameData.currentMenu == NOTFINISHED && gameData.gameResult != NOTFINISHED) {
                 shareGameBoard.click();
             }
-        break;
+            break;
         case "Down":
         case "ArrowDown":
             if(gameData.currentMenu == MAINMENU) {
@@ -99,78 +99,78 @@ document.addEventListener("keyup", (event) => {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(settingsPostGameButton);
-                    break;
+                        break;
 
                     case settingsPostGameButton:
                         focusOn(mainMenuButton);
-                    break;
+                        break;
 
                     case playAgainButton:
                         focusOn(shareGameBoard);
-                    break;
+                        break;
 
                     case shareGameBoard:
                         focusOn(playAgainButton);
-                    break;
+                        break;
 
                     case saveImageButton:
                         focusOn(copyToClipBoardButton);
-                    break;
+                        break;
 
                     case copyToClipBoardButton:
                         focusOn(mobileShareButton);
-                    break;
+                        break;
 
                     case mobileShareButton:
                         focusOn(exitPopupButton);
-                    break;
+                        break;
 
                     case exitPopupButton:
                         focusOn(saveImageButton);
-                    break;
+                        break;
                 }
             } else if(gameData.currentMenu == SETTINGSMENU) {
                 switch(gameData.currentFocus) {
                     case volumeSlider:
                         event.preventDefault();
                         focusOn(suggestionsSwitch);
-                    break;
+                        break;
                     case suggestionsSwitch:
                         focusOn(switchTurnsSwitch);
-                    break;
+                        break;
                     case switchTurnsSwitch:
                         focusOn(AISwitch);
-                    break;
+                        break;
                     case AISwitch:
                         if(gameData.settingsData["AI"]) {
                             focusOn(AIDifficultySelection);
                         } else {
                             focusOn(fullscreenSwitch);
                         }
-                    break;
+                        break;
                     case AIDifficultySelection:
                         focusOn(fullscreenSwitch);
-                    break;
+                        break;
                     case fullscreenSwitch:
                         focusOn(playerOneIconSelection);
-                    break;
+                        break;
                     case playerOneIconSelection:
                         focusOn(playerTwoIconSelection);
-                    break;
+                        break;
                     case playerTwoIconSelection:
                         focusOn(themeSelection);
-                    break;
+                        break;
                     case themeSelection:
                         focusOn(settingsBackButton);
-                    break;
+                        break;
                     case settingsBackButton:
                         focusOn(volumeSlider);
-                    break;
+                        break;
                 }
             } else if(gameData.currentMenu == NOTFINISHED && gameData.gameResult == NOTFINISHED && gameData.settingsData["suggestions"]) {
                 moveSuggestion(DOWN);
             }
-        break;
+            break;
 
         case "w":
         case "W":
@@ -198,54 +198,54 @@ document.addEventListener("keyup", (event) => {
 
                     case settingsPostGameButton:
                         focusOn(mainMenuButton);
-                    break;
+                        break;
 
                     case playAgainButton:
                         focusOn(shareGameBoard);
-                    break;
+                        break;
 
                     case shareGameBoard:
                         focusOn(playAgainButton);
-                    break;
+                        break;
 
                     case saveImageButton:
                         focusOn(exitPopupButton);
-                    break;
+                        break;
 
                     case copyToClipBoardButton:
                         focusOn(saveImageButton);
-                    break;
+                        break;
 
                     case mobileShareButton:
                         focusOn(copyToClipBoardButton);
-                    break;
+                        break;
 
                     case exitPopupButton:
                         focusOn(mobileShareButton);
-                    break;
+                        break;
                 }
             } else if(gameData.currentMenu == SETTINGSMENU) {
                 switch(gameData.currentFocus) {
                     case volumeSlider:
                         event.preventDefault();
                         focusOn(settingsBackButton);
-                    break;
+                        break;
 
                     case suggestionsSwitch:
                         focusOn(volumeSlider);
-                    break;
+                        break;
 
                     case switchTurnsSwitch:
                         focusOn(suggestionsSwitch);
-                    break;
+                        break;
 
                     case AISwitch:
                         focusOn(switchTurnsSwitch);
-                    break;
+                        break;
 
                     case AIDifficultySelection:
                         focusOn(AISwitch);
-                    break;
+                        break;
 
                     case fullscreenSwitch:
                         if(gameData.settingsData["AI"]) {
@@ -253,23 +253,23 @@ document.addEventListener("keyup", (event) => {
                         } else {
                             focusOn(AISwitch);
                         }
-                    break;
+                        break;
 
                     case playerOneIconSelection:
                         focusOn(fullscreenSwitch);
-                    break;
+                        break;
 
                     case playerTwoIconSelection:
                         focusOn(playerOneIconSelection);
-                    break;
+                        break;
 
                     case themeSelection:
                         focusOn(playerTwoIconSelection);
-                    break;
+                        break;
 
                     case settingsBackButton:
                         focusOn(themeSelection);
-                    break;
+                        break;
                 }
             } else if(gameData.currentMenu == NOTFINISHED && gameData.settingsData["suggestions"]) {
                 moveSuggestion(UP);
@@ -284,19 +284,19 @@ document.addEventListener("keyup", (event) => {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(playAgainButton);
-                    break;
+                        break;
 
                     case playAgainButton:
                         focusOn(mainMenuButton);
-                    break;
+                        break;
 
                     case settingsPostGameButton:
                         focusOn(shareGameBoard);
-                    break;
+                        break;
 
                     case shareGameBoard:
                         focusOn(settingsPostGameButton);
-                    break;
+                        break;
                 }
             } else if(gameData.currentMenu == NOTFINISHED && gameData.settingsData["suggestions"]) {
                 moveSuggestion(LEFT);
@@ -309,7 +309,7 @@ document.addEventListener("keyup", (event) => {
             } else if(gameData.currentFocus == themeSelection) {
                 themeSelectionPrev.click();
             }
-        break;
+            break;
 
         case "d":
         case "D":
@@ -319,19 +319,19 @@ document.addEventListener("keyup", (event) => {
                 switch(gameData.currentFocus) {
                     case mainMenuButton:
                         focusOn(playAgainButton);
-                    break;
+                        break;
 
                     case playAgainButton:
                         focusOn(mainMenuButton);
-                    break;
+                        break;
 
                     case settingsPostGameButton:
                         focusOn(shareGameBoard);
-                    break;
+                        break;
 
                     case shareGameBoard:
                         focusOn(settingsPostGameButton);
-                    break;
+                        break;
                 }
             } else if(gameData.currentMenu == NOTFINISHED && gameData.settingsData["suggestions"]) {
                 moveSuggestion(RIGHT);
@@ -344,23 +344,23 @@ document.addEventListener("keyup", (event) => {
             } else if(gameData.currentFocus == themeSelection) {
                 themeSelectionNext.click();
             }
-        break;
+            break;
 
         case "Escape":
         case "Backspace":
             handleReturn();
 
-        break;
+            break;
 
         case "m":
         case "M":
             toggleMute();
-        break;
+            break;
 
         case "F":
         case "f":
             fullscreenSwitch.click()
-        break;
+            break;
 
         case "Z":
         case "z":
@@ -369,7 +369,7 @@ document.addEventListener("keyup", (event) => {
             } else if(event.ctrlKey && gameData.currentMenu == NOTFINISHED) {
                 undoMove();
             }
-        break;
+            break;
     }
 
     gameData.keyPress = false;
@@ -404,9 +404,9 @@ for(let i = 0; i < focusable.length; i++) {
 contextReturnButton.addEventListener("click", handleReturn);
 
 for(let i = 0; i < 9; ++i) {
-    gameboard[i].idElement.addEventListener("click", () => {squareClick(gameboard[i], true)});
+    gameboard[i].idElement.addEventListener("click", () => { squareClick(gameboard[i], true) });
 
-    gameboard[i].idElement.addEventListener("mouseenter", () =>  {
+    gameboard[i].idElement.addEventListener("mouseenter", () => {
         if(gameData.gameResult === NOTFINISHED) {
             clearSelections();
             gameData.currentFocus = gameboard[i].pieceNumber;
@@ -421,8 +421,8 @@ for(let i = 0; i < 9; ++i) {
         clearSelections();
         if(gameData.currentPlayer == PLAYERONE) {
             gameboard[i].idElement.innerHTML = '<p class="selected">' + gameData.settingsData["playerOneIcon"] + '</p>';
-        } else if(!gameData.settingsData["AI"]){
-            gameboard[i].idElement.innerHTML = '<p class="selected">'+ gameData.settingsData["playerTwoIcon"] + '</p>';
+        } else if(!gameData.settingsData["AI"]) {
+            gameboard[i].idElement.innerHTML = '<p class="selected">' + gameData.settingsData["playerTwoIcon"] + '</p>';
         } else {
             return;
         }
@@ -494,8 +494,8 @@ playAgainButton.addEventListener("click", () => {
     clearGameInformation();
     gameData.AIwaitTime = 400;
     mainMenuButton.style.display = settingsPostGameButton.style.display =
-    playAgainButton.style.display = shareGameBoard.style.display =
-    itsATieHTML.style.display = whoWonHTML.style.display = "none";
+        playAgainButton.style.display = shareGameBoard.style.display =
+        itsATieHTML.style.display = whoWonHTML.style.display = "none";
     currentTurnHTML.style.display = "block";
     playerOneName.innerHTML = gameData.settingsData["playerOneIcon"];
     playerTwoName.innerHTML = gameData.settingsData["playerTwoIcon"];
@@ -514,7 +514,9 @@ playAgainButton.addEventListener("click", () => {
 });
 
 shareGameBoard.addEventListener("click", () => {
+    popupShareWrapper.style.display = "flex";
     popupWrapper.style.display = "flex";
+    popupShareWrapper.style.display = "flex";
     undoMoveButton.style.display = "none";
     redoMoveButton.style.display = "none";
     focusOn(saveImageButton);
@@ -524,7 +526,7 @@ popupBackground.addEventListener("click", () => {
     exitPopupButton.click();
 });
 
-saveImageButton.addEventListener("click", () =>  {
+saveImageButton.addEventListener("click", () => {
     shareGameStatus.innerText = "Saving Image...";
     shareGameStatus.style.visibility = "visible";
     html2canvas(board).then((canvas) => {
@@ -535,12 +537,12 @@ saveImageButton.addEventListener("click", () =>  {
     });
     shareGameStatus.innerHTML = "Saved Image";
 
-    setTimeout(() =>  {
+    setTimeout(() => {
         shareGameStatus.style.visibility = "hidden";
     }, 1000);
 });
 
-copyToClipBoardButton.addEventListener("click", () =>  {
+copyToClipBoardButton.addEventListener("click", () => {
     const result = generateTextCopy();
 
     navigator.clipboard.writeText(result);
@@ -548,12 +550,12 @@ copyToClipBoardButton.addEventListener("click", () =>  {
     shareGameStatus.innerText = "Copied to clipboard";
     shareGameStatus.style.visibility = "visible";
 
-    setTimeout(() =>  {
+    setTimeout(() => {
         shareGameStatus.style.visibility = "hidden";
     }, 1000);
 });
 
-mobileShareButton.addEventListener("click", () =>  {
+mobileShareButton.addEventListener("click", () => {
     const data = {
         title: 'Tic-Tac-Toe',
         text: 'Come play Tic-Tac-Toe!',
@@ -565,22 +567,35 @@ mobileShareButton.addEventListener("click", () =>  {
     } else {
         shareGameStatus.innerText = "Unable to share";
         shareGameStatus.style.visibility = "visible";
-        setTimeout(() =>  {
+        setTimeout(() => {
             shareGameStatus.style.visibility = "hidden";
         }, 1000);
     }
 });
 
-exitPopupButton.addEventListener("click", () =>  {
+exitPopupButton.addEventListener("click", () => {
     popupWrapper.style.display = "none";
-    undoMoveButton.style.display = "block";
-    if(gameData.undoMoves.length != 0) {
-        redoMoveButton.style.display = "none";
+
+    if(gameData.currentMenu == MULTIPLAYERMENU) {
+        gameData.currentMenu = MAINMENU;
+        socket.emit("cancelNewGame");
+        popupMultiplayerWrapper.style.display = "none";
+        gameData.playingMultiplayer = false;
+        gameData.multiplayerPassword = "";
+        gameData.multiplayerPlayerNum = null;
+        socket.on("gameStart", null);
+
+    } else {
+        popupShareWrapper.style.display = "none";
+        undoMoveButton.style.display = "block";
+        if(gameData.undoMoves.length != 0) {
+            redoMoveButton.style.display = "none";
+        }
+        focusOn(shareGameBoard);
     }
-    focusOn(shareGameBoard);
 });
 
-settingsPostGameButton.addEventListener("click", () =>  {
+settingsPostGameButton.addEventListener("click", () => {
     gameData.currentMenu = SETTINGSMENU;
     settingsMenu.style.display = wrapper.style.display = "block";
     game.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "none";
@@ -588,14 +603,14 @@ settingsPostGameButton.addEventListener("click", () =>  {
     scoreTitle[PLAYERONE].style.display = scoreTitle[PLAYERTWO].style.display = "none";
     itsATieHTML.style.display = whoWonHTML.style.display = "none";
     gameData.settingsBackFromLocation = NOTFINISHED;
-    setTimeout(() =>  {
+    setTimeout(() => {
         focusOn(volumeSlider);
         pauseHoverOverAudio();
     }, 100);
 });
 
-mainMenuButton.addEventListener("click", () =>  {
-clearGameInformation();
+mainMenuButton.addEventListener("click", () => {
+    clearGameInformation();
     gameData.playerOneScore = gameData.playerTwoScore = 0;
     gameData.currentPlayer = PLAYERONE;
     gameData.gameResult = gameData.currentMenu = MAINMENU;
@@ -606,7 +621,7 @@ clearGameInformation();
         gameboard[i].idElement.innerHTML = "";
     }
 
-    mainMenu.style.display = "grid";
+    mainMenu.style.display = "flex";
     redrawFavicon();
     game.style.display = scoreTitle[PLAYERONE].style.display = scoreTitle[PLAYERTWO].style.display = "none";
     mainMenuButton.style.display = settingsPostGameButton.style.display = "none";
@@ -616,18 +631,18 @@ clearGameInformation();
     pauseHoverOverAudio();
 });
 
-settingsButton.addEventListener("click", () =>  {
+settingsButton.addEventListener("click", () => {
     gameData.settingsBackFromLocation = MAINMENU;
     mainMenu.style.display = "none";
     settingsTitle.style.display = settingsMenu.style.display = wrapper.style.display = "block";
     gameData.currentMenu = SETTINGSMENU;
-    setTimeout(() =>  {
+    setTimeout(() => {
         focusOn(volumeSlider);
         pauseHoverOverAudio();
     }, 100);
 });
 
-AIDifficultySelectionprev.addEventListener("click", () =>  {
+AIDifficultySelectionprev.addEventListener("click", () => {
     if(gameData.settingsData["AI"]) {
         (gameData.settingsData["AIDifficulty"])--;
         showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
@@ -636,7 +651,7 @@ AIDifficultySelectionprev.addEventListener("click", () =>  {
     }
 });
 
-AIDifficultySelectionnext.addEventListener("click", () =>  {
+AIDifficultySelectionnext.addEventListener("click", () => {
     if(gameData.settingsData["AI"]) {
         (gameData.settingsData["AIDifficulty"])++;
         showAIDifficultySelectionOption(gameData.settingsData["AIDifficulty"]);
@@ -645,7 +660,7 @@ AIDifficultySelectionnext.addEventListener("click", () =>  {
     updateAIDifficulty();
 });
 
-playerOneIconSelectionprev.addEventListener("click", () =>  {
+playerOneIconSelectionprev.addEventListener("click", () => {
     (gameData.settingsData["playerOneIconSlideIndex"])--;
     showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
     if(gameData.settingsData["playerOneIconSlideIndex"] == gameData.settingsData["playerTwoIconSlideIndex"]) {
@@ -654,7 +669,7 @@ playerOneIconSelectionprev.addEventListener("click", () =>  {
     }
 });
 
-playerOneIconSelectionnext.addEventListener("click", () =>  {
+playerOneIconSelectionnext.addEventListener("click", () => {
     (gameData.settingsData["playerOneIconSlideIndex"])++;
     showPlayerOneSelectionOption(gameData.settingsData["playerOneIconSlideIndex"]);
     if(gameData.settingsData["playerOneIconSlideIndex"] == gameData.settingsData["playerTwoIconSlideIndex"]) {
@@ -663,7 +678,7 @@ playerOneIconSelectionnext.addEventListener("click", () =>  {
     }
 });
 
-playerTwoIconSelectionprev.addEventListener("click", () =>  {
+playerTwoIconSelectionprev.addEventListener("click", () => {
     (gameData.settingsData["playerTwoIconSlideIndex"])--;
     showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
     if(gameData.settingsData["playerTwoIconSlideIndex"] == gameData.settingsData["playerOneIconSlideIndex"]) {
@@ -672,7 +687,7 @@ playerTwoIconSelectionprev.addEventListener("click", () =>  {
     }
 });
 
-playerTwoIconSelectionnext.addEventListener("click", () =>  {
+playerTwoIconSelectionnext.addEventListener("click", () => {
     (gameData.settingsData["playerTwoIconSlideIndex"])++;
     showPlayerTwoSelectionOption(gameData.settingsData["playerTwoIconSlideIndex"]);
     if(gameData.settingsData["playerTwoIconSlideIndex"] == gameData.settingsData["playerOneIconSlideIndex"]) {
@@ -681,7 +696,7 @@ playerTwoIconSelectionnext.addEventListener("click", () =>  {
     }
 });
 
-settingsBackButton.addEventListener("click", () =>  {
+settingsBackButton.addEventListener("click", () => {
     settingsMenu.style.display = settingsTitle.style.display = "none";
     wrapper.style.display = "grid";
     if(gameData.settingsBackFromLocation == MAINMENU) {
@@ -717,25 +732,25 @@ settingsBackButton.addEventListener("click", () =>  {
     }
 });
 
-volumeSlider.addEventListener("input", (e) =>  {
+volumeSlider.addEventListener("input", (e) => {
     const newVolume = e.target.value / 100;
     gameData.settingsData["volume"] = newVolume;
     document.cookie = "volume=" + newVolume + ";";
     updateVolume();
 });
 
-volumeSlider.addEventListener("mouseup", () =>  {
+volumeSlider.addEventListener("mouseup", () => {
     clickAudio.play();
 });
 
-suggestionsToggle.addEventListener("change", () =>  {
+suggestionsToggle.addEventListener("change", () => {
     gameData.settingsData["suggestions"] = !gameData.settingsData["suggestions"];
     document.cookie = "suggestions=" + gameData.settingsData["suggestions"] + ";";
     focusOn(suggestionsSwitch);
     pauseHoverOverAudio();
 });
 
-switchTurnsCheckBox.addEventListener("change", () =>  {
+switchTurnsCheckBox.addEventListener("change", () => {
     gameData.settingsData["switchTurns"] = !gameData.settingsData["switchTurns"];
     gameData.whoStarts = PLAYERONE;
     document.cookie = "switchTurns=" + gameData.settingsData["switchTurns"] + ";";
@@ -743,7 +758,7 @@ switchTurnsCheckBox.addEventListener("change", () =>  {
     pauseHoverOverAudio();
 });
 
-AIToggle.addEventListener("change", () =>  {
+AIToggle.addEventListener("change", () => {
     gameData.settingsData["AI"] = !gameData.settingsData["AI"];
     document.cookie = "AI=" + gameData.settingsData["AI"] + ";";
 
@@ -752,7 +767,7 @@ AIToggle.addEventListener("change", () =>  {
     updateGrayedOut();
 });
 
-fullscreenToggle.addEventListener("change", () =>  {
+fullscreenToggle.addEventListener("change", () => {
     gameData.settingsData["fullscreen"] = !gameData.settingsData["fullscreen"];
     document.cookie = "fullscreen=" + gameData.settingsData["fullscreen"] + ";";
     gameData.fullscreenRequest = true;
@@ -767,7 +782,7 @@ fullscreenToggle.addEventListener("change", () =>  {
     updateFullscreenButtons();
 });
 
-instructionsButton.addEventListener("click", () =>  {
+instructionsButton.addEventListener("click", () => {
     redrawInstructions(themes[gameData.settingsData.theme]);
     mainMenu.style.display = "none";
     instructionsMenu.style.display = "grid";
@@ -778,7 +793,7 @@ instructionsButton.addEventListener("click", () =>  {
     window.scrollTo(0, 0);
 });
 
-changelogButton.addEventListener("click", () =>  {
+changelogButton.addEventListener("click", () => {
     document.getElementsByTagName("html")[0].style.scrollBehavior = "auto";
     gameData.currentMenu = CHANGELOG;
     gameData.ChangelogButtonOffset = window.pageYOffset;
@@ -791,7 +806,7 @@ changelogButton.addEventListener("click", () =>  {
     document.getElementsByTagName("html")[0].style.scrollBehavior = "smooth";
 });
 
-changelogBackButton.addEventListener("click", () =>  {
+changelogBackButton.addEventListener("click", () => {
     document.getElementsByTagName("html")[0].style.scrollBehavior = "auto";
     gameData.currentMenu = INSTRUCTIONSMENU;
     instructionsMenu.style.display = "grid";
@@ -803,16 +818,16 @@ changelogBackButton.addEventListener("click", () =>  {
     document.getElementsByTagName("html")[0].style.scrollBehavior = "smooth";
 });
 
-instructionsBackButton.addEventListener("click", () =>  {
+instructionsBackButton.addEventListener("click", () => {
     openMainMenu();
     pauseHoverOverAudio();
 });
 
-themeSelectionNext.addEventListener("click", () =>  {
+themeSelectionNext.addEventListener("click", () => {
     updateTheme(gameData.settingsData["theme"] + 1);
 });
 
-themeSelectionPrev.addEventListener("click", () =>  {
+themeSelectionPrev.addEventListener("click", () => {
     updateTheme(gameData.settingsData["theme"] - 1);
 });
 
@@ -850,3 +865,123 @@ contextUnmuteButton.addEventListener("click", toggleMute);
 contextUndoButton.addEventListener("click", undoMove);
 
 contextRedoButton.addEventListener("click", redoMove);
+
+window.addEventListener("gamepadconnected", (event) => {
+    const gamepad = navigator.getGamepads()[event.gamepad.index];
+    if(gameData.playerOneGamepad == null) {
+        console.log("YUHHH")
+        gameData.playerOneGamepadIndex = gamepad.index;
+        checkGamepadState();
+    } else if(gameData.playerTwoGamepad == null) {
+        gameData.playerTwoGamepadIndex = gamepad.index;
+    }
+});
+
+multiplayerButton.addEventListener("click", () => {
+    socket = io('https://zalanshah.com/api/TicTacToe', {
+        path: '/socket.io',
+        transports: ['websocket', 'polling'],  // Allows WebSocket and polling as fallback
+        timeout: 5000
+    });
+    // socket = io('localhost:8000', {
+    //     path: '/api/TicTacToe',
+    //     transports: ['websocket', 'polling'],  // Allows WebSocket and polling as fallback
+    //     timeout: 5000
+    // });
+
+    let numDots = 1;
+    let connected = false;
+
+    let connectionAnimation = setInterval(() => {
+        if(socket == null) {
+            clearInterval(connectionAnimation)
+            return;
+            // TODO: Put something here to show the connection couldn't be made
+        }
+
+        if(connected) {
+            clearInterval(connectionAnimation);
+            return;
+        }
+
+        connectingToServer.innerHTML = "Connecting to server" + ".".repeat(numDots);
+
+        numDots = (numDots + 1) % 4;
+    }, 400);
+
+    gameData.currentMenu = MULTIPLAYERMENU;
+    mainMenu.style.display = "none";
+    multiplayerMenuWrapper.style.display = "flex";
+
+    let connectionTimeout = setTimeout(() => {
+        socket.disconnect();
+        socket = null;
+        alert("Unable to connect")
+    }, 5000);
+
+    socket.on("connectACK", (data) => {
+        clearTimeout(connectionTimeout);
+        clearTimeout(connectionAnimation);
+
+        connectingToServer.style.display = "none";
+        multiplayerMenu.style.display = "flex";
+    })
+});
+
+
+multiplayerNewGameButton.addEventListener("click", () => {
+    if(socket == null) return;
+
+    socket.on("newGameACK", (password) => {
+        gameData.multiplayerPassword = password;
+        gameData.playingMultiplayer = true;
+        gameData.multiplayerPlayerNum = PLAYERONE;
+        popupMultiplayerWrapper.style.display = "flex";
+        popupWrapper.style.display = "flex";
+
+        gamePasswordText.innerText = password;
+        socket.on("disconnect", handleMultiplayerDisconnect)
+        socket.on("newGameACK", null);
+        socket.on("gameStart", startMultiplayerGame);
+    })
+    socket.emit("newGame");
+});
+
+MultiplayerBackButton.addEventListener("click", () => {
+    socket.disconnect();
+    socket = null;
+
+    multiplayerMenuWrapper.style.display = "none";
+    multiplayerMenu.style.display = "none";
+    openMainMenu();
+})
+
+multiplayerJoinGameButton.addEventListener("click", () => {
+    if(socket == null) return;
+
+    socket.on("joinGameACK", () => {
+        gameData["multiplayerPassword"] = multiplayerJoinGameInput.value;
+        gameData["playingMultiplayer"] = true;
+        gameData["multiplayerPlayerNum"] = PLAYERTWO;
+
+        multiplayerJoinGameInput.value = "";
+        socket.on("joinGameACK", null);
+        socket.on("joinGameNACK", null);
+        socket.on("gameStart", startMultiplayerGame);
+
+        socket.on("makeMove", (data) => {
+            squareClick(gameboard[data.pieceNumber], false, false, true);
+            socket.on("makeMove", null);
+        });
+
+        socket.on("disconnect", handleMultiplayerDisconnect)
+    })
+
+    socket.on("joinGameNACK", () => {
+        alert("Unable to join game")
+        socket.on("joinGameNACK", null);
+        socket.on("joinGameACK", null);
+    });
+
+    socket.emit("joinGame", multiplayerJoinGameInput.value);
+});

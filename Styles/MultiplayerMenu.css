@@ -1,0 +1,37 @@
+#multiplayerMenuWrapper {
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#connectingToServer {
+    width: 21ch;
+    margin-top: 30px;
+}
+
+#multiplayerMenu {
+    height: 100%;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#multiplayerMenu > div {
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#multiplayerNewGameButton,
+#multiplayerJoinGameButton {
+    padding: 2rem 3rem;
+    font-size: 30px;
+}
+
+#MultiplayerBackButton {
+    padding: 15px 10px;
+    margin: 5px;
+}

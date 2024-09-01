@@ -43,19 +43,19 @@ if(gameData.settingsData["AIDifficulty"]) {
     switch(gameData.settingsData["AIDifficulty"]) {
         case EASY:
             gameData.AIDifficultyChance = 0.6;
-        break;
+            break;
 
         case NORMAL:
             gameData.AIDifficultyChance = 0.8;
-        break;
+            break;
 
         case HARD:
             gameData.AIDifficultyChance = 0.9;
-        break;
+            break;
 
         case IMPOSSIBLE:
             gameData.AIDifficultyChance = 1;
-        break;
+            break;
     }
 } else {
     document.cookie = "AIDifficulty=1;";
@@ -71,7 +71,7 @@ if(gameData.settingsData["fullscreen"]) {
 }
 
 if(gameData.settingsData["playerOneIconSlideIndex"]
-&& gameData.settingsData["playerTwoIconSlideIndex"]) {
+    && gameData.settingsData["playerTwoIconSlideIndex"]) {
     gameData.settingsData["playerOneIconSlideIndex"] = parseInt(gameData.settingsData["playerOneIconSlideIndex"]);
     gameData.settingsData["playerTwoIconSlideIndex"] = parseInt(gameData.settingsData["playerTwoIconSlideIndex"]);
 } else {

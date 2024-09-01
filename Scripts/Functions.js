@@ -1,41 +1,45 @@
-function squareClick(gamePiece, playerClicked, redoMove = false) {
-    //If the current player is player one, the game hasn't ended, and that gamePiece hasn't previously been clicked,
+function squareClick(gamePiece, playerClicked, redoMove = false, playedFromMultiplayer = false) {
+
+    // If we're playing a multiplayer game and the current move wasn't played
+    // from multiplayer and it's not the current player's turn, return
+    if(gameData.playingMultiplayer && gameData.currentPlayer != gameData.multiplayerPlayerNum && !playedFromMultiplayer) return;
+
+    if(gamePiece.isSelected) return;
+    if(gameData.gameResult != NOTFINISHED) return;
+
+
+    //If the current player is player one,
     //do everything needed to represent it being clicked
-    if(gameData.currentPlayer == PLAYERONE && !gamePiece.isSelected && gameData.gameResult == NOTFINISHED) {
-        gamePiece.idElement.innerHTML = '<p class="clicked">'+ gameData.settingsData["playerOneIcon"] + '</p>';
+    if (gameData.currentPlayer == PLAYERONE) {
+        gamePiece.idElement.innerHTML = '<p class="clicked">' + gameData.settingsData["playerOneIcon"] + '</p>';
         gameData.playerOneSelected.push(gamePiece);
         gameData.playerOneSelectedIds.push(gamePiece.pieceNumber);
 
         drawFaviconX(Math.floor(gamePiece.pieceNumber / 3), (gamePiece.pieceNumber % 3));
 
-        if(!hoverOverAudio.paused) {
-            hoverOverAudio.pause();
-        };
+        if (!hoverOverAudio.paused) hoverOverAudio.pause();
 
         currentPlayerHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
 
-    //If the current player is player two, the game hasn't ended, and that gamePiece hasn't previously been clicked,
-    //do everything needed to represent it being clicked
-    } else if(!gamePiece.isSelected && gameData.gameResult == NOTFINISHED && ((!playerClicked && gameData.settingsData["AI"]) || (playerClicked && !gameData.settingsData["AI"]))) {
+        //If the current player is player two,
+        //do everything needed to represent it being clicked
+    } else if ((!playerClicked && gameData.settingsData["AI"]) || (playerClicked && !gameData.settingsData["AI"]) || gameData.playingMultiplayer) {
         gamePiece.idElement.innerHTML = '<p class="clicked">' + gameData.settingsData["playerTwoIcon"] + '</p>';
         gameData.playerTwoSelected.push(gamePiece);
         gameData.playerTwoSelectedIds.push(gamePiece.pieceNumber);
 
         drawFaviconO(Math.floor(gamePiece.pieceNumber / 3), (gamePiece.pieceNumber % 3));
 
-        if(!hoverOverAudio.paused) {
-            hoverOverAudio.pause();
-        };
+        if (!hoverOverAudio.paused) hoverOverAudio.pause();
+
 
         currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
-    } else {
-        return;
-    }
+    } else return;
 
     gameData.moves.push(new Move(gameData.currentPlayer, gamePiece.pieceNumber));
     contextUndoButton.style.display = "block";
 
-    if(!redoMove) {
+    if (!redoMove) {
         gameData.undoneMoves = [];
         contextRedoButton.style.display = "none";
     }
@@ -48,23 +52,32 @@ function squareClick(gamePiece, playerClicked, redoMove = false) {
 
     //Check if the game has ended, and update information and play sounds accordingly
     const result = checkWin();
-    if(result == NOTFINISHED) {
-        if(gameData.currentPlayer == PLAYERONE) {
+    if (result == NOTFINISHED) {
+        if (gameData.currentPlayer == PLAYERONE) {
             playerOneMoveAudio.play();
             gameData.currentPlayer = PLAYERTWO;
         } else {
             playerTwoMoveAudio.play();
             gameData.currentPlayer = PLAYERONE;
         }
-    } else if(result != DRAW) {
-        WinnerAudio.play();
-    } else {
-        DrawAudio.play();
+    } else if (result != DRAW) WinnerAudio.play();
+    else DrawAudio.play();
+
+    if(gameData.playingMultiplayer && !playedFromMultiplayer) {
+        socket.emit('makeMove', {
+            pieceNumber: gamePiece.pieceNumber,
+            password: gameData.multiplayerPassword
+        });
+
+        socket.on("makeMove", (data) => {
+            squareClick(gameboard[data.pieceNumber], false, false, true);
+            socket.on("makeMove", null);
+        });
     }
 
     //If the game hasn't ended and it's the AI's turn to play, have them move and slow down their rate of movement
-    if(gameData.settingsData["AI"] && gameData.currentPlayer == PLAYERTWO && gameData.gameResult == NOTFINISHED && !redoMove) {
-        setTimeout(function(){
+    if (gameData.settingsData["AI"] && gameData.currentPlayer == PLAYERTWO && gameData.gameResult == NOTFINISHED && !redoMove && !playedFromMultiplayer) {
+        setTimeout(function () {
             AIPlayMove();
         }, gameData.AIwaitTime);
         gameData.AIwaitTime += 75;
@@ -73,22 +86,22 @@ function squareClick(gamePiece, playerClicked, redoMove = false) {
 
 function checkWin() {
     //If player one has won, update all relevant information
-    if(checkSelectedContainsWin(gameData.playerOneSelectedIds)) {
+    if (checkSelectedContainsWin(gameData.playerOneSelectedIds)) {
         gameData.gameResult = PLAYERONE;
         currentTurnHTML.style.display = "none";
         playerWinNameHTML.innerHTML = gameData.settingsData["playerOneIcon"];
         gameData.playerOneScore++;
         playerOneScoreHTML.innerHTML = gameData.playerOneScore;
         whoWonHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display =
-        playAgainButton.style.display = shareGameBoard.style.display = "block";
+            playAgainButton.style.display = shareGameBoard.style.display = "block";
         focusOn(mainMenuButton);
-        if(!hoverOverAudio.paused) {
-            hoverOverAudio.pause();
-        };
+
+        if (!hoverOverAudio.paused) hoverOverAudio.pause();
+
         return PLAYERONE;
     } else {
         //If player two has won, update their relevant information
-        if(checkSelectedContainsWin(gameData.playerTwoSelectedIds)) {
+        if (checkSelectedContainsWin(gameData.playerTwoSelectedIds)) {
             gameData.gameResult = PLAYERTWO;
             currentTurnHTML.style.display = "none";
             playerWinNameHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
@@ -97,21 +110,21 @@ function checkWin() {
             whoWonHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display = "block";
             playAgainButton.style.display = shareGameBoard.style.display = "block";
             focusOn(mainMenuButton);
-            if(!hoverOverAudio.paused) {
-        hoverOverAudio.pause();
-    };
+
+            if (!hoverOverAudio.paused) hoverOverAudio.pause();
+
             return PLAYERTWO;
         } else {
             //If the game is a tie, update all relevant information to reflect that
-            if(gameData.playerOneSelectedIds.length + gameData.playerTwoSelectedIds.length == 9) {
+            if (gameData.playerOneSelectedIds.length + gameData.playerTwoSelectedIds.length == 9) {
                 gameData.gameResult = DRAW;
                 currentTurnHTML.style.display = "none";
                 itsATieHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display =
-                playAgainButton.style.display = shareGameBoard.style.display = "block";
+                    playAgainButton.style.display = shareGameBoard.style.display = "block";
                 focusOn(mainMenuButton);
-                if(!hoverOverAudio.paused) {
-        hoverOverAudio.pause();
-    };
+
+                if (!hoverOverAudio.paused) hoverOverAudio.pause();
+
                 return DRAW;
             }
         }
@@ -173,7 +186,7 @@ function showPlayerOneSelectionOption(n) {
     document.cookie = "playerOneIconSlideIndex=" + gameData.settingsData["playerOneIconSlideIndex"] + ";";
 }
 
-  //Given the index of player two's icon, update relevant information
+//Given the index of player two's icon, update relevant information
 function showPlayerTwoSelectionOption(n) {
     //If n is past the end of the carousel, bring it to the beginning
     if (n >= playerTwoSelections.length) {
@@ -194,15 +207,15 @@ function showPlayerTwoSelectionOption(n) {
     document.cookie = "playerTwoIconSlideIndex=" + gameData.settingsData["playerTwoIconSlideIndex"] + ";";
 }
 
-  //Focus on the given element
+//Focus on the given element
 function focusOn(element) {
-    if(!maxWidth.matches) {
+    if (!maxWidth.matches) {
         gameData.currentFocus = element;
         element.focus();
     }
 }
 
-  //Update the volume and all it's relevant information
+//Update the volume and all it's relevant information
 function updateVolume() {
     playerOneMoveAudio.volume = playerTwoMoveAudio.volume = gameData.settingsData["volume"];
     hoverOverAudio.volume = clickAudio.volume = gameData.settingsData["volume"];
@@ -213,13 +226,13 @@ function updateVolume() {
 
 function updateTheme(themeIndex) {
 
-    if(themeIndex > themeSelections.length - 1) {
+    if (themeIndex > themeSelections.length - 1) {
         themeIndex = 0;
-    } else if(themeIndex < 0) {
+    } else if (themeIndex < 0) {
         themeIndex = themeSelections.length - 1;
     }
 
-    for(let i = 0; i < themeSelections.length; ++i) {
+    for (let i = 0; i < themeSelections.length; ++i) {
         themeSelections[i].style.display = "none";
     }
 
@@ -239,19 +252,19 @@ function updateTheme(themeIndex) {
 function generateTextCopy() {
     let result = "SCORE: " + gameData.playerOneScore + "-" + gameData.playerTwoScore + "\n\n" + " ";
 
-    for(let i = 0; i < 9; ++i) {
-        if(gameData.playerOneSelectedIds.includes(i)) {
+    for (let i = 0; i < 9; ++i) {
+        if (gameData.playerOneSelectedIds.includes(i)) {
             result += "X";
-        } else if(gameData.playerTwoSelectedIds.includes(i)) {
+        } else if (gameData.playerTwoSelectedIds.includes(i)) {
             result += "O";
         } else {
             result += " ";
         }
 
-        if(onEdge(i, RIGHT)) {
+        if (onEdge(i, RIGHT)) {
             result += " ";
 
-            if(!onEdge(i, DOWN)) {
+            if (!onEdge(i, DOWN)) {
                 result += "\n---+---+---\n ";
             }
         } else {
@@ -262,37 +275,37 @@ function generateTextCopy() {
     return result;
 }
 
-  //Turn off the hover audio if it's currently playing, and play it from the start
+//Turn off the hover audio if it's currently playing, and play it from the start
 function playHoverAudio() {
-    if(!hoverOverAudio.paused) {
+    if (!hoverOverAudio.paused) {
         hoverOverAudio.pause();
     }
 
-    hoverOverAudio.play().catch(function() {
+    hoverOverAudio.play().catch(function () {
         hoverOverAudio.currentTime = 0;
     });
 }
 
-  //Turn off the click audio if it's currently playing, and play it from the start
+//Turn off the click audio if it's currently playing, and play it from the start
 function playClickAudio() {
-    if(!clickAudio.paused) {
+    if (!clickAudio.paused) {
         clickAudio.pause();
     }
-    clickAudio.play().catch(function() {
+    clickAudio.play().catch(function () {
         clickAudio.currentTime = 0;
     });
- }
+}
 
 //Update whether the AI difficulty is grayed out or not depending on whether AI is active
 function updateGrayedOut() {
-    if(gameData.settingsData["AI"]) {
-        for(let i = 0; i < canGray.length; ++i) {
+    if (gameData.settingsData["AI"]) {
+        for (let i = 0; i < canGray.length; ++i) {
             canGray[i].classList.remove("grayedOut");
         }
         canGray[4].addEventListener("click", playClickAudio);
         canGray[9].addEventListener("click", playClickAudio);
     } else {
-        for(let i = 0; i < canGray.length; ++i) {
+        for (let i = 0; i < canGray.length; ++i) {
             canGray[i].classList.add("grayedOut");
         }
         canGray[4].removeEventListener("click", playClickAudio);
@@ -301,75 +314,75 @@ function updateGrayedOut() {
 }
 
 //Have the AI play a move
-  function AIPlayMove() {
-      //Generate a random number, and see if that random number passes the AI difficulty
-      //threshold. If it does, check for a valid move in this order:
-      //    - See if a square would cause a win, and play it to win
-      //    - See if a square would cause you to win, and play it to block
-      //    - See if center square is played, and play it
+function AIPlayMove() {
+    //Generate a random number, and see if that random number passes the AI difficulty
+    //threshold. If it does, check for a valid move in this order:
+    //    - See if a square would cause a win, and play it to win
+    //    - See if a square would cause you to win, and play it to block
+    //    - See if center square is played, and play it
     const randomChance = Math.random();
-    if(randomChance < gameData.AIDifficultyChance) {
-      if(AIEdgeWinTest(TOPMIDDLE, TOPLEFT, TOPRIGHT, CENTER, BOTTOMMIDDLE)) {
-          squareClick(gameboard[TOPMIDDLE], false);
-          return;
-      } else if(AIEdgeWinTest(MIDDLERIGHT, CENTER, MIDDLELEFT, TOPRIGHT, BOTTOMRIGHT)) {
-          squareClick(gameboard[MIDDLERIGHT], false);
-          return;
-      } else if(AIEdgeWinTest(BOTTOMMIDDLE, BOTTOMLEFT, BOTTOMRIGHT, CENTER, TOPMIDDLE)) {
-          squareClick(gameboard[BOTTOMMIDDLE], false);
-          return;
-      } else if(AIEdgeWinTest(MIDDLELEFT, CENTER, MIDDLERIGHT, BOTTOMLEFT, TOPLEFT)) {
-          squareClick(gameboard[MIDDLELEFT], false);
-          return;
-      } else if(AICornerWinTest(TOPLEFT, TOPMIDDLE, TOPRIGHT, MIDDLELEFT, BOTTOMLEFT, BOTTOMRIGHT)) {
-          squareClick(gameboard[TOPLEFT], false);
-          return;
-      } else if(AICornerWinTest(TOPRIGHT, TOPMIDDLE, TOPLEFT, MIDDLERIGHT, BOTTOMRIGHT, BOTTOMLEFT)) {
-          squareClick(gameboard[TOPRIGHT], false);
-          return;
-      } else if(AICornerWinTest(BOTTOMLEFT, BOTTOMMIDDLE, BOTTOMRIGHT, MIDDLELEFT, TOPLEFT, TOPRIGHT)) {
-          squareClick(gameboard[BOTTOMLEFT], false);
-          return;
-      } else if(AICornerWinTest(BOTTOMRIGHT, BOTTOMMIDDLE, BOTTOMLEFT, MIDDLERIGHT, TOPRIGHT, TOPLEFT)) {
-          squareClick(gameboard[BOTTOMRIGHT], false);
-          return;
-      } else if(AIEdgeBlockTest(TOPMIDDLE, TOPLEFT, TOPRIGHT, CENTER, BOTTOMMIDDLE)) {
-          squareClick(gameboard[TOPMIDDLE], false);
-          return;
-      } else if(AIEdgeBlockTest(MIDDLERIGHT, CENTER, MIDDLELEFT, TOPRIGHT, BOTTOMRIGHT)) {
-          squareClick(gameboard[MIDDLERIGHT], false);
-          return;
-      } else if(AIEdgeBlockTest(BOTTOMMIDDLE, BOTTOMLEFT, BOTTOMRIGHT, CENTER, TOPMIDDLE)) {
-          squareClick(gameboard[BOTTOMMIDDLE], false);
-          return;
-      } else if(AIEdgeBlockTest(MIDDLELEFT, CENTER, MIDDLERIGHT, BOTTOMLEFT, TOPLEFT)) {
-          squareClick(gameboard[MIDDLELEFT], false);
-          return;
-      } else if(AICornerBlockTest(TOPLEFT, TOPMIDDLE, TOPRIGHT, MIDDLELEFT, BOTTOMLEFT, BOTTOMRIGHT)) {
-          squareClick(gameboard[TOPLEFT], false);
-          return;
-      } else if(AICornerBlockTest(TOPRIGHT, TOPMIDDLE, TOPLEFT, MIDDLERIGHT, BOTTOMRIGHT, BOTTOMLEFT)) {
-          squareClick(gameboard[TOPRIGHT], false);
-          return;
-      } else if(AICornerBlockTest(BOTTOMLEFT, BOTTOMMIDDLE, BOTTOMRIGHT, MIDDLELEFT, TOPLEFT, TOPRIGHT)) {
-          squareClick(gameboard[BOTTOMLEFT], false);
-          return;
-      } else if(AICornerBlockTest(BOTTOMRIGHT, BOTTOMMIDDLE, BOTTOMLEFT, MIDDLERIGHT, TOPRIGHT, TOPLEFT)) {
-          squareClick(gameboard[BOTTOMRIGHT], false);
-          return;
-      } else if(!gameData.playerOneSelected.includes(gameboard[CENTER]) && !gameData.playerTwoSelected.includes(gameboard[CENTER])) {
-          squareClick(gameboard[CENTER], false);
-          return;
-      }
+    if (randomChance < gameData.AIDifficultyChance) {
+        if (AIEdgeWinTest(TOPMIDDLE, TOPLEFT, TOPRIGHT, CENTER, BOTTOMMIDDLE)) {
+            squareClick(gameboard[TOPMIDDLE], false);
+            return;
+        } else if (AIEdgeWinTest(MIDDLERIGHT, CENTER, MIDDLELEFT, TOPRIGHT, BOTTOMRIGHT)) {
+            squareClick(gameboard[MIDDLERIGHT], false);
+            return;
+        } else if (AIEdgeWinTest(BOTTOMMIDDLE, BOTTOMLEFT, BOTTOMRIGHT, CENTER, TOPMIDDLE)) {
+            squareClick(gameboard[BOTTOMMIDDLE], false);
+            return;
+        } else if (AIEdgeWinTest(MIDDLELEFT, CENTER, MIDDLERIGHT, BOTTOMLEFT, TOPLEFT)) {
+            squareClick(gameboard[MIDDLELEFT], false);
+            return;
+        } else if (AICornerWinTest(TOPLEFT, TOPMIDDLE, TOPRIGHT, MIDDLELEFT, BOTTOMLEFT, BOTTOMRIGHT)) {
+            squareClick(gameboard[TOPLEFT], false);
+            return;
+        } else if (AICornerWinTest(TOPRIGHT, TOPMIDDLE, TOPLEFT, MIDDLERIGHT, BOTTOMRIGHT, BOTTOMLEFT)) {
+            squareClick(gameboard[TOPRIGHT], false);
+            return;
+        } else if (AICornerWinTest(BOTTOMLEFT, BOTTOMMIDDLE, BOTTOMRIGHT, MIDDLELEFT, TOPLEFT, TOPRIGHT)) {
+            squareClick(gameboard[BOTTOMLEFT], false);
+            return;
+        } else if (AICornerWinTest(BOTTOMRIGHT, BOTTOMMIDDLE, BOTTOMLEFT, MIDDLERIGHT, TOPRIGHT, TOPLEFT)) {
+            squareClick(gameboard[BOTTOMRIGHT], false);
+            return;
+        } else if (AIEdgeBlockTest(TOPMIDDLE, TOPLEFT, TOPRIGHT, CENTER, BOTTOMMIDDLE)) {
+            squareClick(gameboard[TOPMIDDLE], false);
+            return;
+        } else if (AIEdgeBlockTest(MIDDLERIGHT, CENTER, MIDDLELEFT, TOPRIGHT, BOTTOMRIGHT)) {
+            squareClick(gameboard[MIDDLERIGHT], false);
+            return;
+        } else if (AIEdgeBlockTest(BOTTOMMIDDLE, BOTTOMLEFT, BOTTOMRIGHT, CENTER, TOPMIDDLE)) {
+            squareClick(gameboard[BOTTOMMIDDLE], false);
+            return;
+        } else if (AIEdgeBlockTest(MIDDLELEFT, CENTER, MIDDLERIGHT, BOTTOMLEFT, TOPLEFT)) {
+            squareClick(gameboard[MIDDLELEFT], false);
+            return;
+        } else if (AICornerBlockTest(TOPLEFT, TOPMIDDLE, TOPRIGHT, MIDDLELEFT, BOTTOMLEFT, BOTTOMRIGHT)) {
+            squareClick(gameboard[TOPLEFT], false);
+            return;
+        } else if (AICornerBlockTest(TOPRIGHT, TOPMIDDLE, TOPLEFT, MIDDLERIGHT, BOTTOMRIGHT, BOTTOMLEFT)) {
+            squareClick(gameboard[TOPRIGHT], false);
+            return;
+        } else if (AICornerBlockTest(BOTTOMLEFT, BOTTOMMIDDLE, BOTTOMRIGHT, MIDDLELEFT, TOPLEFT, TOPRIGHT)) {
+            squareClick(gameboard[BOTTOMLEFT], false);
+            return;
+        } else if (AICornerBlockTest(BOTTOMRIGHT, BOTTOMMIDDLE, BOTTOMLEFT, MIDDLERIGHT, TOPRIGHT, TOPLEFT)) {
+            squareClick(gameboard[BOTTOMRIGHT], false);
+            return;
+        } else if (!gameData.playerOneSelected.includes(gameboard[CENTER]) && !gameData.playerTwoSelected.includes(gameboard[CENTER])) {
+            squareClick(gameboard[CENTER], false);
+            return;
+        }
     }
 
     //If the threshold was not passed or none of the checks were passed, play a random valid square
     let potentialSquare = Math.floor(Math.random() * 9);
-    while((gameData.playerOneSelectedIds.includes(potentialSquare) || gameData.playerTwoSelectedIds.includes(potentialSquare))) {
+    while ((gameData.playerOneSelectedIds.includes(potentialSquare) || gameData.playerTwoSelectedIds.includes(potentialSquare))) {
         potentialSquare = Math.floor(Math.random() * 9);
     }
     squareClick(gameboard[potentialSquare], false);
-  }
+}
 
 //Check if the AI should block a specific edge that the opponent could win with
 function AIEdgeBlockTest(edge, horizontalOne, horizontalTwo, verticalOne, verticalTwo) {
@@ -401,39 +414,39 @@ function AICornerWinTest(corner, horizontalOne, horizontalTwo, verticalOne, vert
 function writeStartMenu() {
 
     //Show "Tic-Tac-Toe"
-    if(!startMenuData.titleCompleted) {
+    if (!startMenuData.titleCompleted) {
         startMenuTitle.innerHTML += startMenuData.title.charAt(startMenuData.i);
         startMenuData.i++;
-        if(startMenuData.i == startMenuData.title.length) {
+        if (startMenuData.i == startMenuData.title.length) {
             startMenuData.i = 0;
             startMenuData.titleCompleted = true;
         }
-    setTimeout(writeStartMenu, startMenuData.speed);
-    } else if(!startMenuData.creditsCompleted) {
+        setTimeout(writeStartMenu, startMenuData.speed);
+    } else if (!startMenuData.creditsCompleted) {
         //Show "A game by Zalan Shah"
         startMenuCredits.innerHTML += startMenuData.credits.charAt(startMenuData.i);
         startMenuData.i++;
-        if(startMenuData.i == startMenuData.credits.length) {
+        if (startMenuData.i == startMenuData.credits.length) {
             startMenuData.i = 0;
             startMenuData.creditsCompleted = true;
         }
 
-        if(startMenuData.credits.charAt(startMenuData.i) == " ") {
+        if (startMenuData.credits.charAt(startMenuData.i) == " ") {
             startMenuCredits.innerHTML += startMenuData.credits.charAt(startMenuData.i);
             startMenuData.i++;
         }
 
         setTimeout(writeStartMenu, startMenuData.speed);
-    } else if(!startMenuData.subtitleCompleted) {
+    } else if (!startMenuData.subtitleCompleted) {
         //Show "Press Enter to Start"
         startMenuSubtitle.innerHTML += startMenuData.subtitle.charAt(startMenuData.i);
         startMenuData.i++;
-        if(startMenuData.i == startMenuData.subtitle.length) {
+        if (startMenuData.i == startMenuData.subtitle.length) {
             startMenuData.i = 0;
             startMenuData.subtitleCompleted = true;
         }
 
-        if(startMenuData.subtitle.charAt(startMenuData.i) == " ") {
+        if (startMenuData.subtitle.charAt(startMenuData.i) == " ") {
             startMenuSubtitle.innerHTML += startMenuData.subtitle.charAt(startMenuData.i);
             startMenuData.i++;
         }
@@ -445,49 +458,49 @@ function writeStartMenu() {
 //If the game is currently being played and the user wants to go up, down, left, or right, play
 //the valid location they are able to go to
 function moveSuggestion(direction) {
-    switch(direction) {
+    switch (direction) {
         case UP:
-            if(onEdge(gameData.currentFocus, UP)) {
+            if (onEdge(gameData.currentFocus, UP)) {
                 return;
             }
 
-            if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 3)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 3)))) {
+            if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 3)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 3)))) {
                 gameData.currentFocus -= 3;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 6)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 6)))
-                   && onEdge(gameData.currentFocus, DOWN)) {
+            } else if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 6)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 6)))
+                && onEdge(gameData.currentFocus, DOWN)) {
                 gameData.currentFocus -= 6;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 4)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 4)))
-                   && !onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 4)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 4)))
+                && !onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus -= 4;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 2) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 2))
-                   && !onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 2) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 2))
+                && !onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus -= 2;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 7))
-                    && onEdge(gameData.currentFocus, DOWN) && !onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 7))
+                && onEdge(gameData.currentFocus, DOWN) && !onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus -= 7;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
-                   && !onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
+                && !onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus -= 5;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
-                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
+                && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus -= 5;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 8))
-                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 8))
+                && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus -= 8;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 1))
-                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 1))
+                && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus--;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 4))
-                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 4))
+                && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus -= 4;
                 gameboard[gameData.currentFocus].idElement.focus();
             }
@@ -495,47 +508,47 @@ function moveSuggestion(direction) {
             return;
 
         case DOWN:
-            if(onEdge(gameData.currentFocus, DOWN)) {
+            if (onEdge(gameData.currentFocus, DOWN)) {
                 return;
             }
 
-            if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 3)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 3)))) {
+            if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 3)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 3)))) {
                 gameData.currentFocus += 3;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 6)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 6)))
-                   && onEdge(gameData.currentFocus, UP)) {
+            } else if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 6)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 6)))
+                && onEdge(gameData.currentFocus, UP)) {
                 gameData.currentFocus += 6;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 2)))
-                    && !onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 2)))
+                && !onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus += 2;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
-                    && !onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
+                && !onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus += 4;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
-                    && onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
+                && onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus += 5;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 7))
-                    && onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 7))
+                && onEdge(gameData.currentFocus, UP) && !onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus += 7;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
-            && onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
+                && onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus += 5;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 8))
-            && onEdge(gameData.currentFocus, UP) && onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 8))
+                && onEdge(gameData.currentFocus, UP) && onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus += 8;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 1))
-            && onEdge(gameData.currentFocus, UP) && onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 1))
+                && onEdge(gameData.currentFocus, UP) && onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus++;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
-            && onEdge(gameData.currentFocus, UP) && onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
+                && onEdge(gameData.currentFocus, UP) && onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus += 4;
                 gameboard[gameData.currentFocus].idElement.focus();
             }
@@ -543,47 +556,47 @@ function moveSuggestion(direction) {
             return;
 
         case LEFT:
-            if(onEdge(gameData.currentFocus, LEFT)) {
+            if (onEdge(gameData.currentFocus, LEFT)) {
                 return;
             }
 
-            if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 1)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 1)))) {
+            if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 1)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 1)))) {
                 gameData.currentFocus--;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 2)))
-                   && onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 2)))
+                && onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus -= 2;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 4)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 4)))
-                   && !onEdge(gameData.currentFocus, UP)) {
+            } else if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 4)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 4)))
+                && !onEdge(gameData.currentFocus, UP)) {
                 gameData.currentFocus -= 4;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 2) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 2))
-                   && !onEdge(gameData.currentFocus, DOWN)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 2) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 2))
+                && !onEdge(gameData.currentFocus, DOWN)) {
                 gameData.currentFocus += 2;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 1))
-                   && onEdge(gameData.currentFocus, RIGHT) && !onEdge(gameData.currentFocus, DOWN)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 1))
+                && onEdge(gameData.currentFocus, RIGHT) && !onEdge(gameData.currentFocus, DOWN)) {
                 gameData.currentFocus++;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
-                   && !onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, UP)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
+                && !onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, UP)) {
                 gameData.currentFocus += 5;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
-                   && onEdge(gameData.currentFocus, RIGHT) && onEdge(gameData.currentFocus, UP)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
+                && onEdge(gameData.currentFocus, RIGHT) && onEdge(gameData.currentFocus, UP)) {
                 gameData.currentFocus += 4;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
-                   && onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
+                && onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus -= 5;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 7))
-                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 7))
+                && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus -= 7;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 8))
-                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 8))
+                && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, RIGHT)) {
                 gameData.currentFocus -= 8;
                 gameboard[gameData.currentFocus].idElement.focus();
             }
@@ -591,47 +604,47 @@ function moveSuggestion(direction) {
             return;
 
         case RIGHT:
-            if(onEdge(gameData.currentFocus, RIGHT)) {
+            if (onEdge(gameData.currentFocus, RIGHT)) {
                 return;
             }
 
-            if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 1)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 1)))) {
+            if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 1)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 1)))) {
                 gameData.currentFocus++;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 2)))
-                   && onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus + 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus + 2)))
+                && onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus += 2;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 2)))
-                   && !onEdge(gameData.currentFocus, UP)) {
+            } else if (!(gameData.playerOneSelectedIds.includes((gameData.currentFocus - 2)) || gameData.playerTwoSelectedIds.includes((gameData.currentFocus - 2)))
+                && !onEdge(gameData.currentFocus, UP)) {
                 gameData.currentFocus -= 2;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
-                   && !onEdge(gameData.currentFocus, DOWN)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 4))
+                && !onEdge(gameData.currentFocus, DOWN)) {
                 gameData.currentFocus += 4;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 1))
-                   && onEdge(gameData.currentFocus, LEFT) && !onEdge(gameData.currentFocus, UP)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 1) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 1))
+                && onEdge(gameData.currentFocus, LEFT) && !onEdge(gameData.currentFocus, UP)) {
                 gameData.currentFocus--;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
-                   && !onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 5))
+                && !onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus += 5;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 7))
-                   && onEdge(gameData.currentFocus, LEFT) && onEdge(gameData.currentFocus, UP)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 7) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 7))
+                && onEdge(gameData.currentFocus, LEFT) && onEdge(gameData.currentFocus, UP)) {
                 gameData.currentFocus += 7;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 8))
-                   && onEdge(gameData.currentFocus, LEFT) && onEdge(gameData.currentFocus, UP)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus + 8) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus + 8))
+                && onEdge(gameData.currentFocus, LEFT) && onEdge(gameData.currentFocus, UP)) {
                 gameData.currentFocus += 8;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
-                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 5) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 5))
+                && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus -= 5;
                 gameboard[gameData.currentFocus].idElement.focus();
-            } else if(!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 4))
-                   && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
+            } else if (!(gameData.playerOneSelectedIds.includes(gameData.currentFocus - 4) || gameData.playerTwoSelectedIds.includes(gameData.currentFocus - 4))
+                && onEdge(gameData.currentFocus, DOWN) && onEdge(gameData.currentFocus, LEFT)) {
                 gameData.currentFocus -= 4;
                 gameboard[gameData.currentFocus].idElement.focus();
             }
@@ -642,7 +655,7 @@ function moveSuggestion(direction) {
 
 //Figure out whether a square is on a certain edge
 function onEdge(square, edge) {
-    switch(edge) {
+    switch (edge) {
         case UP:
             return square < 3;
 
@@ -660,13 +673,13 @@ function onEdge(square, edge) {
 //Clear the selections
 function clearSelections() {
     toBeDeleted = document.getElementsByClassName("selected");
-    while(toBeDeleted.length != 0) {
+    while (toBeDeleted.length != 0) {
         toBeDeleted[0].parentNode.removeChild(toBeDeleted[0]);
     }
 }
 
 function pauseHoverOverAudio() {
-    if(!hoverOverAudio.paused) {
+    if (!hoverOverAudio.paused) {
         hoverOverAudio.pause();
     };
 }
@@ -684,28 +697,28 @@ function redrawFavicon() {
     faviconCtx.lineWidth = FAVICONLINEWIDTH;
 
     for (let i = 1; i < 3; i++) {
-      // Vertical
-      faviconCtx.beginPath();
-      faviconCtx.moveTo(i * (FAVICONCANVASSIZE / 3), 0);
-      faviconCtx.lineTo(i * (FAVICONCANVASSIZE / 3), FAVICONCANVASSIZE);
-      faviconCtx.stroke();
+        // Vertical
+        faviconCtx.beginPath();
+        faviconCtx.moveTo(i * (FAVICONCANVASSIZE / 3), 0);
+        faviconCtx.lineTo(i * (FAVICONCANVASSIZE / 3), FAVICONCANVASSIZE);
+        faviconCtx.stroke();
 
-      // Horizontal
-      faviconCtx.beginPath();
-      faviconCtx.moveTo(0, i * (FAVICONCANVASSIZE / 3));
-      faviconCtx.lineTo(FAVICONCANVASSIZE, i * (FAVICONCANVASSIZE / 3));
-      faviconCtx.stroke();
+        // Horizontal
+        faviconCtx.beginPath();
+        faviconCtx.moveTo(0, i * (FAVICONCANVASSIZE / 3));
+        faviconCtx.lineTo(FAVICONCANVASSIZE, i * (FAVICONCANVASSIZE / 3));
+        faviconCtx.stroke();
     }
 
     faviconCtx.strokeStyle = themeColors[themes[gameData.settingsData.theme]].highlight;
 
-    for(let i = 0; i < 3; i++) {
-        for(let j = 0; j < 3; j++) {
-            if(gameboard[(i * 3) + j].isSelected &&
-               gameboard[(i * 3) + j].idElement.textContent === 'X') {
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (gameboard[(i * 3) + j].isSelected &&
+                gameboard[(i * 3) + j].idElement.textContent === 'X') {
                 drawFaviconX(i, j);
-            } else if(gameboard[(i * 3) + j].isSelected &&
-                      gameboard[(i * 3) + j].idElement.textContent === 'O') {
+            } else if (gameboard[(i * 3) + j].isSelected &&
+                gameboard[(i * 3) + j].idElement.textContent === 'O') {
                 drawFaviconO(i, j);
             }
         }
@@ -755,11 +768,11 @@ function redrawCursor() {
     cursorClickDownCtx.imageSmoothingEnabled = false;
 
     cursorDefaultCtx.arc(7.5, 7.5, 5, 0, Math.PI * 2);
-    cursorDefaultCtx.fillStyle  = themeColors[themes[gameData.settingsData.theme]]["secondary"];
+    cursorDefaultCtx.fillStyle = themeColors[themes[gameData.settingsData.theme]]["secondary"];
     cursorDefaultCtx.fill();
 
     cursorClickDownCtx.arc(7.5, 7.5, 4.5, 0, Math.PI * 2);
-    cursorClickDownCtx.fillStyle  = themeColors[themes[gameData.settingsData.theme]]["highlight"];
+    cursorClickDownCtx.fillStyle = themeColors[themes[gameData.settingsData.theme]]["highlight"];
     cursorClickDownCtx.fill();
 
     cursorDefaultCtx.lineWidth = 2;
@@ -784,7 +797,7 @@ function redrawInstructions(theme) {
     ctxFirst.strokeStyle = themeColors[theme]["secondary"];
     ctxFirst.lineWidth = 10;
 
-    for(let i = 1; i < 3; i++) {
+    for (let i = 1; i < 3; i++) {
         const x = i * 120;
         const y = i * 85;
 
@@ -807,26 +820,26 @@ function redrawInstructions(theme) {
     let playerOneTextSize = 43;
     let playerTwoTextSize = 43;
 
-    switch(gameData.settingsData.playerOneIconSlideIndex) {
+    switch (gameData.settingsData.playerOneIconSlideIndex) {
         // <3 OR &lt;3
         case 7:
             playerOneIcon = "<3"
             playerOneTextSize = 33;
-        break;
-            // </3 OR &lt;/3
+            break;
+        // </3 OR &lt;/3
         case 8:
             playerOneIcon = "</3"
             playerOneTextSize = 28;
             break;
     }
 
-    switch(gameData.settingsData.playerTwoIconSlideIndex) {
+    switch (gameData.settingsData.playerTwoIconSlideIndex) {
         // <3 OR &lt;3
         case 7:
             playerTwoIcon = "<3"
             playerTwoTextSize = 33;
             break;
-            // </3 OR &lt;/3
+        // </3 OR &lt;/3
         case 8:
             playerTwoIcon = "</3"
             playerTwoTextSize = 28;
@@ -908,18 +921,18 @@ function redrawInstructions(theme) {
 }
 
 function undoMove() {
-    if(gameData.moves.length == 0) {
+    if (gameData.moves.length == 0) {
         mainMenuButton.click();
         return;
     }
 
-    if(gameData.settingsData["AI"] && currentPlayer == PLAYERTWO) {
+    if (gameData.settingsData["AI"] && currentPlayer == PLAYERTWO) {
         return;
     }
 
-    if(gameData.gameResult != NOTFINISHED) {
+    if (gameData.gameResult != NOTFINISHED) {
         currentTurnHTML.style.display = "block";
-        if(gameData.gameResult == PLAYERONE) {
+        if (gameData.gameResult == PLAYERONE) {
             gameData.playerOneScore--;
             playerOneScoreHTML.innerHTML = gameData.playerOneScore;
         } else {
@@ -928,16 +941,16 @@ function undoMove() {
         }
 
         whoWonHTML.style.display = mainMenuButton.style.display = settingsPostGameButton.style.display =
-        playAgainButton.style.display = shareGameBoard.style.display = itsATieHTML.style.display = "none";
+            playAgainButton.style.display = shareGameBoard.style.display = itsATieHTML.style.display = "none";
         gameData.gameResult = NOTFINISHED;
     }
 
-    if(!gameData.settingsData["AI"] || gameData.gameResult != NOTFINISHED) {
+    if (!gameData.settingsData["AI"] || gameData.gameResult != NOTFINISHED) {
         let move = gameData.moves.pop();
         gameData.undoneMoves.push(move);
         redoMove.style.display = "block";
 
-        if(move.player == PLAYERONE) {
+        if (move.player == PLAYERONE) {
             gameData.playerOneSelectedIds.pop();
             gameData.playerOneSelected.pop();
             currentPlayerHTML.innerHTML = gameData.settingsData["playerTwoIcon"];
@@ -954,7 +967,7 @@ function undoMove() {
         gameboard[move.boardSquare].idElement.classList.add("unclicked");
         redrawFavicon();
 
-        if(gameData.moves.length == 0) {
+        if (gameData.moves.length == 0) {
             contextUndoButton.style.display = "none";
         }
         return;
@@ -965,7 +978,7 @@ function undoMove() {
     gameData.playerTwoSelectedIds.pop();
     gameData.playerTwoSelected.pop();
 
-    for(let i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++) {
         let move = gameData.moves.pop();
         gameData.undoneMoves.push(move);
         gameboard[move.boardSquare].isSelected = false;
@@ -978,18 +991,18 @@ function undoMove() {
     gameData.currentPlayer = PLAYERONE;
     redrawFavicon();
 
-    if(gameData.moves.length == 0) {
+    if (gameData.moves.length == 0) {
         contextUndoButton.style.display = "none";
     }
 }
 
 function redoMove() {
-    if(gameData.undoneMoves.length == 0) {
+    if (gameData.undoneMoves.length == 0) {
         return;
     }
     const move1 = gameData.undoneMoves.shift();
 
-    if(gameData.settingsData["AI"]) {
+    if (gameData.settingsData["AI"]) {
         const move2 = gameData.undoneMoves.shift();
 
         squareClick(gameboard[move2.boardSquare], false, true);
@@ -997,11 +1010,11 @@ function redoMove() {
 
     squareClick(gameboard[move1.boardSquare], false, true);
 
-    if(gameData.undoneMoves.length == 0) {
+    if (gameData.undoneMoves.length == 0) {
         contextRedoButton.style.display = "none";
     }
 
-    if(gameData.settingsData["AI"]) {
+    if (gameData.settingsData["AI"]) {
         gameData.currentPlayer = PLAYERONE;
 
     }
@@ -1009,13 +1022,13 @@ function redoMove() {
 
 // Width of page
 function getWidth() {
-return Math.max(
-    document.body.scrollWidth,
-    document.documentElement.scrollWidth,
-    document.body.offsetWidth,
-    document.documentElement.offsetWidth,
-    document.documentElement.clientWidth
-);
+    return Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.documentElement.clientWidth
+    );
 }
 
 // Height of page
@@ -1027,14 +1040,16 @@ function getHeight() {
         document.documentElement.offsetHeight,
         document.documentElement.clientHeight
     );
-    }
+}
 
 function openMainMenu() {
+    game.style.display = "none";
     gameData.gameResult = MAINMENU;
     gameData.currentMenu = MAINMENU;
     instructionsMenu.style.display = instructionsTitle.style.display =
-    startMenuWrapper.style.display = "none";
-    mainMenu.style.display = wrapper.style.display = "grid";
+        startMenuWrapper.style.display = "none";
+    mainMenu.style.display = "flex";
+    wrapper.style.display = "grid";
     gameData.currentMenu = MAINMENU;
     redrawFavicon();
     focusOn(startButton);
@@ -1053,7 +1068,7 @@ function clearGameInformation() {
 }
 
 function updateContextVolumeButtons() {
-    if(gameData.settingsData["volume"] == 0) {
+    if (gameData.settingsData["volume"] == 0) {
         contextUnmuteButton.style.display = "block";
         contextMuteButton.style.display = "none";
     } else {
@@ -1063,7 +1078,7 @@ function updateContextVolumeButtons() {
 }
 
 function updateFullscreenButtons() {
-    if(gameData.settingsData["fullscreen"]) {
+    if (gameData.settingsData["fullscreen"]) {
         contextWindowedButton.style.display = "block";
         contextFullscreenButton.style.display = "none";
     } else {
@@ -1074,7 +1089,7 @@ function updateFullscreenButtons() {
 }
 
 function toggleMute() {
-    if(gameData.settingsData["volume"] == 0) {
+    if (gameData.settingsData["volume"] == 0) {
         gameData.settingsData["volume"] = gameData.rememberedVolume;
     } else {
         gameData.rememberedVolume = gameData.settingsData["volume"];
@@ -1088,43 +1103,110 @@ function toggleMute() {
 }
 
 function updateAIDifficulty() {
-    switch(gameData.settingsData["AIDifficulty"]) {
+    switch (gameData.settingsData["AIDifficulty"]) {
         case EASY:
             gameData.AIDifficultyChance = 0.6;
-        return;
+            return;
 
         case NORMAL:
             gameData.AIDifficultyChance = 0.8;
-        return;
+            return;
 
         case HARD:
             gameData.AIDifficultyChance = 0.9;
-        return;
+            return;
 
         case IMPOSSIBLE:
             gameData.AIDifficultyChance = 1;
-        return;
+            return;
     }
 }
 
 function handleReturn() {
-    switch(gameData.currentMenu) {
+    switch (gameData.currentMenu) {
         case NOTFINISHED:
-                popupBackground.click();
-                mainMenuButton.click();
+            popupBackground.click();
+            mainMenuButton.click();
             break;
-            case INSTRUCTIONSMENU:
-                instructionsBackButton.click();
+        case INSTRUCTIONSMENU:
+            instructionsBackButton.click();
             break;
-            case SETTINGSMENU:
-                settingsBackButton.click();
+        case SETTINGSMENU:
+            settingsBackButton.click();
             break;
-            case CHANGELOG:
-                changelogBackButton.click();
+        case CHANGELOG:
+            changelogBackButton.click();
             break;
     }
 
-    if(gameData.currentMenu == MAINMENU) {
+    if (gameData.currentMenu == MAINMENU) {
         contextReturnButton.style.display = "none";
     }
+}
+
+// TODO: inevitably I'll get around to doing this
+// function checkGamepadState() {
+//     if (!gameData.playerOneGamepadIndex) {
+//         return;
+//     }
+
+//     setTimeout(() => {
+//         requestAnimationFrame(checkGamepadState);
+//     }, 400)
+
+//     const gamepad = navigator.getGamepads()[gameData.playerOneGamepadIndex];
+
+//     const xAxis = gamepad.axes[0];
+//     const yAxis = gamepad.axes[1];
+
+//     if (xAxis < -0.5) {
+//         console.log("Gamepad " + gamepad.id + " Left");
+//     } else if (xAxis > 0.5) {
+//         console.log("Gamepad " + gamepad.id + " Right");
+//     }
+
+//     if (yAxis < -0.5) {
+//         console.log("Gamepad " + gamepad.id + " Up");
+//     } else if (yAxis > 0.5) {
+//         console.log("Gamepad " + gamepad.id + " Down");
+//     }
+// }
+
+function startMultiplayerGame() {
+    popupWrapper.style.display = "none";
+    popupMultiplayerWrapper.style.display = "none";
+    multiplayerMenu.style.display = "none";
+    multiplayerMenuWrapper.style.display = "none";
+    game.style.display = "grid";
+    gameData.currentMenu = NOTFINISHED;
+    gameData.gameResult = NOTFINISHED;
+    gameData.playerOneScore = gameData.playerTwoScore = 0;
+    playerOneScoreHTML.innerHTML = playerTwoScoreHTML.innerHTML = 0;
+    currentPlayerHTML.innerHTML = gameData.settingsData["playerOneIcon"];
+    gameData.currentPlayer = PLAYERONE;
+    gameData.playerOneSelectedIds = [];
+    gameData.playerOneSelected = [];
+    gameData.playerTwoSelected = [];
+    gameData.playerTwoSelectedIds = [];
+    gameData.moves = [];
+    gameData.undoneMoves = [];
+    contextUndoButton.style.display = "none";
+    contextRedoButton.style.display = "none";
+    gameData.gameResult = NOTFINISHED;
+    redrawFavicon();
+    focusOn(gameboard[4].idElement);
+}
+
+function handleMultiplayerDisconnect() {
+    alert("Other player disconnected");
+    socket.on("disconnect", null);
+    socket.on("makeMove", null);
+    socket.on("gameStart", null);
+    socket.disconnect();
+    socket = null;
+    gameData.playingMultiplayer = false;
+    gameData.multiplayerPassword = "";
+    gameData.multiplayerPlayerNum = null;
+
+    openMainMenu();
 }

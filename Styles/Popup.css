@@ -1,9 +1,14 @@
 #popupWrapper,
-#popupContent,
+#popupShareWrapper,
 #popupButtonWrapper {
-    display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#popupShareWrapper, #popupMultiplayerWrapper {
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-around;
 }
 
 #popupWrapper {
@@ -15,6 +20,7 @@
     z-index: 2;
     color: var(--secondary);
     text-align: center;
+    display: flex;
 }
 
 #shareGameStatus {
@@ -25,7 +31,7 @@
 #popupBackground {
     position: absolute;
     top: 0;
-    bottom: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     background-color: var(--secondary);
@@ -33,23 +39,40 @@
     z-index: 3;
 }
 
-#popupContent {
+#popup {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     opacity: 1;
     background-color: var(--main);
     width: 30%;
     height: 40%;
     z-index: 4;
+}
+
+#popupMessageWrapper {
+    height: 100%;
+    width: 100%;
     flex-direction: column;
     justify-content: space-around;
 }
 
-#popupButtonWrapper {
+#popupMultiplayerWrapper {
     flex-direction: column;
+}
+
+.popupButtonWrapper {
+    flex-direction: column;
+    display: flex;
 }
 
 .popupButton {
     margin: 0.6rem;
     background-color: var(--secondary);
+}
+
+#exitPopupButton {
+    margin: 0rem 1.2rem 2rem;
 }
 
 #contextMenu {
